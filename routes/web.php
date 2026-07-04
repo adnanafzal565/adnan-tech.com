@@ -1,0 +1,219 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\PageController;
+
+use App\Http\Middleware\Admin;
+use App\Http\Middleware\CheckRoutePermission;
+use App\Http\Middleware\UserAuth;
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::post("/set-timezone", [UserController::class, "set_user_timezone"])
+    ->name("timezone.update");
+
+Route::group([
+    "middleware" => [UserAuth::class]
+], function () {
+    Route::get("/messages/buffer-attachment/{id}", [MessageController::class, "buffer_attachment"])
+        ->name("messages.buffer_attachment");
+
+    Route::post("/messages/fetch", [MessageController::class, "fetch"])
+        ->name("messages.fetch");
+
+    Route::post("/messages/send", [MessageController::class, "send"])
+        ->name("messages.send");
+
+    Route::any("/change-password", [UserController::class, "change_password"])
+        ->name("profile.change_password");
+
+    Route::any("/profile", [UserController::class, "profile"])
+        ->name("profile.edit");
+
+    Route::get("/logout", [UserController::class, "logout"])
+        ->name("logout");
+});
+
+Route::get("/email-verification/{email}", [UserController::class, "email_verification"])
+    ->name("verification.email");
+
+Route::get("/reset-password/{email}/{token}", [UserController::class, "reset_password_view"])
+    ->name("password.reset");
+
+Route::get("/forgot-password", [UserController::class, "forgot_password"])
+    ->name("password.request");
+
+Route::any("/register", [UserController::class, "register"])
+    ->name("register");
+
+Route::any("/login", [UserController::class, "login"])
+    ->name("login");
+
+Route::get("/", [UserController::class, "home"])
+    ->name("home");
+
+Route::group([
+    "middleware" => [Admin::class, CheckRoutePermission::class]
+], function () {
+
+    Route::post("/admin/contact-us/delete", [AdminController::class, "delete_contact_us"])
+        ->name("admin.contact.destroy");
+
+    Route::get("/admin/contact-us", [AdminController::class, "contact_us"])
+        ->name("admin.contact.index");
+
+    Route::post("/admin/menus/items/delete", [MenuController::class, "delete_item"])
+        ->name("admin.menus.items.destroy");
+
+    Route::post("/admin/menus/items/update", [MenuController::class, "update_item"])
+        ->name("admin.menus.items.update");
+
+    Route::post("/admin/menus/items/reorder", [MenuController::class, "reorder_items"])
+        ->name("admin.menus.items.reorder");
+
+    Route::post("/admin/menus/items/fetch", [MenuController::class, "fetch_items"])
+        ->name("admin.menus.items.fetch");
+
+    Route::post("/admin/menus/items/add", [MenuController::class, "add_item"])
+        ->name("admin.menus.items.create");
+
+    Route::post("/admin/menus/add", [MenuController::class, "add"])
+        ->name("admin.menus.create");
+
+    Route::get("/admin/menus", [MenuController::class, "index"])
+        ->name("admin.menus.index");
+
+    Route::post("/admin/themes/update", [ThemeController::class, "update"])
+        ->name("admin.themes.update");
+
+    Route::get("/admin/themes", [ThemeController::class, "index"])
+        ->name("admin.themes.index");
+
+    Route::post("/admin/files/delete", [FileController::class, "destroy"])
+        ->name("admin.files.destroy");
+
+    Route::post("/admin/files/upload", [FileController::class, "upload"])
+        ->name("admin.files.upload");
+
+    Route::any("/admin/files", [FileController::class, "index"])
+        ->name("admin.files.index");
+
+    Route::any("/admin/tags/add", [TagController::class, "add"])
+        ->name("admin.tags.create");
+
+    Route::any("/admin/categories/add", [CategoryController::class, "add"])
+        ->name("admin.categories.create");
+
+    Route::post("/admin/pages/delete", [PageController::class, "destroy"])
+        ->name("admin.pages.destroy");
+
+    Route::post("/admin/pages/update", [PageController::class, "update"])
+        ->name("admin.pages.update");
+
+    Route::get("/admin/pages/{id}/edit", [PageController::class, "edit"])
+        ->name("admin.pages.edit");
+
+    Route::any("/admin/pages/add", [PageController::class, "add"])
+        ->name("admin.pages.create");
+
+    Route::get("/admin/pages", [PageController::class, "admin_index"])
+        ->name("admin.pages.index");
+
+    Route::post("/admin/posts/delete-permanently", [PostController::class, "delete_permanently"])
+        ->name("admin.posts.force_delete");
+
+    Route::post("/admin/posts/restore", [PostController::class, "restore"])
+        ->name("admin.posts.restore");
+
+    Route::get("/admin/posts/trash", [PostController::class, "trash"])
+        ->name("admin.posts.trash");
+
+    Route::post("/admin/posts/delete", [PostController::class, "destroy"])
+        ->name("admin.posts.destroy");
+
+    Route::post("/admin/posts/update", [PostController::class, "update"])
+        ->name("admin.posts.update");
+
+    Route::get("/admin/posts/{id}/edit", [PostController::class, "edit"])
+        ->name("admin.posts.edit");
+
+    Route::any("/admin/posts/add", [PostController::class, "add"])
+        ->name("admin.posts.create");
+
+    Route::get("/admin/posts", [PostController::class, "admin_index"])
+        ->name("admin.posts.index");
+
+    Route::post("/admin/send-message", [MessageController::class, "send_admin"])
+        ->name("admin.messages.send");
+
+    Route::post("/admin/fetch-messages", [MessageController::class, "fetch_admin"])
+        ->name("admin.messages.fetch");
+
+    Route::post("/admin/fetch-contacts", [MessageController::class, "fetch_contacts"])
+        ->name("admin.messages.contacts");
+
+    Route::get("/admin/messages", [MessageController::class, "index"])
+        ->name("admin.messages.index");
+
+    Route::post("/admin/users/delete-permanently", [UserController::class, "delete_permanently"])
+        ->name("admin.users.force_delete");
+
+    Route::post("/admin/users/restore", [UserController::class, "restore"])
+        ->name("admin.users.restore");
+
+    Route::get("/admin/users/trash", [UserController::class, "trash"])
+        ->name("admin.users.trash");
+
+    Route::post("/admin/users/un-block", [UserController::class, "un_block"])
+        ->name("admin.users.unblock");
+
+    Route::post("/admin/users/block", [UserController::class, "block"])
+        ->name("admin.users.block");
+
+    Route::post("/admin/users/change-password", [UserController::class, "change_user_password"])
+        ->name("admin.users.change_password");
+
+    Route::post("/admin/users/delete", [UserController::class, "destroy"])
+        ->name("admin.users.destroy");
+
+    Route::post("/admin/users/update", [UserController::class, "update"])
+        ->name("admin.users.update");
+
+    Route::any("/admin/users/add", [UserController::class, "add"])
+        ->name("admin.users.create");
+
+    Route::get("/admin/users/edit/{id}", [UserController::class, "edit"])
+        ->name("admin.users.edit");
+
+    Route::get("/admin/users", [UserController::class, "index"])
+        ->name("admin.users.index");
+
+    Route::post("/admin/save-settings", [SettingsController::class, "save"])
+        ->name("admin.settings.update");
+
+    Route::get("/admin/settings", [SettingsController::class, "index"])
+        ->name("admin.settings.index");
+
+    Route::get("/admin", [AdminController::class, "index"])
+        ->name("admin.dashboard");
+});
+
+Route::any("/admin/login", [AdminController::class, "login"])
+    ->name("admin.login");
+
+Route::get("/{slug}", [PageController::class, "detail"])
+    ->where('slug', '^[a-zA-Z0-9-_]+$')
+    ->name("pages.show");

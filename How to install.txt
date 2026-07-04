@@ -1,0 +1,20 @@
+- Create a database in your phpMyAdmin.
+- Set it's credentials in .env file.
+- Set your super admin credentials in .env file.
+- Run following commands at the root folder:
+
+    > php artisan migrate
+    > php artisan db:seed
+    > php artisan storage:link
+    > php artisan key:generate
+    > php artisan serve
+
+User side:
+    http://localhost:8000
+
+Admin side:
+    http://localhost:8000/admin
+
+- For any help contact:
+    Email: support@adnan-tech.com
+    WhatsApp: +92 315 60413104
