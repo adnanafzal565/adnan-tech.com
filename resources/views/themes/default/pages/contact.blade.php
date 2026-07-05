@@ -29,7 +29,7 @@
 
                 <p id="msg-success" style="color: green;"></p>
 
-                <button type="submit" name="submit" class="btn-submit">Send Message</button>
+                <button type="submit" name="submit" class="btn btn-primary">Send Message</button>
             </form>
         </div>
     </section>

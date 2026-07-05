@@ -40,10 +40,10 @@ Route::group([
     Route::post("/messages/send", [MessageController::class, "send"])
         ->name("messages.send");
 
-    Route::any("/change-password", [UserController::class, "change_password"])
+    Route::post("/change-password", [UserController::class, "change_password"])
         ->name("profile.change_password");
 
-    Route::any("/profile", [UserController::class, "profile"])
+    Route::post("/profile", [UserController::class, "profile"])
         ->name("profile.edit");
 
     Route::get("/logout", [UserController::class, "logout"])

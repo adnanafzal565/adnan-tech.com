@@ -739,6 +739,8 @@ class UserController extends Controller
                 "message" => "Profile has been saved."
             ]);
         }
+
+        // 
         return view("profile");
     }
 

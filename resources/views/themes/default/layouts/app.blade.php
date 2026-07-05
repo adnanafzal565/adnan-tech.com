@@ -30,7 +30,7 @@
 
     <link rel="canonical" href="{{ url()->current() }}" />
 
-    <link href="{{ asset('themes/' . active_theme() . '/css/style.css') }}" rel="stylesheet" />
+    <link href="{{ asset('themes/' . active_theme() . '/css/style.css?v=' . time()) }}" rel="stylesheet" />
     <script src="{{ asset('themes/' . active_theme() . '/js/app.js') }}"></script>
 
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}" />

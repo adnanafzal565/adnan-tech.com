@@ -115,7 +115,7 @@ function Chat() {
                   document.getElementById("message-notification-badge").innerHTML = ""
                 }
             } else {
-                swal.fire("Error", response.data.message, "error")
+                // swal.fire("Error", response.data.message, "error")
             }
         } catch (exp) {
             // swal.fire("Error", exp.response?.data?.message || "", "error")

@@ -6,6 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
+    protected $table = "pages";
+
+    protected $fillable = [
+        'user_id',
+        'title',
+        'slug',
+        'keywords',
+        'excerpt',
+        'content',
+        'is_active',
+    ];
+
+    public $timestamps = true;
+
     public static function map($page)
     {
         if ($page == null)

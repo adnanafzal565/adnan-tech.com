@@ -56,6 +56,8 @@ class User extends Authenticatable
         "deleted_at_format",
     ];
 
+    public $timestamps = true;
+
     public function getDeletedAtFormatAttribute() {
         $value = $this->deleted_at ?? "";
         if ($value) {

@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use DB;
 use App\Modules\Category;
+use App\Models\User;
+use App\Models\Page;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,28 +27,20 @@ class DatabaseSeeder extends Seeder
         // $this->set_categories();
 
         $super_admin_id = 0;
-        $super_admin = DB::table("users")
-            ->where("type", "=", "super_admin")
-            ->first();
+        $super_admin = User::where("type", "super_admin")->first();
 
-        if ($super_admin == null)
-        {
-            $super_admin_id = DB::table("users")
-                ->insertGetId([
-                    "name" => env("SUPERADMIN_NAME"),
-                    "username" => env("SUPERADMIN_USERNAME"),
-                    "email" => env("SUPERADMIN_EMAIL"),
-                    "password" => password_hash(env("SUPERADMIN_PASSWORD"), PASSWORD_DEFAULT),
-                    "email_verified_at" => now()->utc(),
-                    "type" => "super_admin",
-                    "created_at" => now()->utc(),
-                    "updated_at" => now()->utc()
-                ]);
+        if (!$super_admin) {
+            $super_admin = User::create([
+                "name" => env("SUPERADMIN_NAME"),
+                "username" => env("SUPERADMIN_USERNAME"),
+                "email" => env("SUPERADMIN_EMAIL"),
+                "password" => env("SUPERADMIN_PASSWORD"),
+                "email_verified_at" => now()->utc(),
+                "type" => "super_admin"
+            ]);
         }
-        else
-        {
-            $super_admin_id = $super_admin->id;
-        }
+
+        $super_admin_id = $super_admin->id;
 
         $menus = DB::table("menus")->count();
         if ($menus <= 0)
@@ -95,39 +88,61 @@ class DatabaseSeeder extends Seeder
         $pages = DB::table("pages")->count();
         if ($pages <= 0)
         {
-            DB::table("pages")
-                ->insertGetId([
+            $now = now()->utc();
+
+            Page::insert([
+                [
                     "user_id" => $super_admin_id,
                     "title" => "Home",
                     "slug" => "/",
+                    "content" => "",
                     "is_active" => 1,
-                    "created_at" => now()->utc(),
-                    "updated_at" => now()->utc()
-                ]);
-
-            DB::table("pages")
-                ->insertGetId([
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
+                [
                     "user_id" => $super_admin_id,
                     "title" => "About",
                     "slug" => "about",
+                    "content" => "<section class=\"about-us\"><h1>About Us</h1><p>Welcome! I'm a passionate web developer with over <strong>8 years of experience</strong> building modern, fast, and reliable web applications. Throughout my career, I've worked on projects of all sizes, helping businesses and individuals turn their ideas into functional, scalable solutions.</p><p>In addition to developing this platform, I also work as a <strong>freelance web developer</strong>. Whether you need a business website, custom web application, API integration, bug fixes, performance optimization, or ongoing maintenance, I'd be happy to help.</p><p>If you're using this project and need features tailored to your specific requirements, I also offer <strong>custom development and customization services</strong>. From small enhancements to completely new modules, I can customize the project to match your workflow and business needs.</p><p>Thank you for visiting, and I look forward to working with you!</p></section>",
                     "is_active" => 1,
-                    "created_at" => now()->utc(),
-                    "updated_at" => now()->utc()
-                ]);
-
-            DB::table("pages")
-                ->insertGetId([
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
+                [
                     "user_id" => $super_admin_id,
                     "title" => "Contact us",
                     "slug" => "contact",
+                    "content" => "",
                     "is_active" => 1,
-                    "created_at" => now()->utc(),
-                    "updated_at" => now()->utc()
-                ]);
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
+                [
+                    "user_id" => $super_admin_id,
+                    "title" => "Profile",
+                    "slug" => "profile",
+                    "content" => "",
+                    "is_active" => 1,
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
+                [
+                    "user_id" => $super_admin_id,
+                    "title" => "Change password",
+                    "slug" => "change-password",
+                    "content" => "",
+                    "is_active" => 1,
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
+            ]);
 
             forget_page_cache("/");
             forget_page_cache("about");
             forget_page_cache("contact");
+            forget_page_cache("profile");
+            forget_page_cache("change-password");
         }
 
         $active_theme = DB::table('settings')
