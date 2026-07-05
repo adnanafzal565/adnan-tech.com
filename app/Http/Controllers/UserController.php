@@ -12,7 +12,7 @@ use Storage;
 use Validator;
 
 use App\Models\User;
-use App\Mail\UserPasswordMail;
+use App\Jobs\AddUserJob;
 
 class UserController extends Controller
 {
@@ -381,9 +381,7 @@ class UserController extends Controller
             }
 
             if ($request->has('send_password_email')) {
-                Mail::to($user->email)->send(
-                    new UserPasswordMail($user, $request->password)
-                );
+                dispatch(new AddUserJob($user, $request->password));
             }
 
             return response()->json([
@@ -748,7 +746,7 @@ class UserController extends Controller
     {
         if (request()->expectsJson())
         {
-            $user = auth("sanctum")->user();
+            $user = auth()->user();
 
             // $user->tokens()->delete();
 

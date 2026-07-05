@@ -114,12 +114,9 @@
                                 <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                       onclick="return do_logout();">
                                         Logout
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
                                 </li>
                             </ul>
                         </li>
@@ -177,6 +174,13 @@
     <div id="chat-app"></div>
     <script type="text/babel" src="{{ asset('/components/Chat.js?v=' . time()) }}"></script>
     <link rel="stylesheet" href="{{ asset('/css/chat.css') }}" />
+
+    <script>
+        function do_logout() {
+            localStorage.removeItem(accessTokenKey);
+            return true;
+        }
+    </script>
 
     <style>
         footer {

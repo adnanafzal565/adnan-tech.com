@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\Post;
 use App\Models\Page;
+use App\Models\Settings;
 
 function fetch_routes()
 {
@@ -51,29 +52,14 @@ function fetch_setting($key)
 
 function set_setting($key, $value)
 {
-    $setting = DB::table("settings")
-        ->where("key", "=", $key)
-        ->first();
-
-    if ($setting == null)
-    {
-        DB::table("settings")
-            ->insertGetId([
-                "key" => $key,
-                "value" => $value,
-                "created_at" => now()->utc(),
-                "updated_at" => now()->utc()
-            ]);
-    }
-    else
-    {
-        DB::table("settings")
-            ->where("id", "=", $setting->id)
-            ->update([
-                "value" => $value,
-                "updated_at" => now()->utc()
-            ]);
-    }
+    Settings::updateOrCreate(
+        [
+            "key" => $key
+        ],
+        [
+            "value" => $value
+        ]
+    );
 
     cache()->forget($key);
 }

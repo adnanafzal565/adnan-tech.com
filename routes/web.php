@@ -15,8 +15,8 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PageController;
 
 use App\Http\Middleware\Admin;
-use App\Http\Middleware\CheckRoutePermission;
 use App\Http\Middleware\UserAuth;
+use App\Http\Middleware\CheckRoutePermission;
 
 // Route::get('/', function () {
 //     return view('welcome');

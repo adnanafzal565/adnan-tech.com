@@ -50,6 +50,7 @@
       </div>
     </div>
 
+    {{--
     <div class="row">
       <div class="col-6">
         <div class="card">
@@ -58,14 +59,14 @@
             <div class="row mb-3">
               <label for="inputText" class="col-sm-3 col-form-label">Host</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" form="form-settings" name="host" />
+                <input type="text" class="form-control" form="form-settings" name="smtp_host" value="{{ $settings['smtp_host'] ?? '' }}" />
               </div>
             </div>
 
             <div class="row mb-3">
               <label for="inputText" class="col-sm-3 col-form-label">Port</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" form="form-settings" name="port" />
+                <input type="text" class="form-control" form="form-settings" name="smtp_port" value="{{ $settings['smtp_port'] ?? '' }}" />
               </div>
             </div>
 
@@ -74,12 +75,24 @@
               <div class="col-sm-9">
                 <label>
                   SSL
-                  <input type="radio" name="encryption" form="form-settings" value="ssl" />
+                  <input
+                    type="radio"
+                    name="smtp_encryption"
+                    form="form-settings"
+                    value="ssl"
+                    {{ ($settings['smtp_encryption'] ?? '') == 'ssl' ? 'checked' : '' }}
+                  />
                 </label>
-                
+
                 <label>
                   TLS
-                  <input type="radio" name="encryption" form="form-settings" value="tls" />
+                  <input
+                    type="radio"
+                    name="smtp_encryption"
+                    form="form-settings"
+                    value="tls"
+                    {{ ($settings['smtp_encryption'] ?? '') == 'tls' ? 'checked' : '' }}
+                  />
                 </label>
               </div>
             </div>
@@ -87,33 +100,34 @@
             <div class="row mb-3">
               <label for="inputText" class="col-sm-3 col-form-label">Username</label>
               <div class="col-sm-9">
-                <input type="email" class="form-control" form="form-settings" name="username" />
+                <input type="email" class="form-control" form="form-settings" name="smtp_username" value="{{ $settings['smtp_username'] ?? '' }}" />
               </div>
             </div>
 
             <div class="row mb-3">
               <label for="inputText" class="col-sm-3 col-form-label">Password</label>
               <div class="col-sm-9">
-                <input type="password" class="form-control" form="form-settings" name="password" />
+                <input type="password" class="form-control" form="form-settings" name="smtp_password" value="{{ $settings['smtp_password'] ?? '' }}" />
               </div>
             </div>
 
             <div class="row mb-3">
               <label for="inputText" class="col-sm-3 col-form-label">From email</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" form="form-settings" name="from" />
+                <input type="text" class="form-control" form="form-settings" name="smtp_from" value="{{ $settings['smtp_from'] ?? '' }}" />
               </div>
             </div>
 
             <div class="row mb-3">
               <label for="inputText" class="col-sm-3 col-form-label">From name</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" form="form-settings" name="from_name" />
+                <input type="text" class="form-control" form="form-settings" name="smtp_from_name" value="{{ $settings['smtp_from_name'] ?? '' }}" />
               </div>
             </div>
           </div>
         </div>
       </div>
+      --}}
 
       <div class="col-6">
         <div class="card">

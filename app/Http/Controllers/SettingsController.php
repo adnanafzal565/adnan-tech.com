@@ -8,19 +8,21 @@ use DB;
 use Storage;
 use Validator;
 
+use App\Models\Settings;
+
 class SettingsController extends Controller
 {
     public function save()
     {
         $admin = auth()->user();
 
-        $host = request()->host ?? "";
-        $port = request()->port ?? "";
-        $encryption = request()->encryption ?? "";
-        $username = request()->username ?? "";
-        $password = request()->password ?? "";
-        $from = request()->from ?? "";
-        $from_name = request()->from_name ?? "";
+        $smtp_host = request()->smtp_host ?? "";
+        $smtp_port = request()->smtp_port ?? "";
+        $smtp_encryption = request()->smtp_encryption ?? "";
+        $smtp_username = request()->smtp_username ?? "";
+        $smtp_password = request()->smtp_password ?? "";
+        $smtp_from = request()->smtp_from ?? "";
+        $smtp_from_name = request()->smtp_from_name ?? "";
         $verify_email = request()->verify_email ?? "";
         $title = request()->title ?? "";
         $logo = request()->file("logo");
@@ -42,13 +44,13 @@ class SettingsController extends Controller
         }
 
         set_setting("verify_email", $verify_email);
-        set_setting("smtp_host", $host);
-        set_setting("smtp_port", $port);
-        set_setting("smtp_encryption", $encryption);
-        set_setting("smtp_username", $username);
-        set_setting("smtp_password", $password);
-        set_setting("smtp_from", $from);
-        set_setting("smtp_from_name", $from_name);
+        set_setting("smtp_host", $smtp_host);
+        set_setting("smtp_port", $smtp_port);
+        set_setting("smtp_encryption", $smtp_encryption);
+        set_setting("smtp_username", $smtp_username);
+        set_setting("smtp_password", $smtp_password);
+        set_setting("smtp_from", $smtp_from);
+        set_setting("smtp_from_name", $smtp_from_name);
         set_setting("title", $title);
 
         return response()->json([
@@ -59,13 +61,11 @@ class SettingsController extends Controller
 
     public function index()
     {
-        $settings = DB::table("settings")->get();
+        $settings = Settings::get();
 
         $settings_arr = [];
         foreach ($settings as $setting)
-        {
             $settings_arr[$setting->key ?? ""] = $setting->value ?? "";
-        }
 
         return view("admin/settings", [
             "settings" => $settings_arr
