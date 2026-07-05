@@ -61,7 +61,7 @@
                     onerror="this.remove();" />
                 </td>
                 <td>{{ $user->type }}</td>
-                <td>{{ $user->created_at }}</td>
+                <td>{{ $user->created_at_format }}</td>
 
                 @if ($can_edit || $can_delete || $can_block)
                 <td>
@@ -87,6 +87,8 @@
             @endforeach
           </tbody>
         </table>
+
+        {{ $users->links("pagination::bootstrap-5") }}
       </div>
     </div>
   </section>

@@ -113,6 +113,12 @@ Start the development server:
 php artisan serve
 ```
 
+## Customization
+
+Need additional features?
+
+I provide Laravel development and customization services. If you need custom modules, API integrations, UI improvements, new themes, or any other functionality, feel free to contact me.
+
 ## Screenshots
 
 ### Dashboard
@@ -162,12 +168,6 @@ php artisan serve
 ### Theme 3
 
 ![Theme 3](screenshots/theme-3-home.png)
-
-## Customization
-
-Need additional features?
-
-I provide Laravel development and customization services. If you need custom modules, API integrations, UI improvements, new themes, or any other functionality, feel free to contact me.
 
 ## Contributing
 

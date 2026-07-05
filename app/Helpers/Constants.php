@@ -22,6 +22,7 @@ class Constants
     public const USERS_RESTORE = 'admin.users.restore';
     public const USERS_FORCE_DELETE = 'admin.users.force_delete';
     public const USERS_CHANGE_PASSWORD = 'admin.users.change_password';
+    public const AUTHOR = 'author';
 
     // Posts
     public const POSTS_INDEX = 'admin.posts.index';
@@ -35,6 +36,7 @@ class Constants
 
     // Pages
     public const PAGES_INDEX = 'admin.pages.index';
+    public const PAGES_SHOW = 'pages.show';
     public const PAGES_CREATE = 'admin.pages.create';
     public const PAGES_EDIT = 'admin.pages.edit';
     public const PAGES_UPDATE = 'admin.pages.update';

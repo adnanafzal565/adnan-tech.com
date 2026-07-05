@@ -19,6 +19,14 @@ class UserAuth
         {
             if (auth()->user()->is_block)
             {
+                if (request()->expectsJson())
+                {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'You have been blocked.',
+                    ]);
+                }
+
                 abort(403, "You have been blocked.");
             }
             return $next($request);
@@ -26,7 +34,12 @@ class UserAuth
 
         if (request()->expectsJson())
         {
-            abort(401);
+            // abort(401);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You are not logged-in.',
+            ]);
         }
 
         return redirect(route("login"));

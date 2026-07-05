@@ -51,6 +51,27 @@ class User extends Authenticatable
         ];
     }
 
+    protected $appends = [
+        "created_at_format",
+        "deleted_at_format",
+    ];
+
+    public function getDeletedAtFormatAttribute() {
+        $value = $this->deleted_at ?? "";
+        if ($value) {
+            $value = date("d F, Y", strtotime($value));
+        }
+        return $value ?? '';
+    }
+
+    public function getCreatedAtFormatAttribute() {
+        $value = $this->created_at ?? "";
+        if ($value) {
+            $value = date("d F, Y", strtotime($value));
+        }
+        return $value ?? '';
+    }
+
     public static function map($user)
     {
         if ($user == null)

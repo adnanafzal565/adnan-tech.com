@@ -41,21 +41,19 @@ class UserController extends Controller
         $me = auth()->user();
         $id = request()->id ?? 0;
 
-        $user = DB::table("users")
-            ->where("id", "=", $id)
+        $user = User::onlyTrashed()
+            ->where("id", $id)
+            ->where("type", "!=", "super_admin")
             ->first();
 
-        if ($user == null)
-        {
+        if (!$user) {
             return response()->json([
                 "status" => "error",
                 "message" => "User does not exist."
             ]);
         }
 
-        DB::table("users")
-            ->where("id", "=", $user->id)
-            ->delete();
+        $user->forceDelete();
 
         return response()->json([
             "status" => "success",
@@ -80,23 +78,18 @@ class UserController extends Controller
         $me = auth()->user();
         $id = request()->id ?? 0;
 
-        $user = DB::table("users")
-            ->where("id", "=", $id)
+        $user = User::onlyTrashed()
+            ->where("id", $id)
             ->first();
 
-        if ($user == null)
-        {
+        if (!$user) {
             return response()->json([
                 "status" => "error",
                 "message" => "User does not exist."
             ]);
         }
 
-        DB::table("users")
-            ->where("id", "=", $user->id)
-            ->update([
-                "deleted_at" => null
-            ]);
+        $user->restore();
 
         return response()->json([
             "status" => "success",
@@ -108,17 +101,12 @@ class UserController extends Controller
     {
         set_timezone();
 
-        $users = DB::table("users")
-            ->whereNotNull("deleted_at")
-            ->orderBy("id", "desc")
-            ->paginate();
-
-        $users_arr = [];
-        foreach ($users as $user)
-            array_push($users_arr, User::map($user));
+        $users = User::onlyTrashed()
+            ->orderBy("deleted_at", "desc")
+            ->paginate(config("config.PER_PAGE"));
 
         return view("admin/users/trash", [
-            "users" => $users_arr
+            "users" => $users
         ]);
     }
 
@@ -361,21 +349,24 @@ class UserController extends Controller
             $me = auth()->user();
             $routes = request()->routes ?? [];
 
-            $user = User::where("email", $request->email)
-                ->orWhere("username", $request->email)
+            $email = $request->email;
+            $username = strtok($email, "@");
+
+            $user = User::where("email", $email)
+                ->orWhere("username", $username)
                 ->exists();
 
             if ($user) {
                 return response()->json([
                     "status" => "error",
-                    "message" => "User with same email already exists."
+                    "message" => "User with same email/username already exists."
                 ]);
             }
 
             $user = User::create([
                 'name' => $request->name,
-                'username' => $request->email,
-                'email' => $request->email,
+                'username' => $username,
+                'email' => $email,
                 'password' => $request->password,
                 'type' => $request->type,
                 'email_verified_at' => now()->utc()
@@ -446,24 +437,18 @@ class UserController extends Controller
         $admin = auth()->user();
         $id = request()->id ?? 0;
 
-        $user = DB::table("users")
-            ->where("id", "=", $id)
+        $user = User::where("id", $id)
             ->where("type", "!=", "super_admin")
             ->first();
 
-        if ($user == null)
-        {
+        if (!$user) {
             return response()->json([
                 "status" => "error",
                 "message" => "User not found."
             ]);
         }
 
-        DB::table("users")
-            ->where("id", "=", $user->id)
-            ->update([
-                "deleted_at" => now()->utc()
-            ]);
+        $user->delete();
 
         return response()->json([
             "status" => "success",
@@ -477,22 +462,17 @@ class UserController extends Controller
         $not_type = ["super_admin"];
 
         $me = auth()->user();
-        $users = DB::table("users");
-            
+        $users = User::query();
+
         if (!$me->is_super_admin())
             $not_type[] = "admin";
-            
-        $users = $users->whereNotIn("type", $not_type)
-            ->whereNull("deleted_at")
-            ->orderBy("id", "desc")
-            ->paginate();
 
-        $users_arr = [];
-        foreach ($users as $user)
-            array_push($users_arr, User::map($user));
+        $users = $users->whereNotIn("type", $not_type)
+            ->orderBy("id", "desc")
+            ->paginate(config("config.PER_PAGE"));
 
         return view("admin/users/index", [
-            "users" => $users_arr
+            "users" => $users
         ]);
     }
 

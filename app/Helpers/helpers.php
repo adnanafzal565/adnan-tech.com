@@ -213,7 +213,7 @@ function menu_items($name)
 
 function site_title()
 {
-    return cache()->rememberForever('site_title', function () {
+    return cache()->rememberForever('title', function () {
         return DB::table('settings')->where('key', 'title')->value('value') ?? '';
     });
 }

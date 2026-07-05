@@ -215,14 +215,19 @@
             }
             setMessages(tempMessages)
 
-            let currentNotificationCount = document.getElementById("message-notification-badge").innerHTML ?? "0"
-            currentNotificationCount = parseInt(currentNotificationCount)
-            currentNotificationCount -= notificationsCount
+            const message_notification_badge = document.getElementById("message-notification-badge");
+            let currentNotificationCount = 0;
 
-            if (currentNotificationCount > 0) {
-              document.getElementById("message-notification-badge").innerHTML = currentNotificationCount
-            } else {
-              document.getElementById("message-notification-badge").innerHTML = ""
+            if (message_notification_badge) {
+              currentNotificationCount = message_notification_badge.innerHTML ?? "0"
+              currentNotificationCount = parseInt(currentNotificationCount)
+              currentNotificationCount -= notificationsCount
+            
+              if (currentNotificationCount > 0) {
+                message_notification_badge.innerHTML = currentNotificationCount
+              } else {
+                message_notification_badge.innerHTML = ""
+              }
             }
 
             const tempContacts = [...contacts]

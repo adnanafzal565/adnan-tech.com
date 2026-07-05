@@ -15,19 +15,9 @@ class PostController extends Controller
     {
         set_timezone();
 
-        $posts = DB::table("posts")
-            ->select("posts.*", "files.file_path",
-                "users.name AS user_name", "users.username")
-            ->leftJoin("files", "files.id", "=", "posts.image_id")
-            ->join("users", "users.id", "=", "posts.user_id")
-            ->whereNotNull("posts.deleted_at")
+        $posts = Post::onlyTrashed()
             ->orderBy("posts.id", "desc")
-            ->paginate();
-
-        foreach ($posts as $key => $value)
-        {
-            $posts[$key] = Post::map($value);
-        }
+            ->paginate(config("config.PER_PAGE"));
 
         return view("admin/posts/trash", [
             "posts" => $posts
@@ -51,24 +41,21 @@ class PostController extends Controller
         $user = auth()->user();
         $id = request()->id ?? 0;
 
-        $post = DB::table("posts")
-            ->where("id", "=", $id)
+        $post = Post::onlyTrashed()
+            ->where("id", $id)
             ->first();
 
-        if ($post == null)
-        {
+        if (!$post) {
             return response()->json([
                 "status" => "error",
                 "message" => "Post does not exist."
             ]);
         }
 
-        DB::table("posts")
-            ->where("id", "=", $post->id)
-            ->delete();
-
         forget_posts_cache();
         forget_post_cache($post->slug);
+
+        $post->forceDelete();
 
         return response()->json([
             "status" => "success",
@@ -93,23 +80,18 @@ class PostController extends Controller
         $user = auth()->user();
         $id = request()->id ?? 0;
 
-        $post = DB::table("posts")
-            ->where("id", "=", $id)
+        $post = Post::onlyTrashed()
+            ->where("id", $id)
             ->first();
 
-        if ($post == null)
-        {
+        if (!$post) {
             return response()->json([
                 "status" => "error",
                 "message" => "Post does not exist."
             ]);
         }
 
-        DB::table("posts")
-            ->where("id", "=", $post->id)
-            ->update([
-                "deleted_at" => null
-            ]);
+        $post->restore();
 
         forget_posts_cache();
         forget_post_cache($post->slug);
@@ -137,26 +119,19 @@ class PostController extends Controller
         $user = auth()->user();
         $id = request()->id ?? 0;
 
-        $post = DB::table("posts")
-            ->where("id", "=", $id)
-            ->first();
+        $post = Post::find($id);
 
-        if ($post == null)
-        {
+        if (!$post) {
             return response()->json([
                 "status" => "error",
                 "message" => "Post does not exist."
             ]);
         }
 
-        DB::table("posts")
-            ->where("id", "=", $post->id)
-            ->update([
-                "deleted_at" => now()->utc()
-            ]);
-
         forget_posts_cache();
         forget_post_cache($post->slug);
+
+        $post->delete();
 
         return response()->json([
             "status" => "success",
@@ -538,19 +513,8 @@ class PostController extends Controller
     {
         set_timezone();
 
-        $posts = DB::table("posts")
-            ->select("posts.*", "files.file_path",
-                "users.name AS user_name", "users.username")
-            ->leftJoin("files", "files.id", "=", "posts.image_id")
-            ->join("users", "users.id", "=", "posts.user_id")
-            ->whereNull("posts.deleted_at")
-            ->orderBy("posts.id", "desc")
-            ->paginate();
-
-        foreach ($posts as $key => $value)
-        {
-            $posts[$key] = Post::map($value);
-        }
+        $posts = Post::orderBy("posts.id", "desc")
+            ->paginate(config("config.PER_PAGE"));
 
         return view("admin/posts/index", [
             "posts" => $posts

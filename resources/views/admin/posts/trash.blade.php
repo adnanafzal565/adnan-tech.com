@@ -46,19 +46,19 @@
             @foreach ($posts as $post)
               <tr data-id="{{ $post->id }}">
                 <td>
-                  <a href="{{ $post->url ?? '' }}" target="_blank">
+                  <a href="{{ url('/' . $post->slug ?? '') }}" target="_blank">
                     {{ $post->title ?? "" }}
                   </a>
                 </td>
 
                 <td>
-                  @foreach ($post->categories as $category)
+                  @foreach (json_decode($post->categories ?? "[]") as $category)
                     {{ $category }}
                   @endforeach
                 </td>
 
                 <td>
-                  @foreach ($post->tags as $tag)
+                  @foreach (json_decode($post->tags ?? "[]") as $tag)
                     {{ $tag }}
                   @endforeach
                 </td>
@@ -89,6 +89,8 @@
             @endforeach
           </tbody>
         </table>
+
+        {{ $posts->links("pagination::bootstrap-5") }}
       </div>
     </div>
   </section>

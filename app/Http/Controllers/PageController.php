@@ -80,26 +80,18 @@ class PageController extends Controller
         if ($post != null)
         {
             // Get previous post (lower id)
-            $previous_post = DB::table('posts')
-                ->where('id', '<', $post->id)
+            $previous_post = Post::where('id', '<', $post->id)
                 ->where("is_active", "=", 1)
-                ->whereNull("deleted_at")
                 ->orderBy('id', 'desc')
                 ->limit(1)
                 ->first();
 
-            $previous_post = Post::map($previous_post);
-
             // Get next post (higher id)
-            $next_post = DB::table('posts')
-                ->where('id', '>', $post->id)
+            $next_post = Post::where('id', '>', $post->id)
                 ->where("is_active", "=", 1)
-                ->whereNull("deleted_at")
                 ->orderBy('id', 'asc')
                 ->limit(1)
                 ->first();
-
-            $next_post = Post::map($next_post);
 
             if (View::exists("theme::posts/detail"))
             {

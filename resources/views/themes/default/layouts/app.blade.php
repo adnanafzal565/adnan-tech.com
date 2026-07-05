@@ -36,13 +36,44 @@
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}" />
     <script src="{{ asset('/js/jquery.js') }}"></script>
     <script src="{{ asset('/js/bootstrap.bundle.js') }}"></script>
+
+    <script src="{{ asset('/js/react.development.js') }}"></script>
+    <script src="{{ asset('/js/react-dom.development.js') }}"></script>
+    <script src="{{ asset('/js/babel.min.js') }}"></script>
+    <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
+    <script src="{{ asset('/js/axios.min.js') }}"></script>
+    <script src="{{ asset('/js/fontawesome.js') }}"></script>
+    <script src="{{ asset('/js/script.js?v=' . time()) }}"></script>
 </head>
 <body>
+
+    @php
+        $user = null;
+    @endphp
+
+    @if (auth()->check())
+        @php
+            $user = auth()->user();
+        @endphp
+
+        <input type="hidden" id="user" value="{{ json_encode([
+            'id' => $user->id ?? 0,
+            'name' => $user->name ?? '',
+            'email' => $user->email ?? '',
+            'type' => $user->type ?? ''
+        ]) }}" />
+    @endif
 
     <input type="hidden" id="base-url" value="{{ url('/') }}" />
 
     <script>
         const baseUrl = document.getElementById("base-url").value || "";
+
+        let user = null;
+
+        if (document.getElementById("user") != null) {
+            user = JSON.parse(document.getElementById("user").value);
+        }
     </script>
 
     @php
@@ -139,9 +170,13 @@
         </div>
 
         <div class="footer-bottom">
-          &copy; {{ date('Y') }} adnan-tech.com. All rights reserved.
+          &copy; {{ date('Y') }} {{ site_title() }}. All rights reserved.
         </div>
     </footer>
+
+    <div id="chat-app"></div>
+    <script type="text/babel" src="{{ asset('/components/Chat.js?v=' . time()) }}"></script>
+    <link rel="stylesheet" href="{{ asset('/css/chat.css') }}" />
 
     <style>
         footer {

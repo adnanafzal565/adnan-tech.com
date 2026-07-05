@@ -55,19 +55,19 @@
             @foreach ($posts as $post)
               <tr data-id="{{ $post->id }}">
                 <td>
-                  <a href="{{ $post->url }}" target="_blank">
+                  <a href="{{ route(\App\Helpers\Constants::PAGES_SHOW, ['slug' => $post->slug ?? '']) }}" target="_blank">
                     {{ $post->title }}
                   </a>
                 </td>
 
                 <td>
-                  @foreach ($post->categories as $category)
+                  @foreach (json_decode($post->categories ?? "[]") as $category)
                     {{ $category }}
                   @endforeach
                 </td>
 
                 <td>
-                  @foreach ($post->tags as $tag)
+                  @foreach (json_decode($post->tags ?? "[]") as $tag)
                     {{ $tag }}
                   @endforeach
                 </td>
@@ -75,9 +75,11 @@
                 <td>{{ $post->is_active == 1 ? "Active" : "Inactive" }}</td>
                 <td>{{ $post->is_featured == 1 ? "Featured" : "" }}</td>
                 <td>
-                  <a href="{{ url('/author/' . $post->username) }}">
-                    {{ $post->user_name }}
+                  @if ($post->user?->username)
+                  <a href="{{ route(\App\Helpers\Constants::AUTHOR, ['username' => $post->user->username]) }}">
+                    {{ $post->user->name ?? "" }}
                   </a>
+                  @endif
                 </td>
                 <td>{{ date("d F, Y", strtotime($post->updated_at . " UTC")) }}</td>
                 
@@ -97,6 +99,8 @@
             @endforeach
           </tbody>
         </table>
+
+        {{ $posts->links("pagination::bootstrap-5") }}
       </div>
     </div>
   </section>

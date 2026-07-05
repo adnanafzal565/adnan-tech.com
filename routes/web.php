@@ -22,6 +22,9 @@ use App\Http\Middleware\UserAuth;
 //     return view('welcome');
 // });
 
+Route::get("/author/{username}", [AdminController::class, "login"])
+    ->name("author");
+
 Route::post("/set-timezone", [UserController::class, "set_user_timezone"])
     ->name("timezone.update");
 

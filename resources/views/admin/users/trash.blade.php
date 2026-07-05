@@ -32,7 +32,7 @@
               <th>Email</th>
               <th>Profile</th>
               <th>Type</th>
-              <th>Registered at</th>
+              <th>Deleted at</th>
 
               @if ($can_restore || $can_delete)
               <th>Actions</th>
@@ -51,7 +51,7 @@
                     onerror="this.remove();" />
                 </td>
                 <td>{{ $user->type }}</td>
-                <td>{{ $user->created_at }}</td>
+                <td>{{ $user->deleted_at_format }}</td>
                 @if ($can_restore || $can_delete)
                 <td>
                   @if ($can_restore)
@@ -69,6 +69,8 @@
             @endforeach
           </tbody>
         </table>
+
+        {{ $users->links("pagination::bootstrap-5") }}
       </div>
     </div>
   </section>
