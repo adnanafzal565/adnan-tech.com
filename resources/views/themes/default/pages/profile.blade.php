@@ -2,7 +2,6 @@
 @section ("title", $page->title)
 @section ("meta_keywords", $page->keywords)
 @section ("meta_description", $page->excerpt)
-@section ("type", "article")
 
 @section ("main")
     <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
@@ -34,6 +33,11 @@
                     <div class="form-group">
                         <label class="form-label">Name</label>
                         <input type="text" name="name" value="{{ auth()->user()->name ?? '' }}" class="form-control" required />
+                    </div>
+
+                    <div class="form-group mt-3 mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" value="{{ auth()->user()->username ?? '' }}" class="form-control" disabled />
                     </div>
 
                     <div class="form-group mt-3 mb-3">

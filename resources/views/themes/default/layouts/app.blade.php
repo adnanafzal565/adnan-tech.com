@@ -64,7 +64,7 @@
         ]) }}" />
     @endif
 
-    <input type="hidden" id="base-url" value="{{ url('/') }}" />
+    <input type="hidden" id="base-url" value="{{ route(\App\Helpers\Constants::HOME) }}" />
 
     <script>
         const baseUrl = document.getElementById("base-url").value || "";
@@ -84,7 +84,7 @@
     <header class="site-header">
         <div class="container header-inner">
             <div class="logo">
-                <a href="{{ url('/') }}">
+                <a href="{{ route(\App\Helpers\Constants::HOME) }}">
                     @if (count($title_parts) > 0)
                         {!! $title_parts[0] . ((count($title_parts) > 1) ? ("<span>" . $title_parts[1] . "</span>") : "") !!}
                     @endif
@@ -108,12 +108,12 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                 @if (auth()->user()->type === "admin")
-                                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Panel</a></li>
+                                    <li><a class="dropdown-item" href="{{ route(\App\Helpers\Constants::DASHBOARD) }}">Admin Panel</a></li>
                                 @endif
 
-                                <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route(\App\Helpers\Constants::PAGES_SHOW, ['slug' => 'profile']) }}">Profile</a></li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item" href="{{ route(\App\Helpers\Constants::LOGOUT) }}"
                                        onclick="return do_logout();">
                                         Logout
                                     </a>
@@ -122,11 +122,11 @@
                         </li>
                     @else
                         <li>
-                            <a href="{{ url('/login') }}">Login</a>
+                            <a href="{{ route(\App\Helpers\Constants::LOGIN) }}">Login</a>
                         </li>
 
                         <li>
-                            <a href="{{ url('/register') }}">Sign Up</a>
+                            <a href="{{ route(\App\Helpers\Constants::REGISTER) }}">Sign Up</a>
                         </li>
                     @endif
                 </ul>

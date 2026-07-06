@@ -59,10 +59,10 @@ Route::get("/reset-password/{email}/{token}", [UserController::class, "reset_pas
 Route::get("/forgot-password", [UserController::class, "forgot_password"])
     ->name("password.request");
 
-Route::any("/register", [UserController::class, "register"])
+Route::post("/register", [UserController::class, "register"])
     ->name("register");
 
-Route::any("/login", [UserController::class, "login"])
+Route::post("/login", [UserController::class, "login"])
     ->name("login");
 
 Route::get("/", [UserController::class, "home"])

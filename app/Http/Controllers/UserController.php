@@ -970,7 +970,6 @@ class UserController extends Controller
         {
             $validator = Validator::make(request()->all(), [
                 "name" => "required",
-                "username" => "required",
                 "email" => "required",
                 "password" => "required"
             ]);
@@ -984,8 +983,8 @@ class UserController extends Controller
             }
 
             $name = request()->name ?? "";
-            $username = request()->username ?? "";
             $email = request()->email ?? "";
+            $username = strtok($email, "@");
             $password = request()->password ?? "";
 
             if (DB::table("users")->where("email", "=", $email)->exists())

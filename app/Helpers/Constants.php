@@ -7,6 +7,13 @@ namespace App\Helpers;
  */
 class Constants
 {
+    public const HOME = 'home';
+    public const PROFILE = 'profile';
+    public const LOGOUT = 'logout';
+    public const LOGIN = 'login';
+    public const REGISTER = 'register';
+    public const PASSWORD_REQUEST = 'password.request';
+
     // Dashboard
     public const DASHBOARD = 'admin.dashboard';
 

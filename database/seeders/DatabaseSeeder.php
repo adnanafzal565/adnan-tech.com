@@ -136,6 +136,24 @@ class DatabaseSeeder extends Seeder
                     "created_at" => $now,
                     "updated_at" => $now,
                 ],
+                [
+                    "user_id" => $super_admin_id,
+                    "title" => "Login",
+                    "slug" => "login",
+                    "content" => "",
+                    "is_active" => 1,
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
+                [
+                    "user_id" => $super_admin_id,
+                    "title" => "Register",
+                    "slug" => "register",
+                    "content" => "",
+                    "is_active" => 1,
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
             ]);
 
             forget_page_cache("/");
@@ -143,6 +161,8 @@ class DatabaseSeeder extends Seeder
             forget_page_cache("contact");
             forget_page_cache("profile");
             forget_page_cache("change-password");
+            forget_page_cache("login");
+            forget_page_cache("register");
         }
 
         $active_theme = DB::table('settings')

@@ -63,9 +63,11 @@ class PageController extends Controller
         {
             if (View::exists("theme::pages/" . $page->slug))
             {
-                return view("theme::pages/" . $page->slug, [
+                $data = [
                     "page" => $page
-                ]);
+                ];
+
+                return view("theme::pages/" . $page->slug, $data);
             }
 
             if (View::exists("theme::pages/detail"))
