@@ -104,6 +104,11 @@ class User extends Authenticatable
         return $this->type === 'super_admin';
     }
 
+    public function is_admin(): bool
+    {
+        return in_array($this->type, ['admin', 'super_admin']);
+    }
+
     public function has_route_access(string $route_name): bool
     {
         if ($this->is_super_admin()) {

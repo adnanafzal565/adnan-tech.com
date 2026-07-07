@@ -53,11 +53,11 @@ Route::group([
 Route::get("/email-verification/{email}", [UserController::class, "email_verification"])
     ->name("verification.email");
 
-Route::get("/reset-password/{email}/{token}", [UserController::class, "reset_password_view"])
-    ->name("password.reset");
+// Route::get("/reset-password/{email}/{token}", [UserController::class, "reset_password_view"])
+//     ->name("password.reset");
 
-Route::get("/forgot-password", [UserController::class, "forgot_password"])
-    ->name("password.request");
+// Route::get("/forgot-password", [UserController::class, "forgot_password"])
+//     ->name("password.request");
 
 Route::post("/register", [UserController::class, "register"])
     ->name("register");

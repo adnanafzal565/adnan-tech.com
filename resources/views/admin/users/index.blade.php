@@ -26,7 +26,7 @@
 
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::USERS_INDEX) }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::DASHBOARD) }}">Dashboard</a></li>
         <li class="breadcrumb-item active">Users</li>
       </ol>
     </nav>

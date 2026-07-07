@@ -666,7 +666,7 @@ class UserController extends Controller
         $reset_token = Str::random(60);
 
         $message = "<p>Please click the link below to reset your password</p>";
-        $message .= "<a href='" . url("/reset-password/" . $email . "/" . $reset_token) . "'>";
+        $message .= "<a href='" . url("/reset-password?email=" . $email . "&token=" . $reset_token) . "'>";
             $message .= "Reset password";
         $message .= "</a>";
 

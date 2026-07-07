@@ -67,6 +67,11 @@ class PageController extends Controller
                     "page" => $page
                 ];
 
+                if ($page->slug === 'reset-password') {
+                    $data['email'] = request()->email ?? "";
+                    $data['token'] = request()->token ?? "";
+                }
+
                 return view("theme::pages/" . $page->slug, $data);
             }
 

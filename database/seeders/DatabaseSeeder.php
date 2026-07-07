@@ -154,6 +154,24 @@ class DatabaseSeeder extends Seeder
                     "created_at" => $now,
                     "updated_at" => $now,
                 ],
+                [
+                    "user_id" => $super_admin_id,
+                    "title" => "Forgot password",
+                    "slug" => "forgot-password",
+                    "content" => "",
+                    "is_active" => 1,
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
+                [
+                    "user_id" => $super_admin_id,
+                    "title" => "Reset password",
+                    "slug" => "reset-password",
+                    "content" => "",
+                    "is_active" => 1,
+                    "created_at" => $now,
+                    "updated_at" => $now,
+                ],
             ]);
 
             forget_page_cache("/");

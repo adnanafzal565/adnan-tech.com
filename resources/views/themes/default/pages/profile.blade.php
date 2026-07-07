@@ -63,7 +63,13 @@
                 const formData = new FormData(event.target)
                 const response = await axios.post(
                     baseUrl + "/profile",
-                    formData
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "Authorization": "Bearer " + localStorage.getItem(accessTokenKey)
+                        }
+                    }
                 )
 
                 if (response.data.status == "success") {
@@ -72,7 +78,7 @@
                     swal.fire("Error", response.data.message, "error")
                 }
             } catch (exp) {
-                if (exp.response.status == 401) {
+                if (exp.response.status === 401) {
                     window.location.href = baseUrl + "/login?redirect=" + window.location.href
                 } else {
                     swal.fire("Error", exp.message, "error")

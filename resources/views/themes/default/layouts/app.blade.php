@@ -134,7 +134,7 @@
         </div>
     </header>
 
-    <main style="margin-top: 50px; margin-bottom: 50px;">
+    <main>
         @yield("main")
     </main>
 
