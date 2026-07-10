@@ -64,11 +64,7 @@
         ]) }}" />
     @endif
 
-    <input type="hidden" id="base-url" value="{{ route(\App\Helpers\Constants::HOME) }}" />
-
     <script>
-        const baseUrl = document.getElementById("base-url").value || "";
-
         let user = null;
 
         if (document.getElementById("user") != null) {
@@ -180,6 +176,45 @@
             localStorage.removeItem(accessTokenKey);
             return true;
         }
+
+        async function onInit() {
+            const accessToken = localStorage.getItem(accessTokenKey)
+
+            try {
+                const response = await axios.post(
+                    baseUrl + "/api/me",
+                    null,
+                    {
+                        headers: {
+                            Authorization: "Bearer " + localStorage.getItem(accessTokenKey)
+                        }
+                    }
+                )
+
+                if (response.data.status == "success") {
+                    window.user = response.data.user;
+                    const unread_notifications = response.data.unread_notifications;
+
+                    if (unread_notifications > 0) {
+                        document.getElementById("name-notifications-count").innerHTML = `(${unread_notifications})`;
+                    }
+
+                    // for non-React
+                    if (typeof on_user_fetch !== "undefined") {
+                        on_user_fetch();
+                    }
+
+                    // for React
+                    globalState.setState({
+                        user: window.user
+                    });
+                }
+            } catch (exp) {
+                console.log(exp.message)
+            }
+        }
+
+        window.addEventListener("load", () => onInit());
     </script>
 
     <style>

@@ -34,8 +34,6 @@ class UserAuth
 
         if (request()->expectsJson())
         {
-            // abort(401);
-
             return response()->json([
                 'status' => 'error',
                 'message' => 'You are not logged-in.',

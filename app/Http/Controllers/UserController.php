@@ -987,7 +987,7 @@ class UserController extends Controller
             $username = strtok($email, "@");
             $password = request()->password ?? "";
 
-            if (DB::table("users")->where("email", "=", $email)->exists())
+            if (User::where("email", $email)->exists())
             {
                 return response()->json([
                     "status" => "error",
@@ -995,7 +995,7 @@ class UserController extends Controller
                 ]);
             }
 
-            if (DB::table("users")->where("username", "=", $username)->exists())
+            if (User::where("username", $username)->exists())
             {
                 return response()->json([
                     "status" => "error",

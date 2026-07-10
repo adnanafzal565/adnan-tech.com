@@ -1,4 +1,6 @@
-const accessTokenKey = "LaravelAuthenticationAccessToken"
+const baseUrl = "http://localhost:8000";
+const accessTokenKey = "LaravelBoilerplateAccessToken";
+const apiKey = "xxx";
 
 const globalState = {
     state: {
@@ -20,6 +22,94 @@ const globalState = {
         for (let a = 0; a < this.listeners.length; a++) {
             this.listeners[a](this.state, newState)
         }
+    }
+}
+
+function get_type_from_path(file = "") {
+    const extension = file.split(".").pop().toLowerCase();
+
+    const type = ["jpg", "jpeg", "png", "gif", "webp", "bmp", "svg", "avif"].includes(extension)
+        ? "image"
+        : ["mp4", "webm", "ogg", "mov", "avi", "mkv", "m4v", "3gp"].includes(extension)
+        ? "video"
+        : "";
+
+    return type;
+}
+
+function ajaxPromise(url, formData) {
+    return new Promise(function (resolve, reject) {
+        return ajax(url, formData, resolve, reject);
+    });
+}
+
+async function ajax(
+    url,
+    formData,
+    onSuccess,
+    onError,
+    onProgress,
+    responseType = "json"
+) {
+
+    const token = localStorage.getItem(accessTokenKey);
+    const noError = ["/me"];
+    const byPassGuestUrls = ['/login'];
+
+    try {
+
+        if (!formData) {
+            formData = new FormData();
+        }
+
+        formData.append("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+        
+        const response = await axios.post(
+            baseUrl + url,
+            formData,
+            {
+                responseType,
+                headers: {
+                    Authorization: "Bearer " + token,
+                    "x-api-key": apiKey
+                },
+                onUploadProgress: (progressEvent) => {
+                    if (onProgress) {
+                        const percent = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
+                        );
+
+                        onProgress(percent);
+                    }
+                }
+            }
+        );
+
+        if (responseType === "json") {
+            if (response.data.status == "success") {
+                onSuccess?.(response.data);
+            } else {
+                if (!noError.includes(url)) {
+                    swal.fire("Error", response.data.message, "error");
+                    onError?.(response);
+                }
+            }
+        } else if (responseType === "blob") {
+            onSuccess?.(response);
+        }
+    } catch (exp) {
+
+        console.log(exp)
+
+        if (!noError.includes(url)) {
+            if (exp.response?.data?.message) {
+                swal.fire("Error", exp.response?.data?.message, "error");
+            } else if (exp.response?.status == 401) {
+                swal.fire("Error", "Unauthorized", "error");
+            }
+        }
+
+        onError?.(exp.response);
     }
 }
 
