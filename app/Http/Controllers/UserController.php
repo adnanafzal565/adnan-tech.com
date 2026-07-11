@@ -740,7 +740,6 @@ class UserController extends Controller
             ]);
         }
 
-        // 
         return view("profile");
     }
 
@@ -986,14 +985,6 @@ class UserController extends Controller
             $email = request()->email ?? "";
             $username = strtok($email, "@");
             $password = request()->password ?? "";
-
-            if (User::where("email", $email)->exists())
-            {
-                return response()->json([
-                    "status" => "error",
-                    "message" => "Email already exists."
-                ]);
-            }
 
             if (User::where("username", $username)->exists())
             {

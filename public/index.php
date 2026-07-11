@@ -1,5 +1,14 @@
 <?php
 
+// convert instagram post images to 3840x2160 adding white background
+// mkdir -p output
+// for f in *.jpg; do
+//     ffmpeg -i "$f" \
+//     -vf "scale=3840:2160:force_original_aspect_ratio=decrease,pad=3840:2160:(ow-iw)/2:(oh-ih)/2:white" \
+//     -q:v 2 \
+//     "output/$f"
+// done
+
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
