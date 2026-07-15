@@ -4,7 +4,7 @@
 @section ("main")
 
   @php
-    $can_update = auth()->user()->has_route_access(\App\Helpers\Constants::THEMES_UPDATE);
+    $can_update = auth()->user()->has_route_access('admin.themes.update');
   @endphp
 
   <div class="pagetitle">
@@ -14,7 +14,7 @@
 
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url('/admin') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active">Themes</li>
       </ol>
     </nav>

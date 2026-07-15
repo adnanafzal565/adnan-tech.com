@@ -25,13 +25,13 @@ use App\Http\Middleware\CheckRoutePermission;
 Route::get("/author/{username}", [AdminController::class, "login"])
     ->name("author");
 
-Route::post("/set-timezone", [UserController::class, "set_user_timezone"])
+Route::post("/set_timezone", [UserController::class, "set_user_timezone"])
     ->name("timezone.update");
 
 Route::group([
     "middleware" => [UserAuth::class]
 ], function () {
-    Route::get("/messages/buffer-attachment/{id}", [MessageController::class, "buffer_attachment"])
+    Route::get("/messages/buffer_attachment/{id}", [MessageController::class, "buffer_attachment"])
         ->name("messages.buffer_attachment");
 
     Route::post("/messages/fetch", [MessageController::class, "fetch"])
@@ -40,29 +40,29 @@ Route::group([
     Route::post("/messages/send", [MessageController::class, "send"])
         ->name("messages.send");
 
-    Route::post("/change-password", [UserController::class, "change_password"])
-        ->name("profile.change_password");
+    Route::any("/change_password", [UserController::class, "change_password"])
+        ->name("change_password");
 
-    Route::post("/profile", [UserController::class, "profile"])
-        ->name("profile.edit");
+    Route::any("/profile", [UserController::class, "profile"])
+        ->name("profile");
 
     Route::get("/logout", [UserController::class, "logout"])
         ->name("logout");
 });
 
-Route::get("/email-verification/{email}", [UserController::class, "email_verification"])
+Route::get("/email_verification/{email}", [UserController::class, "email_verification"])
     ->name("verification.email");
 
-// Route::get("/reset-password/{email}/{token}", [UserController::class, "reset_password_view"])
-//     ->name("password.reset");
+Route::get("/reset_password/{email}/{token}", [UserController::class, "reset_password_view"])
+    ->name("password.reset");
 
-// Route::get("/forgot-password", [UserController::class, "forgot_password"])
-//     ->name("password.request");
+Route::get("/forgot_password", [UserController::class, "forgot_password"])
+    ->name("password.request");
 
-Route::post("/register", [UserController::class, "register"])
+Route::any("/register", [UserController::class, "register"])
     ->name("register");
 
-Route::post("/login", [UserController::class, "login"])
+Route::any("/login", [UserController::class, "login"])
     ->name("login");
 
 Route::get("/", [UserController::class, "home"])
@@ -186,7 +186,7 @@ Route::group([
     Route::post("/admin/users/block", [UserController::class, "block"])
         ->name("admin.users.block");
 
-    Route::post("/admin/users/change-password", [UserController::class, "change_user_password"])
+    Route::post("/admin/users/change_password", [UserController::class, "change_user_password"])
         ->name("admin.users.change_password");
 
     Route::post("/admin/users/delete", [UserController::class, "destroy"])

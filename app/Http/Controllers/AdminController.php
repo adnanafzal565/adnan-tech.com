@@ -74,7 +74,7 @@ class AdminController extends Controller
         $user_counts = 0;
         $users = $posts = $pages = 0;
 
-        if ($user->has_route_access(Constants::USERS_INDEX)) {
+        if ($user->has_route_access('admin.users.index')) {
             $users = DB::table("users")->count();
 
             $user_data = DB::table('users')
@@ -88,11 +88,11 @@ class AdminController extends Controller
             $user_counts = $user_data->pluck('count')->toArray();
         }
 
-        if ($user->has_route_access(Constants::POSTS_INDEX)) {
+        if ($user->has_route_access('admin.posts.index')) {
             $posts = DB::table("posts")->count();
         }
 
-        if ($user->has_route_access(Constants::PAGES_INDEX)) {
+        if ($user->has_route_access('admin.pages.index')) {
             $pages = DB::table("pages")->count();
         }
 

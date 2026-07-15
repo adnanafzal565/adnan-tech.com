@@ -80,7 +80,7 @@
     <header class="site-header">
         <div class="container header-inner">
             <div class="logo">
-                <a href="{{ route(\App\Helpers\Constants::HOME) }}">
+                <a href="{{ route('home') }}">
                     @if (count($title_parts) > 0)
                         {!! $title_parts[0] . ((count($title_parts) > 1) ? ("<span>" . $title_parts[1] . "</span>") : "") !!}
                     @endif
@@ -104,12 +104,12 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                 @if (auth()->user()->type === "admin")
-                                    <li><a class="dropdown-item" href="{{ route(\App\Helpers\Constants::DASHBOARD) }}">Admin Panel</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Panel</a></li>
                                 @endif
 
-                                <li><a class="dropdown-item" href="{{ route(\App\Helpers\Constants::PAGES_SHOW, ['slug' => 'profile']) }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route('pages.show', ['slug' => 'profile']) }}">Profile</a></li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ route(\App\Helpers\Constants::LOGOUT) }}"
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="return do_logout();">
                                         Logout
                                     </a>
@@ -118,11 +118,11 @@
                         </li>
                     @else
                         <li>
-                            <a href="{{ route(\App\Helpers\Constants::LOGIN) }}">Login</a>
+                            <a href="{{ route('login') }}">Login</a>
                         </li>
 
                         <li>
-                            <a href="{{ route(\App\Helpers\Constants::REGISTER) }}">Sign Up</a>
+                            <a href="{{ route('register') }}">Sign Up</a>
                         </li>
                     @endif
                 </ul>

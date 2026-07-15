@@ -4,11 +4,11 @@
 
 <ul class="list-group profile-left-menu">
     <li class="list-group-item {{ $path == 'profile' ? 'active' : '' }}">
-        <a href="{{ url('/profile') }}">Profile</a>
+        <a href="{{ route('profile') }}">Profile</a>
     </li>
 
-    <li class="list-group-item {{ $path == 'change-password' ? 'active' : '' }}">
-        <a href="{{ url('/change-password') }}">Change password</a>
+    <li class="list-group-item {{ $path == 'change_password' ? 'active' : '' }}">
+        <a href="{{ route('change_password') }}">Change password</a>
     </li>
 </ul>
 

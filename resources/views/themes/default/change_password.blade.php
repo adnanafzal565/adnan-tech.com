@@ -1,7 +1,5 @@
 @extends ("theme::layouts/app")
-@section ("title", $page->title)
-@section ("meta_keywords", $page->keywords)
-@section ("meta_description", $page->excerpt)
+@section ("title", "Change Password")
 
 @section ("main")
 
@@ -40,7 +38,7 @@
 
                 const formData = new FormData(form)
                 const response = await axios.post(
-                    baseUrl + "/change-password",
+                    baseUrl + "/change_password",
                     formData
                 )
 

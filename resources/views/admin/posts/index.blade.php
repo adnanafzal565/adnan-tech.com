@@ -4,10 +4,10 @@
 @section ("main")
 
   @php
-    $can_add = auth()->user()->has_route_access(\App\Helpers\Constants::POSTS_CREATE);
-    $can_edit = auth()->user()->has_route_access(\App\Helpers\Constants::POSTS_EDIT);
-    $can_delete = auth()->user()->has_route_access(\App\Helpers\Constants::POSTS_DELETE);
-    $can_see_trash = auth()->user()->has_route_access(\App\Helpers\Constants::POSTS_TRASH);
+    $can_add = auth()->user()->has_route_access('admin.posts.create');
+    $can_edit = auth()->user()->has_route_access('admin.posts.edit');
+    $can_delete = auth()->user()->has_route_access('admin.posts.destroy');
+    $can_see_trash = auth()->user()->has_route_access('admin.posts.trash');
   @endphp
 
   <div class="pagetitle">
@@ -15,17 +15,17 @@
       <h1>Posts</h1>
 
       @if ($can_add)
-      <a href="{{ route(\App\Helpers\Constants::POSTS_CREATE) }}" class="btn btn-outline-primary btn-sm ms-3">Add post</a>
+      <a href="{{ route('admin.posts.create') }}" class="btn btn-outline-primary btn-sm ms-3">Add post</a>
       @endif
 
       @if ($can_see_trash)
-      <a href="{{ route(\App\Helpers\Constants::POSTS_TRASH) }}" class="btn btn-outline-primary btn-sm ms-2">Trash</a>
+      <a href="{{ route('admin.posts.trash') }}" class="btn btn-outline-primary btn-sm ms-2">Trash</a>
       @endif
     </div>
 
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::POSTS_INDEX) }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Dashboard</a></li>
         <li class="breadcrumb-item active">Posts</li>
       </ol>
     </nav>
@@ -55,7 +55,7 @@
             @foreach ($posts as $post)
               <tr data-id="{{ $post->id }}">
                 <td>
-                  <a href="{{ route(\App\Helpers\Constants::PAGES_SHOW, ['slug' => $post->slug ?? '']) }}" target="_blank">
+                  <a href="{{ route('pages.show', ['slug' => $post->slug ?? '']) }}" target="_blank">
                     {{ $post->title }}
                   </a>
                 </td>
@@ -76,7 +76,7 @@
                 <td>{{ $post->is_featured == 1 ? "Featured" : "" }}</td>
                 <td>
                   @if ($post->user?->username)
-                  <a href="{{ route(\App\Helpers\Constants::AUTHOR, ['username' => $post->user->username]) }}">
+                  <a href="{{ route('author', ['username' => $post->user->username]) }}">
                     {{ $post->user->name ?? "" }}
                   </a>
                   @endif
@@ -86,7 +86,7 @@
                 @if ($can_edit || $can_delete)
                 <td>
                   @if ($can_edit)
-                  <a href="{{ route(\App\Helpers\Constants::POSTS_EDIT, ['id' => $post->id]) }}" class="btn btn-warning">Edit</a>
+                  <a href="{{ route('admin.posts.edit', ['id' => $post->id]) }}" class="btn btn-warning">Edit</a>
                   @endif
 
                   @if ($can_delete)

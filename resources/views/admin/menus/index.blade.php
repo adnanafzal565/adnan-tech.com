@@ -5,11 +5,11 @@
 
   @php
     $selected_menu_name = "";
-    $can_create = auth()->user()->has_route_access(\App\Helpers\Constants::MENUS_CREATE);
-    $can_create_item = auth()->user()->has_route_access(\App\Helpers\Constants::MENUS_ITEMS_CREATE);
-    $can_update_item = auth()->user()->has_route_access(\App\Helpers\Constants::MENUS_ITEMS_UPDATE);
-    $can_delete_item = auth()->user()->has_route_access(\App\Helpers\Constants::MENUS_ITEMS_DELETE);
-    $can_reorder_item = auth()->user()->has_route_access(\App\Helpers\Constants::MENUS_ITEMS_REORDER);
+    $can_create = auth()->user()->has_route_access('admin.menus.create');
+    $can_create_item = auth()->user()->has_route_access('admin.menus.items.create');
+    $can_update_item = auth()->user()->has_route_access('admin.menus.items.update');
+    $can_delete_item = auth()->user()->has_route_access('admin.menus.items.destroy');
+    $can_reorder_item = auth()->user()->has_route_access('admin.menus.items.reorder');
   @endphp
 
   <!-- <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script> -->

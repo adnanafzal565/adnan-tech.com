@@ -226,7 +226,7 @@ function Chat() {
                                                         }}>
                                                             <button type="button" onClick={ function () {
                                                                 window.open(
-                                                                    baseUrl + "/messages/buffer-attachment/" + attachment.id,
+                                                                    baseUrl + "/messages/buffer_attachment/" + attachment.id,
                                                                     "_blank"
                                                                 );
                                                               } } className="btn btn-secondary">

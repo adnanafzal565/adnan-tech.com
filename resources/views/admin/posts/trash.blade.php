@@ -4,8 +4,8 @@
 @section ("main")
 
   @php
-    $can_restore = auth()->user()->has_route_access(\App\Helpers\Constants::POSTS_RESTORE);
-    $can_delete = auth()->user()->has_route_access(\App\Helpers\Constants::POSTS_FORCE_DELETE);
+    $can_restore = auth()->user()->has_route_access('admin.posts.restore');
+    $can_delete = auth()->user()->has_route_access('admin.posts.force_delete');
   @endphp
 
   <div class="pagetitle">
@@ -15,8 +15,8 @@
 
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::DASHBOARD) }}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::POSTS_INDEX) }}">Posts</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Posts</a></li>
         <li class="breadcrumb-item active">Trash</li>
       </ol>
     </nav>

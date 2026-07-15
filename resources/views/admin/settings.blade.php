@@ -4,7 +4,7 @@
 @section ("main")
 
   @php
-    $can_update = auth()->user()->has_route_access(\App\Helpers\Constants::SETTINGS_UPDATE);
+    $can_update = auth()->user()->has_route_access('admin.settings.update');
   @endphp
 
   <div class="pagetitle">

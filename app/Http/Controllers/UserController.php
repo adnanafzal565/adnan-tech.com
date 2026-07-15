@@ -516,7 +516,7 @@ class UserController extends Controller
             ]);
         }
 
-        return view("change-password");
+        return view("theme::change_password");
     }
 
     public function home()
@@ -740,7 +740,7 @@ class UserController extends Controller
             ]);
         }
 
-        return view("profile");
+        return view("theme::profile");
     }
 
     public function logout()
@@ -935,7 +935,7 @@ class UserController extends Controller
             ]);
         }
 
-        return view("login");
+        return view("theme::login");
     }
 
     public function email_verification()
@@ -960,7 +960,7 @@ class UserController extends Controller
 
     public function forgot_password()
     {
-        return view("forgot-password");
+        return view("theme::forgot_password");
     }
 
     public function register()
@@ -1041,6 +1041,6 @@ class UserController extends Controller
             ]);
         }
 
-        return view("register");
+        return view("theme::register");
     }
 }

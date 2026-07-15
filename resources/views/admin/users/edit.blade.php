@@ -4,8 +4,8 @@
 @section ("main")
 
   @php
-    $can_update = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_UPDATE);
-    $can_change_password = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_CHANGE_PASSWORD);
+    $can_update = auth()->user()->has_route_access('admin.users.update');
+    $can_change_password = auth()->user()->has_route_access('admin.users.change_password');
   @endphp
 
   <div class="pagetitle">
@@ -13,8 +13,8 @@
     
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::DASHBOARD) }}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::USERS_INDEX) }}">Users</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Users</a></li>
         <li class="breadcrumb-item">Edit</li>
         <li class="breadcrumb-item active">{{ $id }}</li>
       </ol>
@@ -137,7 +137,7 @@
 
       try {
         const response = await axios.post(
-          baseUrl + "/admin/users/change-password",
+          baseUrl + "/admin/users/change_password",
           formData
         )
 

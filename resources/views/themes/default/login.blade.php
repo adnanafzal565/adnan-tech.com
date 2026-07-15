@@ -1,7 +1,5 @@
 @extends ("theme::layouts/app")
-@section ("title", $page->title)
-@section ("meta_keywords", $page->keywords)
-@section ("meta_description", $page->excerpt)
+@section ("title", "Login")
 
 @section ("main")
 
@@ -25,7 +23,7 @@
                 </form>
 
                 <p class="mt-4">
-                    <a href="{{ route(\App\Helpers\Constants::PASSWORD_REQUEST) }}">Forgot password ?</a>
+                    <a href="{{ route('password.request') }}">Forgot password?</a>
                 </p>
             </div>
         </div>

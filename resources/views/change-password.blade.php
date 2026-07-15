@@ -38,7 +38,7 @@
 
                 const formData = new FormData(form)
                 const response = await axios.post(
-                    baseUrl + "/change-password",
+                    baseUrl + "/change_password",
                     formData
                 )
 

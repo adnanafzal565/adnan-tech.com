@@ -4,19 +4,19 @@
 @section ("main")
 
   @php
-    $can_restore = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_RESTORE);
-    $can_delete = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_FORCE_DELETE);
+    $can_restore = auth()->user()->has_route_access('admin.users.restore');
+    $can_delete = auth()->user()->has_route_access('admin.users.force_delete');
   @endphp
 
   <div class="pagetitle">
     <div style="display: flex;">
       <h1>Users</h1>
-      <a href="{{ route(\App\Helpers\Constants::USERS_INDEX) }}" class="btn btn-outline-primary btn-sm ms-3">All Users</a>
+      <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary btn-sm ms-3">All Users</a>
     </div>
 
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::DASHBOARD) }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active">Trashed Users</li>
       </ol>
     </nav>

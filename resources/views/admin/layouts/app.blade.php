@@ -109,7 +109,7 @@
 
     if (user != null) {
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      fetch(baseUrl + "/set-timezone", {
+      fetch(baseUrl + "/set_timezone", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

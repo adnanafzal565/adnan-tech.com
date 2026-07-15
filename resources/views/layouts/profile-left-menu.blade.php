@@ -8,8 +8,8 @@
         
     </li>
 
-    <li class="list-group-item {{ $path == 'change-password' ? 'active' : '' }}">
-        <a href="{{ url('/change-password') }}">Change password</a>
+    <li class="list-group-item {{ $path == 'change_password' ? 'active' : '' }}">
+        <a href="{{ url('/change_password') }}">Change password</a>
     </li>
 </ul>
 

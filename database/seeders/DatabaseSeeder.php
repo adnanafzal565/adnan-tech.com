@@ -117,70 +117,12 @@ class DatabaseSeeder extends Seeder
                     "is_active" => 1,
                     "created_at" => $now,
                     "updated_at" => $now,
-                ],
-                [
-                    "user_id" => $super_admin_id,
-                    "title" => "Profile",
-                    "slug" => "profile",
-                    "content" => "",
-                    "is_active" => 1,
-                    "created_at" => $now,
-                    "updated_at" => $now,
-                ],
-                [
-                    "user_id" => $super_admin_id,
-                    "title" => "Change password",
-                    "slug" => "change-password",
-                    "content" => "",
-                    "is_active" => 1,
-                    "created_at" => $now,
-                    "updated_at" => $now,
-                ],
-                [
-                    "user_id" => $super_admin_id,
-                    "title" => "Login",
-                    "slug" => "login",
-                    "content" => "",
-                    "is_active" => 1,
-                    "created_at" => $now,
-                    "updated_at" => $now,
-                ],
-                [
-                    "user_id" => $super_admin_id,
-                    "title" => "Register",
-                    "slug" => "register",
-                    "content" => "",
-                    "is_active" => 1,
-                    "created_at" => $now,
-                    "updated_at" => $now,
-                ],
-                [
-                    "user_id" => $super_admin_id,
-                    "title" => "Forgot password",
-                    "slug" => "forgot-password",
-                    "content" => "",
-                    "is_active" => 1,
-                    "created_at" => $now,
-                    "updated_at" => $now,
-                ],
-                [
-                    "user_id" => $super_admin_id,
-                    "title" => "Reset password",
-                    "slug" => "reset-password",
-                    "content" => "",
-                    "is_active" => 1,
-                    "created_at" => $now,
-                    "updated_at" => $now,
-                ],
+                ]
             ]);
 
             forget_page_cache("/");
             forget_page_cache("about");
             forget_page_cache("contact");
-            forget_page_cache("profile");
-            forget_page_cache("change-password");
-            forget_page_cache("login");
-            forget_page_cache("register");
         }
 
         $active_theme = DB::table('settings')

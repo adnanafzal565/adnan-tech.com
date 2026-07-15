@@ -4,7 +4,7 @@
 @section ("main")
 
   @php
-    $can_delete = auth()->user()->has_route_access(\App\Helpers\Constants::FILES_DELETE);
+    $can_delete = auth()->user()->has_route_access('admin.files.destroy');
   @endphp
 
   <div class="pagetitle">
@@ -14,7 +14,7 @@
 
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::DASHBOARD) }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active">File Manager</li>
       </ol>
     </nav>
@@ -51,7 +51,7 @@
           <button type="submit" name="submit">Upload</button>
         </form>
 
-        <form method="GET" action="{{ route(\App\Helpers\Constants::FILES_INDEX) }}">
+        <form method="GET" action="{{ route('admin.files.index') }}">
             <div class="form-group mt-5">
                 <input type="search" name="search" placeholder="Search here..." class="form-control" value="{{ $search }}" />
             </div>

@@ -4,7 +4,7 @@
 @section ("main")
 
   @php
-    $can_send = auth()->user()->has_route_access(\App\Helpers\Constants::MESSAGES_SEND);
+    $can_send = auth()->user()->has_route_access('admin.messages.send');
   @endphp
 
   <div class="pagetitle">
@@ -62,7 +62,7 @@
 
                 <button type="button" onClick={ function () {
                     window.open(
-                        baseUrl + "/messages/buffer-attachment/" + attachment.id,
+                        baseUrl + "/messages/buffer_attachment/" + attachment.id,
                         "_blank"
                     );
                   } } className="btn btn-secondary">

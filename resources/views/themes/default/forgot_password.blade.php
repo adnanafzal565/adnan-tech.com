@@ -1,7 +1,5 @@
 @extends ("theme::layouts/app")
-@section ("title", $page->title)
-@section ("meta_keywords", $page->keywords)
-@section ("meta_description", $page->excerpt)
+@section ("title", "Forgot Password")
 
 @section ("main")
 

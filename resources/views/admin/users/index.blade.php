@@ -4,11 +4,11 @@
 @section ("main")
 
   @php
-    $can_add = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_CREATE);
-    $can_edit = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_EDIT);
-    $can_delete = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_DELETE);
-    $can_block = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_BLOCK);
-    $can_see_trash = auth()->user()->has_route_access(\App\Helpers\Constants::USERS_TRASH);
+    $can_add = auth()->user()->has_route_access('admin.users.create');
+    $can_edit = auth()->user()->has_route_access('admin.users.edit');
+    $can_delete = auth()->user()->has_route_access('admin.users.destroy');
+    $can_block = auth()->user()->has_route_access('admin.users.block');
+    $can_see_trash = auth()->user()->has_route_access('admin.users.trash');
   @endphp
 
   <div class="pagetitle">
@@ -16,17 +16,17 @@
       <h1>Users</h1>
 
       @if ($can_add)
-      <a href="{{ route(\App\Helpers\Constants::USERS_CREATE) }}" class="btn btn-outline-primary btn-sm ms-3">Add user</a>
+      <a href="{{ route('admin.users.create') }}" class="btn btn-outline-primary btn-sm ms-3">Add user</a>
       @endif
 
       @if ($can_see_trash)
-      <a href="{{ route(\App\Helpers\Constants::USERS_TRASH) }}" class="btn btn-outline-primary btn-sm ms-2">Trash</a>
+      <a href="{{ route('admin.users.trash') }}" class="btn btn-outline-primary btn-sm ms-2">Trash</a>
       @endif
     </div>
 
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route(\App\Helpers\Constants::DASHBOARD) }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active">Users</li>
       </ol>
     </nav>
@@ -66,7 +66,7 @@
                 @if ($can_edit || $can_delete || $can_block)
                 <td>
                   @if ($can_edit)
-                  <a href="{{ route(\App\Helpers\Constants::USERS_EDIT, ['id' => $user->id]) }}"
+                  <a href="{{ route('admin.users.edit', ['id' => $user->id]) }}"
                     class="btn btn-warning">Edit</a>
                   @endif
 

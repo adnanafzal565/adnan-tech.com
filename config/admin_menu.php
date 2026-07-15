@@ -79,8 +79,8 @@ return [
     [
         'title' => 'Change Password',
         'icon' => 'fa fa-lock',
-        'url' => '/admin/change-password',
-        'active' => 'admin/change-password',
+        'url' => '/admin/change_password',
+        'active' => 'admin/change_password',
         'permission' => 'admin.change_password',
     ],
 

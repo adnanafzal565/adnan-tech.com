@@ -4,7 +4,7 @@
 @section ("main")
 
   @php
-    $can_delete = auth()->user()->has_route_access(\App\Helpers\Constants::CONTACT_DELETE);
+    $can_delete = auth()->user()->has_route_access('admin.contact.destroy');
   @endphp
 
   <div class="pagetitle">
