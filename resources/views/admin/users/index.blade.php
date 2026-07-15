@@ -152,7 +152,7 @@
    
           try {
             const response = await axios.post(
-              baseUrl + "/admin/users/un-block",
+              baseUrl + "/admin/users/un_block",
               formData
             );
  

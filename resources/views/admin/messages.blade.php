@@ -171,7 +171,7 @@
             formData.append("search", search)
 
             const response = await axios.post(
-                baseUrl + "/admin/fetch-contacts",
+                baseUrl + "/admin/fetch_contacts",
                 formData
             )
 
@@ -197,7 +197,7 @@
           formData.append("id", id)
 
           const response = await axios.post(
-            baseUrl + "/admin/fetch-messages",
+            baseUrl + "/admin/fetch_messages",
             formData
           )
 
@@ -270,7 +270,7 @@
           formData.append("id", selectedContact)
 
           const response = await axios.post(
-            baseUrl + "/admin/send-message",
+            baseUrl + "/admin/send_message",
             formData
           )
 

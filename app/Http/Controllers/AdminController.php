@@ -61,7 +61,7 @@ class AdminController extends Controller
                 "updated_at" => now()->utc()
             ]);
 
-        return view("admin/contact-us", [
+        return view("admin/contact_us", [
             "data" => $data
         ]);
     }

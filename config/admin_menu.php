@@ -70,8 +70,8 @@ return [
     [
         'title' => 'Contact us',
         'icon' => 'fa fa-comment',
-        'url' => '/admin/contact-us',
-        'active' => 'admin/contact-us',
+        'url' => '/admin/contact_us',
+        'active' => 'admin/contact_us',
         'permission' => 'admin.contact.index',
         'badge' => 'unread_contact_us',
     ],

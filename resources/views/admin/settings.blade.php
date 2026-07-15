@@ -170,7 +170,7 @@
 
       try {
         const response = await axios.post(
-          baseUrl + "/admin/save-settings",
+          baseUrl + "/admin/save_settings",
           formData
         )
 

@@ -9,6 +9,7 @@ use DB;
 use App\Modules\Category;
 use App\Models\User;
 use App\Models\Page;
+use App\Models\Settings;
 
 class DatabaseSeeder extends Seeder
 {
@@ -41,6 +42,11 @@ class DatabaseSeeder extends Seeder
         }
 
         $super_admin_id = $super_admin->id;
+
+        $title = Settings::where('key', 'title')->value('value') ?? '';
+        if (empty($title)) {
+            set_setting("title", "Laravel Boilerplate");
+        }
 
         $menus = DB::table("menus")->count();
         if ($menus <= 0)

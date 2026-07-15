@@ -93,7 +93,7 @@
             formData.append("id", id);
 
             const response = await axios.post(
-              baseUrl + "/admin/users/delete-permanently",
+              baseUrl + "/admin/users/delete_permanently",
               formData
             )
 

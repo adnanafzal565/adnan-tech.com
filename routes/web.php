@@ -72,10 +72,10 @@ Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
 
-    Route::post("/admin/contact-us/delete", [AdminController::class, "delete_contact_us"])
+    Route::post("/admin/contact_us/delete", [AdminController::class, "delete_contact_us"])
         ->name("admin.contact.destroy");
 
-    Route::get("/admin/contact-us", [AdminController::class, "contact_us"])
+    Route::get("/admin/contact_us", [AdminController::class, "contact_us"])
         ->name("admin.contact.index");
 
     Route::post("/admin/menus/items/delete", [MenuController::class, "delete_item"])
@@ -135,7 +135,7 @@ Route::group([
     Route::get("/admin/pages", [PageController::class, "admin_index"])
         ->name("admin.pages.index");
 
-    Route::post("/admin/posts/delete-permanently", [PostController::class, "delete_permanently"])
+    Route::post("/admin/posts/delete_permanently", [PostController::class, "delete_permanently"])
         ->name("admin.posts.force_delete");
 
     Route::post("/admin/posts/restore", [PostController::class, "restore"])
@@ -159,19 +159,19 @@ Route::group([
     Route::get("/admin/posts", [PostController::class, "admin_index"])
         ->name("admin.posts.index");
 
-    Route::post("/admin/send-message", [MessageController::class, "send_admin"])
+    Route::post("/admin/send_message", [MessageController::class, "send_admin"])
         ->name("admin.messages.send");
 
-    Route::post("/admin/fetch-messages", [MessageController::class, "fetch_admin"])
+    Route::post("/admin/fetch_messages", [MessageController::class, "fetch_admin"])
         ->name("admin.messages.fetch");
 
-    Route::post("/admin/fetch-contacts", [MessageController::class, "fetch_contacts"])
+    Route::post("/admin/fetch_contacts", [MessageController::class, "fetch_contacts"])
         ->name("admin.messages.contacts");
 
     Route::get("/admin/messages", [MessageController::class, "index"])
         ->name("admin.messages.index");
 
-    Route::post("/admin/users/delete-permanently", [UserController::class, "delete_permanently"])
+    Route::post("/admin/users/delete_permanently", [UserController::class, "delete_permanently"])
         ->name("admin.users.force_delete");
 
     Route::post("/admin/users/restore", [UserController::class, "restore"])
@@ -180,7 +180,7 @@ Route::group([
     Route::get("/admin/users/trash", [UserController::class, "trash"])
         ->name("admin.users.trash");
 
-    Route::post("/admin/users/un-block", [UserController::class, "un_block"])
+    Route::post("/admin/users/un_block", [UserController::class, "un_block"])
         ->name("admin.users.unblock");
 
     Route::post("/admin/users/block", [UserController::class, "block"])
@@ -204,7 +204,7 @@ Route::group([
     Route::get("/admin/users", [UserController::class, "index"])
         ->name("admin.users.index");
 
-    Route::post("/admin/save-settings", [SettingsController::class, "save"])
+    Route::post("/admin/save_settings", [SettingsController::class, "save"])
         ->name("admin.settings.update");
 
     Route::get("/admin/settings", [SettingsController::class, "index"])
