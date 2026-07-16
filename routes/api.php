@@ -9,4 +9,4 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::post("/send-contact-us-message", [UserController::class, "send_contact_us_message"]);
+Route::post("/send_contact_us_message", [UserController::class, "send_contact_us_message"]);

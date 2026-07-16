@@ -41,7 +41,7 @@
 
             form.submit.setAttribute("disabled", "disabled");
             var ajax = new XMLHttpRequest();
-            ajax.open("POST", baseUrl + "/api/send-contact-us-message", true);
+            ajax.open("POST", baseUrl + "/api/send_contact_us_message", true);
          
             // when the response is received
             ajax.onreadystatechange = function () {

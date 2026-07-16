@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
 
         $title = Settings::where('key', 'title')->value('value') ?? '';
         if (empty($title)) {
-            set_setting("title", "Laravel Boilerplate");
+            set_setting('title', 'Laravel Boilerplate');
         }
 
         $menus = DB::table("menus")->count();
