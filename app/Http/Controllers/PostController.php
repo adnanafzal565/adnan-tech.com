@@ -513,7 +513,7 @@ class PostController extends Controller
     {
         set_timezone();
 
-        $posts = Post::orderBy("posts.id", "desc")
+        $posts = Post::orderBy("id", "desc")
             ->paginate(config("config.PER_PAGE"));
 
         return view("admin/posts/index", [

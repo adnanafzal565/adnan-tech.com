@@ -1,32 +1,32 @@
 @extends ("admin/layouts/app")
-@section ("title", "Posts")
+@section ("title", "Products")
 
 @section ("main")
 
   @php
-    $can_add = auth()->user()->has_route_access('admin.posts.create');
-    $can_edit = auth()->user()->has_route_access('admin.posts.edit');
-    $can_delete = auth()->user()->has_route_access('admin.posts.destroy');
-    $can_see_trash = auth()->user()->has_route_access('admin.posts.trash');
+    $can_add = auth()->user()->has_route_access('admin.products.create');
+    $can_edit = auth()->user()->has_route_access('admin.products.edit');
+    $can_delete = auth()->user()->has_route_access('admin.products.destroy');
+    $can_see_trash = auth()->user()->has_route_access('admin.products.trash');
   @endphp
 
   <div class="pagetitle">
     <div style="display: flex;">
-      <h1>Posts</h1>
+      <h1>Products</h1>
 
       @if ($can_add)
-      <a href="{{ route('admin.posts.create') }}" class="btn btn-outline-primary btn-sm ms-3">Add post</a>
+      <a href="{{ route('admin.products.create') }}" class="btn btn-outline-primary btn-sm ms-3">Add product</a>
       @endif
 
       @if ($can_see_trash)
-      <a href="{{ route('admin.posts.trash') }}" class="btn btn-outline-primary btn-sm ms-2">Trash</a>
+      <a href="{{ route('admin.products.trash') }}" class="btn btn-outline-primary btn-sm ms-2">Trash</a>
       @endif
     </div>
 
     <nav class="mt-3">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Posts</li>
+        <li class="breadcrumb-item active">Products</li>
       </ol>
     </nav>
   </div>
@@ -52,46 +52,46 @@
           </thead>
 
           <tbody>
-            @foreach ($posts as $post)
-              <tr data-id="{{ $post->id }}">
+            @foreach ($products as $product)
+              <tr data-id="{{ $product->id }}">
                 <td>
-                  <a href="{{ route('pages.show', ['slug' => $post->slug ?? '']) }}" target="_blank">
-                    {{ $post->title }}
+                  <a href="{{ route('pages.show', ['slug' => $product->slug ?? '']) }}" target="_blank">
+                    {{ $product->title }}
                   </a>
                 </td>
 
                 <td>
-                  @foreach (json_decode($post->categories ?? "[]") as $category)
+                  @foreach ($product->categories_array as $category)
                     {{ $category }}
                   @endforeach
                 </td>
 
                 <td>
-                  @foreach (json_decode($post->tags ?? "[]") as $tag)
+                  @foreach ($product->tags_array as $tag)
                     {{ $tag }}
                   @endforeach
                 </td>
 
-                <td>{{ $post->is_active == 1 ? "Active" : "Inactive" }}</td>
-                <td>{{ $post->is_featured == 1 ? "Featured" : "" }}</td>
+                <td>{{ $product->is_active == 1 ? "Active" : "Inactive" }}</td>
+                <td>{{ $product->is_featured == 1 ? "Featured" : "" }}</td>
                 <td>
-                  @if ($post->user?->username)
-                  <a href="{{ route('author', ['username' => $post->user->username]) }}">
-                    {{ $post->user->name ?? "" }}
+                  @if ($product->user?->username)
+                  <a href="{{ route('author', ['username' => $product->user->username]) }}">
+                    {{ $product->user->name ?? "" }}
                   </a>
                   @endif
                 </td>
-                <td>{{ date("d F, Y", strtotime($post->updated_at . " UTC")) }}</td>
+                <td>{{ date("d F, Y", strtotime($product->updated_at . " UTC")) }}</td>
                 
                 @if ($can_edit || $can_delete)
                 <td>
                   @if ($can_edit)
-                  <a href="{{ route('admin.posts.edit', ['id' => $post->id]) }}" class="btn btn-warning">Edit</a>
+                  <a href="{{ route('admin.products.edit', ['id' => $product->id]) }}" class="btn btn-warning">Edit</a>
                   @endif
 
                   @if ($can_delete)
                   <button type="button" class="btn btn-danger"
-                    onclick="deleteData(event, '{{ $post->id }}');">Delete</button>
+                    onclick="deleteData(event, '{{ $product->id }}');">Delete</button>
                   @endif
                 </td>
                 @endif
@@ -100,7 +100,7 @@
           </tbody>
         </table>
 
-        {{ $posts->links("pagination::bootstrap-5") }}
+        {{ $products->links("pagination::bootstrap-5") }}
       </div>
     </div>
   </section>
@@ -110,7 +110,7 @@
       const node = event.currentTarget;
 
       swal.fire({
-        title: "Delete post: #" + id,
+        title: "Delete product: #" + id,
         showCancelButton: true,
         confirmButtonText: "Do it"
       }).then(async function (result) {
@@ -123,7 +123,7 @@
             formData.append("id", id);
 
             const response = await axios.post(
-              baseUrl + "/admin/posts/delete",
+              baseUrl + "/admin/products/delete",
               formData
             )
 

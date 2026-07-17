@@ -35,6 +35,14 @@ return [
     ],
 
     [
+        'title' => 'Products',
+        'icon' => 'fa-solid fa-cart-shopping',
+        'url' => '/admin/products',
+        'active' => 'admin/products',
+        'permission' => 'admin.products.index',
+    ],
+
+    [
         'title' => 'File Manager',
         'icon' => 'fa-regular fa-file-lines',
         'url' => '/admin/files',

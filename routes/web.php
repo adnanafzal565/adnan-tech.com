@@ -13,6 +13,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProductController;
 
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\UserAuth;
@@ -71,6 +72,30 @@ Route::get("/", [UserController::class, "home"])
 Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
+
+    Route::post("/admin/products/delete_permanently", [ProductController::class, "delete_permanently"])
+        ->name("admin.products.force_delete");
+
+    Route::post("/admin/products/restore", [ProductController::class, "restore"])
+        ->name("admin.products.restore");
+
+    Route::get("/admin/products/trash", [ProductController::class, "trash"])
+        ->name("admin.products.trash");
+
+    Route::post("/admin/products/delete", [ProductController::class, "destroy"])
+        ->name("admin.products.destroy");
+
+    Route::post("/admin/products/update", [ProductController::class, "update"])
+        ->name("admin.products.update");
+
+    Route::get("/admin/products/{id}/edit", [ProductController::class, "edit"])
+        ->name("admin.products.edit");
+
+    Route::any("/admin/products/add", [ProductController::class, "add"])
+        ->name("admin.products.create");
+
+    Route::get("/admin/products", [ProductController::class, "admin_index"])
+        ->name("admin.products.index");
 
     Route::post("/admin/contact_us/delete", [AdminController::class, "delete_contact_us"])
         ->name("admin.contact.destroy");

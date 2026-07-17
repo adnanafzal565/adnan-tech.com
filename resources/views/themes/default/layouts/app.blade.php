@@ -103,7 +103,7 @@
 
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                @if (auth()->user()->type === "admin")
+                                @if (in_array(auth()->user()->type, ['admin', 'super_admin']))
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Panel</a></li>
                                 @endif
 

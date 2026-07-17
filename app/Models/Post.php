@@ -13,6 +13,11 @@ class Post extends Model
     
     protected $table = "posts";
 
+    public function image()
+    {
+        return $this->belongsTo(File::class, 'image_id', 'id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
