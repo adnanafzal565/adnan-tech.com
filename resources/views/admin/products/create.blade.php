@@ -1,18 +1,18 @@
 @extends ("admin/layouts/app")
-@section ("title", "Add Post")
+@section ("title", "Add Product")
 
 @section ("main")
 
   <div class="pagetitle">
     <div style="display: flex;">
-      <h1>Add Post</h1>
+      <h1>Add Product</h1>
     </div>
 
     <nav class="mt-3">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Posts</a></li>
-        <li class="breadcrumb-item active">Add Post</li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
+        <li class="breadcrumb-item active">Add Product</li>
       </ol>
     </nav>
   </div>
@@ -30,6 +30,9 @@
             <input type="text" id="slug" name="slug" required>
             <button type="button" onclick="generateSlug();">↻</button>
           </div>
+
+          <label for="price">Price ({{ env("CURRENCY_CODE") }})</label>
+          <input type="number" id="price" name="price" required step="0.01" min="0" />
 
           <label>Excerpt</label>
           <textarea name="excerpt"></textarea>
@@ -81,11 +84,6 @@
             <label for="is_active" style="margin-top: 0px;">Is Active</label>
           </div>
 
-          <div class="switch">
-            <input type="checkbox" id="is_featured" />
-            <label for="is_featured" style="margin-top: 0px;">Is Featured</label>
-          </div>
-
           <button type="submit" name="submit" class="mt-3">Create Post</button>
         </form>
       </div>
@@ -108,19 +106,17 @@
         formData.append("featured_image", fileManager.selected?.id || 0);
 
         const isActive = document.getElementById("is_active").checked;
-        const isFeatured = document.getElementById("is_featured").checked;
         
         formData.append("active", isActive ? 1 : 0)
-        formData.append("featured", isFeatured ? 1 : 0)
         
         const response = await axios.post(
-          baseUrl + "/admin/posts/add",
+          baseUrl + "/admin/products/create",
           formData
         )
 
         if (response.data.status == "success") {
           const id = response.data.id;
-          window.location.href = baseUrl + "/admin/posts/" + id + "/edit";
+          window.location.href = baseUrl + "/admin/products/" + id + "/edit";
         } else {
           swal.fire("Error", response.data.message, "error")
         }

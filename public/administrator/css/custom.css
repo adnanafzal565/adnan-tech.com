@@ -195,6 +195,7 @@ button:disabled {
 }
 
 .edit-post input[type="text"],
+.edit-post input[type="number"],
 .edit-post input[type="file"],
 .edit-post .slug-wrapper input,
 .edit-post textarea {

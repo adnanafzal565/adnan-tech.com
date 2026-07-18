@@ -82,7 +82,7 @@ Route::group([
     Route::get("/admin/products/trash", [ProductController::class, "trash"])
         ->name("admin.products.trash");
 
-    Route::post("/admin/products/delete", [ProductController::class, "destroy"])
+    Route::post("/admin/products/destroy", [ProductController::class, "destroy"])
         ->name("admin.products.destroy");
 
     Route::post("/admin/products/update", [ProductController::class, "update"])
@@ -91,7 +91,9 @@ Route::group([
     Route::get("/admin/products/{id}/edit", [ProductController::class, "edit"])
         ->name("admin.products.edit");
 
-    Route::any("/admin/products/add", [ProductController::class, "add"])
+    Route::post("/admin/products/store", [ProductController::class, "store"]);
+
+    Route::get("/admin/products/create", [ProductController::class, "create"])
         ->name("admin.products.create");
 
     Route::get("/admin/products", [ProductController::class, "admin_index"])

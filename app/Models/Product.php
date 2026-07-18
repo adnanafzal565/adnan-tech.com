@@ -25,20 +25,10 @@ class Product extends Model
         'is_active',
     ];
 
-    protected $appends = [
-        'categories_array',
-        'tags_array',
+    protected $casts = [
+        'categories' => 'array',
+        'tags' => 'array'
     ];
-
-    public function getCategoriesArrayAttribute()
-    {
-        return json_decode($this->categories ?? '[]', true);
-    }
-
-    public function getTagsArrayAttribute()
-    {
-        return json_decode($this->tags ?? '[]', true);
-    }
 
     public function image()
     {

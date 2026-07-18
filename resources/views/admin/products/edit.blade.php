@@ -1,19 +1,19 @@
 @extends ("admin/layouts/app")
-@section ("title", "Edit Post")
+@section ("title", "Edit Product")
 
 @section ("main")
 
   <div class="pagetitle">
     <div style="display: flex;">
-      <h1>Edit Post</h1>
+      <h1>Edit Product</h1>
     </div>
 
     <nav class="mt-3">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Posts</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
         <li class="breadcrumb-item active">Edit</li>
-        <li class="breadcrumb-item">{{ $post->title }}</li>
+        <li class="breadcrumb-item">{{ $product->title }}</li>
       </ol>
     </nav>
   </div>
@@ -22,29 +22,36 @@
     <div class="row">
       <div class="col-12 edit-post">
         <form id="postForm" method="POST" enctype="multipart/form-data"
-          onsubmit="updatePost(event);">
-          <input type="hidden" name="id" value="{{ $post->id ?? 0 }}" />
+          onsubmit="updateProduct(event);">
+          <input type="hidden" name="id" value="{{ $product->id ?? 0 }}" />
+
+          <label>SKU</label>
+          <input type="text" value="{{ $product->sku ?? '' }}" disabled />
+
           <label for="title">Title</label>
-          <input type="text" id="title" name="title" required value="{{ $post->title ?? '' }}" />
+          <input type="text" id="title" name="title" required value="{{ $product->title ?? '' }}" />
 
           <label for="slug">Slug</label>
           <div class="slug-wrapper">
-            <input type="text" id="slug" name="slug" required value="{{ $post->slug ?? '' }}" />
+            <input type="text" id="slug" name="slug" required value="{{ $product->slug ?? '' }}" />
           </div>
 
+          <label for="price">Price ({{ env("CURRENCY_CODE") }})</label>
+          <input type="number" id="price" name="price" required step="0.01" min="0" value="{{ $product->price ?? 0 }}" />
+
           <label>Excerpt</label>
-          <textarea name="excerpt">{{ $post->excerpt ?? "" }}</textarea>
+          <textarea name="excerpt">{{ $product->excerpt ?? "" }}</textarea>
 
           <label for="content">Content</label>
-          <textarea name="content">{{ $post->content ?? "" }}</textarea>
+          <textarea name="content">{{ $product->content ?? "" }}</textarea>
 
           <label for="image">Featured Image</label>
           <button type="button" class="btn no-hover" onclick="fileManager.openMediaModal()">📁 Select Media</button>
 
           <div>
-            @if (isset($post->image_id) && $post->image_id > 0)
+            @if ($product->image)
               <img id="preview" class="img-preview"
-                src="{{ $post->file_path ?? '' }}" />
+                src="{{ $product->image->file_path_absolute ?? '' }}" />
 
               <button type="button" class="btn btn-danger"
                 id="btn-remove-featured-image"
@@ -70,7 +77,7 @@
           <select name="categories[]" id="categories" multiple>
             @foreach ($categories as $cat)
               <option value="{{ $cat }}"
-                {{ in_array($cat, $post->categories) ? "selected" : "" }}>{{ $cat }}</option>
+                {{ in_array($cat, $product->categories) ? "selected" : "" }}>{{ $cat }}</option>
             @endforeach
           </select>
 
@@ -89,36 +96,31 @@
             <div class="suggestions" id="suggestions" hidden></div>
           </div>
 
-          <input type="hidden" name="tags" id="tagsHidden" value="{{ implode(',', $post->tags) }}" />
+          <input type="hidden" name="tags" id="tagsHidden" value="{{ implode(',', $product->tags) }}" />
 
           <div class="switch">
-            <input type="checkbox" id="is_active" {{ $post->is_active == 1 ? "checked" : "" }} />
+            <input type="checkbox" id="is_active" {{ $product->is_active == 1 ? "checked" : "" }} />
             <label for="is_active" style="margin-top: 0px;">Is Active</label>
           </div>
 
-          <div class="switch">
-            <input type="checkbox" id="is_featured" {{ $post->is_featured == 1 ? "checked" : "" }} />
-            <label for="is_featured" style="margin-top: 0px;">Is Featured</label>
-          </div>
-
-          <button type="submit" name="submit" class="mt-3">Update Post</button>
+          <button type="submit" name="submit" class="mt-3">Update Product</button>
         </form>
       </div>
     </div>
   </section>
 
   <input type="hidden" id="available-tags" value="{{ json_encode($tags) }}" />
-  <input type="hidden" id="post-tags" value="{{ json_encode($post->tags) }}" />
-  <input type="hidden" id="post-image-id" value="{{ $post->image_id ?? 0 }}" />
-  <input type="hidden" id="post-file-path" value="{{ $post->file_path ?? '' }}" />
+  <input type="hidden" id="product-tags" value="{{ json_encode($product->tags) }}" />
+  <input type="hidden" id="product-image-id" value="{{ $product->image_id ?? 0 }}" />
+  <input type="hidden" id="product-file-path" value="{{ $product->file_path ?? '' }}" />
 
   <script>
     const availableTags = JSON.parse(document.getElementById("available-tags").value);
-    const postTags = JSON.parse(document.getElementById("post-tags").value);
-    const postImageId = document.getElementById("post-image-id").value || 0;
-    const postFilePath = document.getElementById("post-file-path").value || "";
+    const productTags = JSON.parse(document.getElementById("product-tags").value);
+    const productImageId = document.getElementById("product-image-id").value || 0;
+    const productFilePath = document.getElementById("product-file-path").value || "";
 
-    async function updatePost(event) {
+    async function updateProduct(event) {
       event.preventDefault();
 
       const form = event.currentTarget;
@@ -129,18 +131,16 @@
         formData.append("featured_image", fileManager.selected?.id || 0);
 
         const isActive = document.getElementById("is_active").checked;
-        const isFeatured = document.getElementById("is_featured").checked;
 
         formData.append("active", isActive ? 1 : 0)
-        formData.append("featured", isFeatured ? 1 : 0)
 
         const response = await axios.post(
-          baseUrl + "/admin/posts/update",
+          baseUrl + "/admin/products/update",
           formData
         )
 
         if (response.data.status == "success") {
-          swal.fire("Update Post", response.data.message, "success")
+          swal.fire("Update Product", response.data.message, "success")
         } else {
           swal.fire("Error", response.data.message, "error")
         }
@@ -154,14 +154,14 @@
     window.addEventListener("load", function () {
       $("textarea[name='content']").richText();
       tags.init();
-      tags.selectedTags = postTags;
+      tags.selectedTags = productTags;
       tags.render();
       fileManager.init();
 
-      if (postImageId > 0) {
+      if (productImageId > 0) {
         fileManager.selected = {
-          id: postImageId,
-          filePath: postFilePath
+          id: productImageId,
+          filePath: productFilePath
         };
       }
     });

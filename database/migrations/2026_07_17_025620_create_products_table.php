@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign("user_id")->references("id")->on("users")->onUpdate("CASCADE")->onDelete("SET NULL");
             $table->string('title')->nullable();
             $table->string('slug')->unique();
-            $table->string('sku')->unique();
+            $table->string('sku')->nullable();
             $table->double('price')->nullable();
             $table->text("excerpt")->nullable();
             $table->longText('content')->nullable();

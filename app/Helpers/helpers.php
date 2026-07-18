@@ -127,6 +127,23 @@ function get_cached_post($slug = "")
     });
 }
 
+function forget_product_cache($id = 0)
+{
+    cache()->forget("product_" . $id);
+}
+
+function forget_products_cache()
+{
+    $limit = 15;
+    $count = DB::table("products")->count();
+    $pages = ceil($count / $limit);
+
+    for ($a = 1; $a <= $pages; $a++)
+    {
+        cache()->forget("products_" . $a);
+    }
+}
+
 function forget_posts_cache()
 {
     $limit = 15;

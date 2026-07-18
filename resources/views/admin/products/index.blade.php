@@ -41,7 +41,6 @@
               <th>Categories</th>
               <th>Tags</th>
               <th>Active</th>
-              <th>Featured</th>
               <th>Author</th>
               <th>Last Updated</th>
 
@@ -61,19 +60,18 @@
                 </td>
 
                 <td>
-                  @foreach ($product->categories_array as $category)
+                  @foreach ($product->categories as $category)
                     {{ $category }}
                   @endforeach
                 </td>
 
                 <td>
-                  @foreach ($product->tags_array as $tag)
+                  @foreach ($product->tags as $tag)
                     {{ $tag }}
                   @endforeach
                 </td>
 
                 <td>{{ $product->is_active == 1 ? "Active" : "Inactive" }}</td>
-                <td>{{ $product->is_featured == 1 ? "Featured" : "" }}</td>
                 <td>
                   @if ($product->user?->username)
                   <a href="{{ route('author', ['username' => $product->user->username]) }}">
@@ -123,7 +121,7 @@
             formData.append("id", id);
 
             const response = await axios.post(
-              baseUrl + "/admin/products/delete",
+              baseUrl + "/admin/products/destroy",
               formData
             )
 
