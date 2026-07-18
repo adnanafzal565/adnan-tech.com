@@ -36,7 +36,7 @@ class ProductController extends Controller
         }
 
         forget_products_cache();
-        forget_product_cache($product->id);
+        forget_product_cache($product->slug);
 
         $product->delete();
 
@@ -175,7 +175,7 @@ class ProductController extends Controller
         ]);
 
         forget_products_cache();
-        forget_product_cache($product->id);
+        forget_product_cache($product->slug);
 
         return response()->json([
             "status" => "success",

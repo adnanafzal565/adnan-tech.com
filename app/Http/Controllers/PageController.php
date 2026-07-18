@@ -122,6 +122,15 @@ class PageController extends Controller
             }
         }
 
+        $product = get_cached_product($slug);
+        if ($product) {
+            if (View::exists("theme::products/detail")) {
+                return view("theme::products/detail", [
+                    "product" => $product
+                ]);
+            }
+        }
+
         abort(404, "Page not found.");
     }
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\Post;
 use App\Models\Page;
+use App\Models\Product;
 use App\Models\Settings;
 
 function fetch_routes()
@@ -127,9 +128,9 @@ function get_cached_post($slug = "")
     });
 }
 
-function forget_product_cache($id = 0)
+function forget_product_cache($slug = "")
 {
-    cache()->forget("product_" . $id);
+    cache()->forget("product_" . $slug);
 }
 
 function forget_products_cache()
@@ -142,6 +143,29 @@ function forget_products_cache()
     {
         cache()->forget("products_" . $a);
     }
+}
+
+function get_cached_product($slug = "")
+{
+    return cache()->rememberForever("product_" . $slug, function () use ($slug) {
+        $product = Product::where("slug", $slug)
+            ->where("is_active", "=", 1)
+            ->first();
+
+        return $product;
+    });
+}
+
+function get_cached_products($limit = 15)
+{
+    $page = (int) (request()->page ?? 1);
+    return cache()->rememberForever("products_" . $page, function () use ($limit) {
+        $posts = Product::where("is_active", "=", 1)
+            ->orderBy("id", "desc")
+            ->paginate($limit);
+
+        return $posts;
+    });
 }
 
 function forget_posts_cache()
