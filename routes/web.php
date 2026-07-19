@@ -91,7 +91,8 @@ Route::group([
     Route::get("/admin/products/{id}/edit", [ProductController::class, "edit"])
         ->name("admin.products.edit");
 
-    Route::post("/admin/products/store", [ProductController::class, "store"]);
+    Route::post("/admin/products/store", [ProductController::class, "store"])
+        ->name('admin.products.store');
 
     Route::get("/admin/products/create", [ProductController::class, "create"])
         ->name("admin.products.create");

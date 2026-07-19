@@ -1,178 +1,67 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Adnan Tech
 
-# Laravel Boilerplate
+Official source code for **https://adnan-tech.com**.
 
-A production-ready Laravel boilerplate to help you kickstart your next web application. It comes with a powerful admin panel and essential features required by most content management systems and business applications.
+This repository contains the Laravel application that powers my website, where I publish software products, technical articles, developer resources, and online tools.
 
-## Features
+## About
 
-- User authentication
-- Admin dashboard
-- User management
-- Blog posts
-- Dynamic pages
-- File manager
-- Multiple frontend themes
-- Dynamic menus
-- Chat between admin and users
-- Contact Us
-- Website settings
-- Responsive design
+Adnan Tech is a platform dedicated to helping developers build better applications through practical resources and ready-to-use solutions.
 
-## Admin Panel
+The website includes:
 
-The admin dashboard allows you to manage your entire website from a single place.
+- 🛒 Premium Laravel products
+- 📦 Source code packages
+- 📝 Technical blog posts and tutorials
+- 🛠️ Online developer tools
+- 📚 Programming guides and resources
+- 🚀 New projects and experiments
 
-### Dashboard
-- Website overview
-- Statistics and quick access to modules
+## Tech Stack
 
-### Users
-- Add, edit, block, restore, and permanently delete users
-- Manage user profiles
-
-### Blog Posts
-- Create, edit, publish, restore, and permanently delete blog posts
-
-### Dynamic Pages
-- Create and manage pages such as:
-  - About Us
-  - Privacy Policy
-  - Terms & Conditions
-  - Any custom page
-
-### File Manager
-- Upload files and images
-- Organize uploaded files
-- Reuse uploaded media across the application
-
-### Themes
-- Support for multiple frontend themes
-- Easily switch between themes
-
-### Menus
-- Create dynamic menus
-- Reorder menu items
-- Build custom navigation
-
-### Chat
-- Built-in messaging system between administrators and users
-
-### Contact Us
-- View and manage messages submitted through the Contact Us form
-
-### Settings
-Manage application settings including:
-
-- Website name
-- Website logo
-- Other general settings
-
-## Requirements
-
-- PHP 8.2+
 - Laravel
+- PHP
 - MySQL
-- Composer
+- Bootstrap 5
+- JavaScript
+- HTML5
+- CSS3
+- React
 
-## Installation
+## Repository Status
 
-```bash
-git clone <repository-url>
+This project is currently under active development.
 
-cd <project-folder>
+Features, architecture, and documentation will continue to evolve as the website grows.
 
-composer update
+## Website
 
-php artisan key:generate
-```
+Visit the live website:
 
-Update your database credentials in `.env`.
+**https://adnan-tech.com**
 
-Run migrations:
+## Planned Features
 
-```bash
-php artisan migrate
-```
-
-Run seeder:
-
-```bash
-php artisan db:seed
-```
-
-Create storage link:
-
-```bash
-php artisan storage:link
-```
-
-Start the development server:
-
-```bash
-php artisan serve
-```
-
-## Customization
-
-Need additional features?
-
-I provide Laravel development and customization services. If you need custom modules, API integrations, UI improvements, new themes, or any other functionality, feel free to contact me.
-
-## Screenshots
-
-### Dashboard
-
-![Dashboard](screenshots/dashboard.png)
-
-### Users
-
-![Users](screenshots/edit-user.png)
-
-### Posts
-
-![Posts](screenshots/edit-post.png)
-
-### Pages
-
-![Pages](screenshots/edit-page.png)
-
-### Chat
-
-![Chat](screenshots/chat.png)
-
-### Files Manager
-
-![Files Manager](screenshots/files-manager.png)
-
-### Menus
-
-![Menus](screenshots/menus.png)
-
-### Contact Us
-
-![Contact Us](screenshots/contact-us-messages.png)
-
-### Settings
-
-![Settings](screenshots/settings.png)
-
-### Theme 1
-
-![Theme 1](screenshots/theme-1-home.png)
-
-### Theme 2
-
-![Theme 2](screenshots/theme-2-home.png)
-
-### Theme 3
-
-![Theme 3](screenshots/theme-3-home.png)
+- Product marketplace
+- Blog and tutorials
+- Online developer utilities
+- Authentication
+- User dashboard
+- Secure downloads
+- Search
+- Categories and tags
+- Newsletter
+- Contact system
+- SEO optimization
 
 ## Contributing
 
-Pull requests and suggestions are welcome.
+This repository is primarily maintained by Adnan Afzal. At this stage, external contributions are not being accepted.
 
 ## License
 
-This project is licensed under the MIT License.
+Copyright © Adnan Tech.
+
+All rights reserved.
+
+The source code in this repository may not be copied, redistributed, or used commercially without prior written permission.
