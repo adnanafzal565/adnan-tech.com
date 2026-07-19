@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 use DB;
 use Validator;
+
 use App\Models\Product;
+use App\Models\ProductSection;
 
 class ProductController extends Controller
 {
@@ -46,7 +48,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update()
+    public function update(Request $request)
     {
         $validator = Validator::make(request()->all(), [
             "id" => "required",
@@ -74,6 +76,68 @@ class ProductController extends Controller
         $tags = array_filter(array_map("trim", explode(",", $tags)));
         $featured_image = request()->featured_image ?? 0;
         $active = (int) request()->active ?? 0;
+
+        $sections = $request->input("sections", []);
+
+        $fixedSections = [];
+
+        foreach ($sections as $section) {
+
+            foreach ($section as $key => $value) {
+
+                if (!isset($fixedSections[0][$key])) {
+                    $fixedSections[0][$key] = $value;
+                }
+
+            }
+
+        }
+
+        $request->merge([
+            "sections" => $fixedSections
+        ]);
+
+        $errors = [];
+
+        $sections = $request->input("sections", []);
+
+        foreach ($sections as $index => $section) {
+
+            if (empty($section["title"])) {
+                $errors["sections.$index.title"] = "The title field is required.";
+            }
+
+            if (empty($section["description"])) {
+                $errors["sections.$index.description"] = "The description field is required.";
+            }
+
+            if (empty($section["type"])) {
+                $errors["sections.$index.type"] = "The type field is required.";
+            }
+            else if (!in_array($section["type"], [
+                "text",
+                "text_with_image",
+                "text_with_video",
+            ])) {
+                $errors["sections.$index.type"] = "Invalid section type.";
+            }
+
+            if (
+                !empty($section["url"]) &&
+                !filter_var($section["url"], FILTER_VALIDATE_URL)
+            ) {
+                $errors["sections.$index.url"] = "The URL is invalid.";
+            }
+
+        }
+
+        if (!empty($errors)) {
+            return response()->json([
+                "status" => "error",
+                "message" => "The given data was invalid.",
+                "errors" => $errors
+            ]);
+        }
 
         if (count($categories) > 0)
         {
@@ -174,6 +238,20 @@ class ProductController extends Controller
             "is_active" => $active,
         ]);
 
+        ProductSection::where("product_id", $product->id)->delete();
+
+        foreach ($request->sections ?? [] as $section) {
+
+            ProductSection::create([
+                "product_id" => $product->id,
+                "title" => $section["title"],
+                "description" => $section["description"],
+                "type" => $section["type"],
+                "url" => $section["url"] ?? null,
+            ]);
+
+        }
+
         forget_products_cache();
         forget_product_cache($product->slug);
 
@@ -187,7 +265,8 @@ class ProductController extends Controller
     {
         $id = request()->id ?? 0;
 
-        $product = Product::findOrFail($id);
+        $product = Product::with(['sections'])
+            ->findOrFail($id);
 
         $categories = DB::table("categories")
             ->orderBy("name", "asc")

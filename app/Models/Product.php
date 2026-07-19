@@ -30,6 +30,11 @@ class Product extends Model
         'tags' => 'array'
     ];
 
+    public function sections()
+    {
+        return $this->hasMany(ProductSection::class, 'product_id', 'id');
+    }
+
     public function image()
     {
         return $this->belongsTo(File::class, 'image_id', 'id');

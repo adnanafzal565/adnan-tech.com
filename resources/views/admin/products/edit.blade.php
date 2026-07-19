@@ -98,6 +98,91 @@
 
           <input type="hidden" name="tags" id="tagsHidden" value="{{ implode(',', $product->tags) }}" />
 
+          <div class="sections-wrapper">
+
+            <div class="sections-header">
+                <h4>Sections</h4>
+
+                <button
+                    type="button"
+                    class="btn-add-section"
+                    onclick="addSection();"
+                >
+                    + Add Section
+                </button>
+            </div>
+
+            <div id="sections-container"></div>
+
+        </div>
+
+        <template id="section-template">
+            <div class="section-card">
+
+                <div class="section-top">
+                    <h5 class="section-title"></h5>
+
+                    <button
+                        type="button"
+                        class="btn-remove"
+                        onclick="removeSection(this);"
+                    >
+                        Remove
+                    </button>
+                </div>
+
+                <div class="section-grid">
+
+                    <div class="form-group">
+                        <label>Title</label>
+
+                        <input
+                            type="text"
+                            name="sections[][title]"
+                            class="form-control"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type</label>
+
+                        <select
+                            name="sections[][type]"
+                            class="form-control section-type"
+                            onchange="toggleUrl(this);"
+                            style="min-height: auto !important;"
+                        >
+                            <option value="text">Text</option>
+                            <option value="text_with_image">Text with Image</option>
+                            <option value="text_with_video" selected>Text with Video</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+
+                        <textarea
+                            rows="5"
+                            name="sections[][description]"
+                            class="form-control"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group url-group">
+                        <label class="url-label">Video URL</label>
+
+                        <input
+                            type="text"
+                            name="sections[][url]"
+                            class="form-control"
+                        >
+                    </div>
+
+                </div>
+
+            </div>
+        </template>
+
           <div class="switch">
             <input type="checkbox" id="is_active" {{ $product->is_active == 1 ? "checked" : "" }} />
             <label for="is_active" style="margin-top: 0px;">Is Active</label>
@@ -153,6 +238,7 @@
 
     window.addEventListener("load", function () {
       $("textarea[name='content']").richText();
+
       tags.init();
       tags.selectedTags = productTags;
       tags.render();
@@ -164,7 +250,22 @@
           filePath: productFilePath
         };
       }
+
+      // First empty row
+      // addSection();
     });
+
+    const sections = @json($product->sections);
+
+    if (sections.length) {
+
+        document.getElementById("sections-container").innerHTML = "";
+
+        sections.forEach(function(section){
+            addSection(section);
+        });
+
+    }
   </script>
 
 @endsection

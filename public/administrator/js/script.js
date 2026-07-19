@@ -23,6 +23,90 @@ const globalState = {
     }
 }
 
+function addSection(data = null)
+{
+    const template = document
+        .getElementById("section-template")
+        .content
+        .cloneNode(true);
+
+    const container = document.getElementById("sections-container");
+
+    template.querySelector(".section-title").innerHTML =
+        "Section #" + (container.children.length + 1);
+
+    if (data) {
+
+        template.querySelector('[name="sections[][title]"]').value =
+            data.title || "";
+
+        template.querySelector('[name="sections[][description]"]').value =
+            data.description || "";
+
+        template.querySelector('[name="sections[][type]"]').value =
+            data.type || "text_with_video";
+
+        template.querySelector('[name="sections[][url]"]').value =
+            data.url || "";
+
+        const select = template.querySelector(".section-type");
+
+        const urlGroup = template.querySelector(".url-group");
+
+        const label = template.querySelector(".url-label");
+
+        if (select.value === "text") {
+            urlGroup.style.display = "none";
+        }
+        else {
+            urlGroup.style.display = "block";
+
+            label.innerHTML =
+                select.value === "text_with_image"
+                    ? "Image URL"
+                    : "Video URL";
+        }
+
+    }
+
+    container.appendChild(template);
+
+    setTimeout(() => $("textarea[name='sections[][description]']").richText(), 1000);
+}
+
+function removeSection(button)
+{
+    button.closest(".section-card").remove();
+
+    document.querySelectorAll(".section-title").forEach(function(title, index){
+        title.innerHTML = "Section #" + (index + 1);
+    });
+}
+
+function toggleUrl(select)
+{
+    const card = select.closest(".section-card");
+
+    const group = card.querySelector(".url-group");
+
+    const label = card.querySelector(".url-label");
+
+    if (select.value === "text") {
+
+        group.style.display = "none";
+
+    } else {
+
+        group.style.display = "block";
+
+        label.innerHTML =
+            select.value === "text_with_image"
+                ? "Image URL"
+                : "Video URL";
+
+    }
+}
+
 const editor = {
   format(command) {
     document.execCommand(command, false, null);
