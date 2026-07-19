@@ -48,6 +48,58 @@ class FileController extends Controller
         ]);
     }
 
+    public function bulk_upload()
+    {
+        $validator = Validator::make(request()->all(), [
+            "type" => "required|in:private,public",
+            "files" => "required|array|min:1",
+            "files.*" => "required|file",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "status" => "error",
+                "message" => $validator->errors()->first()
+            ]);
+        }
+
+        $type = request()->type;
+        $uploadedFiles = [];
+
+        foreach (request()->file("files") as $file) {
+
+            $name = $file->getClientOriginalName();
+            $filePath = "files/" . uniqid() . "." . $file->getClientOriginalExtension();
+
+            $file->storeAs("/" . $type, $filePath);
+
+            if (!is_dir(storage_path("app/" . $type. "/files"))) {
+                mkdir(storage_path("app/" . $type . "/files"), 0755, true);
+            }
+
+            chmod(storage_path("app/" . $type . "/files"), 0755);
+
+            $id = DB::table("files")->insertGetId([
+                "file_path"  => $filePath,
+                "name" => $name,
+                "type" => $type,
+                "created_at" => now()->utc(),
+                "updated_at" => now()->utc(),
+            ]);
+
+            $uploadedFiles[] = [
+                "id" => $id,
+                "file_path" => url("/storage/" . $filePath),
+            ];
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Files have been uploaded.",
+            "files" => $uploadedFiles,
+        ]);
+    }
+
     public function upload()
     {
         $validator = Validator::make(request()->all(), [
@@ -156,7 +208,7 @@ class FileController extends Controller
                     ->orWhere("description", "LIKE", "%" . $search . "%");
             });
         }
-        $files = $files->orderByDesc('id')->paginate();
+        $files = $files->orderByDesc('id')->paginate(1000000);
 
         return view("admin/files/index", [
             "files" => $files,

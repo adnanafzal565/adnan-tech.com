@@ -71,7 +71,8 @@ function addSection(data = null)
 
     container.appendChild(template);
 
-    setTimeout(() => $("textarea[name='sections[][description]']").richText(), 1000);
+    // setTimeout(() => $(template.querySelector("textarea")).richText(), 1000);
+    // setTimeout(() => $("textarea[name='sections[][description]']").richText(), 1000);
 }
 
 function removeSection(button)

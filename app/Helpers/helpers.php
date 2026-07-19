@@ -147,13 +147,15 @@ function forget_products_cache()
 
 function get_cached_product($slug = "")
 {
-    return cache()->rememberForever("product_" . $slug, function () use ($slug) {
-        $product = Product::where("slug", $slug)
+    // TODO: uncomment
+    // return cache()->rememberForever("product_" . $slug, function () use ($slug) {
+        $product = Product::with(['sections'])
+            ->where("slug", $slug)
             ->where("is_active", "=", 1)
             ->first();
 
         return $product;
-    });
+    // });
 }
 
 function get_cached_products($limit = 15)

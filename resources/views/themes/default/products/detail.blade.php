@@ -260,6 +260,51 @@
                                 {!! $product->content !!}
                             </div>
 
+                            <div id="product-sections">
+
+                                <div class="product-details">
+
+                                    @foreach($product->sections as $index => $section)
+
+                                        <section class="detail-section {{ $index % 2 ? 'reverse' : '' }}">
+
+                                            <div class="detail-content">
+                                                <h2>{{ $section->title }}</h2>
+
+                                                <div class="description">
+                                                    {!! $section->description !!}
+                                                </div>
+                                            </div>
+
+                                            @if($section->type === "text_with_image")
+                                                <div class="detail-media">
+                                                    <img
+                                                        src="{{ $section->url }}"
+                                                        alt="{{ $section->title }}"
+                                                    >
+                                                </div>
+                                            @endif
+
+                                            @if($section->type === "text_with_video")
+                                                <div class="detail-media">
+                                                    <div class="video-wrapper">
+                                                        <iframe
+                                                            src="{{ $section->url }}"
+                                                            title="{{ $section->title }}"
+                                                            allowfullscreen
+                                                        ></iframe>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                        </section>
+
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+
                         </div>
 
 
@@ -291,6 +336,102 @@
     </main>
 
     <style>
+
+        .detail-section {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 90px;
+        }
+
+        .detail-section.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .detail-content {
+            flex: 1;
+        }
+
+        .detail-content h2 {
+            margin: 0 0 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            line-height: 1.2;
+        }
+
+        .detail-content .description {
+            color: #4b5563;
+            font-size: 16px;
+            line-height: 1.9;
+        }
+
+        .detail-content ol,
+        .detail-content ul {
+            margin-top: 15px;
+            padding-left: 22px;
+        }
+
+        .detail-content li {
+            margin-bottom: 8px;
+        }
+
+        .detail-media {
+            flex: 1;
+        }
+
+        .detail-media img {
+            width: 100%;
+            display: block;
+            border-radius: 14px;
+            box-shadow:
+                0 20px 45px rgba(0,0,0,.08);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+            border-radius: 14px;
+            box-shadow:
+                0 20px 45px rgba(0,0,0,.08);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 900px) {
+
+            .detail-section,
+            .detail-section.reverse {
+                flex-direction: column;
+                gap: 30px;
+                margin-bottom: 70px;
+            }
+
+            .detail-content h2 {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .detail-content h2 {
+                font-size: 1.45rem;
+            }
+
+            .detail-content .description {
+                font-size: 15px;
+                line-height: 1.8;
+            }
+        }
+
         .contact-buy-btn {
 
             display:inline-flex;

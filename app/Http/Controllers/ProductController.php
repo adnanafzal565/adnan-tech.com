@@ -77,68 +77,6 @@ class ProductController extends Controller
         $featured_image = request()->featured_image ?? 0;
         $active = (int) request()->active ?? 0;
 
-        $sections = $request->input("sections", []);
-
-        $fixedSections = [];
-
-        foreach ($sections as $section) {
-
-            foreach ($section as $key => $value) {
-
-                if (!isset($fixedSections[0][$key])) {
-                    $fixedSections[0][$key] = $value;
-                }
-
-            }
-
-        }
-
-        $request->merge([
-            "sections" => $fixedSections
-        ]);
-
-        $errors = [];
-
-        $sections = $request->input("sections", []);
-
-        foreach ($sections as $index => $section) {
-
-            if (empty($section["title"])) {
-                $errors["sections.$index.title"] = "The title field is required.";
-            }
-
-            if (empty($section["description"])) {
-                $errors["sections.$index.description"] = "The description field is required.";
-            }
-
-            if (empty($section["type"])) {
-                $errors["sections.$index.type"] = "The type field is required.";
-            }
-            else if (!in_array($section["type"], [
-                "text",
-                "text_with_image",
-                "text_with_video",
-            ])) {
-                $errors["sections.$index.type"] = "Invalid section type.";
-            }
-
-            if (
-                !empty($section["url"]) &&
-                !filter_var($section["url"], FILTER_VALIDATE_URL)
-            ) {
-                $errors["sections.$index.url"] = "The URL is invalid.";
-            }
-
-        }
-
-        if (!empty($errors)) {
-            return response()->json([
-                "status" => "error",
-                "message" => "The given data was invalid.",
-                "errors" => $errors
-            ]);
-        }
-
         if (count($categories) > 0)
         {
             $dbCategoryNames = DB::table('categories')
@@ -227,6 +165,44 @@ class ProductController extends Controller
             ]);
         }
 
+        $raw = $request->input('sections', []);
+
+        $sections = [];
+        $index = -1;
+
+        foreach ($raw as $item) {
+
+            if (isset($item['title'])) {
+                $index++;
+
+                $sections[$index] = [
+                    'title' => $item['title'],
+                    'type' => '',
+                    'description' => '',
+                    'url' => '',
+                ];
+            }
+
+            if ($index === -1) {
+                continue;
+            }
+
+            if (isset($item['type'])) {
+                $sections[$index]['type'] = $item['type'];
+            }
+
+            if (
+                isset($item['description']) &&
+                $sections[$index]['description'] === ''
+            ) {
+                $sections[$index]['description'] = $item['description'];
+            }
+
+            if (isset($item['url'])) {
+                $sections[$index]['url'] = $item['url'];
+            }
+        }
+
         $product->update([
             "title" => $title,
             "slug" => $slug,
@@ -240,13 +216,13 @@ class ProductController extends Controller
 
         ProductSection::where("product_id", $product->id)->delete();
 
-        foreach ($request->sections ?? [] as $section) {
+        foreach ($sections ?? [] as $section) {
 
             ProductSection::create([
                 "product_id" => $product->id,
-                "title" => $section["title"],
-                "description" => $section["description"],
-                "type" => $section["type"],
+                "title" => $section["title"] ?? null,
+                "description" => $section["description"] ?? null,
+                "type" => $section["type"] ?? null,
                 "url" => $section["url"] ?? null,
             ]);
 

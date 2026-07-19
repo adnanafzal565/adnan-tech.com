@@ -265,6 +265,8 @@
             addSection(section);
         });
 
+        // setTimeout(() => $("textarea[name='sections[][description]']").richText(), 1000);   
+
     }
   </script>
 

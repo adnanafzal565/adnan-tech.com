@@ -136,6 +136,9 @@ Route::group([
     Route::post("/admin/files/delete", [FileController::class, "destroy"])
         ->name("admin.files.destroy");
 
+    Route::post("/admin/files/bulk_upload", [FileController::class, "bulk_upload"])
+        ->name("admin.files.bulk_upload");
+
     Route::post("/admin/files/upload", [FileController::class, "upload"])
         ->name("admin.files.upload");
 
