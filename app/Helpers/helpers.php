@@ -158,16 +158,16 @@ function get_cached_product($slug = "")
     // });
 }
 
-function get_cached_products($limit = 15)
+function get_cached_products($limit = 16)
 {
-    $page = (int) (request()->page ?? 1);
-    return cache()->rememberForever("products_" . $page, function () use ($limit) {
+    // $page = (int) (request()->page ?? 1);
+    // return cache()->rememberForever("products_" . $page, function () use ($limit) {
         $posts = Product::where("is_active", "=", 1)
             ->orderBy("id", "desc")
             ->paginate($limit);
 
         return $posts;
-    });
+    // });
 }
 
 function forget_posts_cache()

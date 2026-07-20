@@ -7,11 +7,79 @@ use Illuminate\Http\Request;
 use DB;
 use Validator;
 
+use App\Models\File;
 use App\Models\Product;
 use App\Models\ProductSection;
 
 class ProductController extends Controller
 {
+    public function seed(Request $request)
+    {
+        $products = json_decode($request->products);
+
+        $products = array_reverse($products);
+
+        foreach ($products as $p) {
+
+            $featuredImage = $p->featuredImage ?? "";
+            $url_parts = explode("/", $featuredImage);
+            $file_name = $url_parts[count($url_parts) - 1];
+
+            $image_id = null;
+            $file = File::where('name', $file_name)->first();
+            if ($file) {
+                $image_id = $file->id;
+            }
+
+            $product = Product::create([
+                "user_id" => 1,
+                "title" => $p->name ?? "",
+                "slug" => $p->slug ?? "",
+                "price" => $p->price ?? "",
+                "excerpt" => $p->description ?? "",
+                "categories" => $p->categories ?? [],
+                "tags" => $p->categories ?? "",
+                "image_id" => $image_id,
+                "is_active" => 1,
+            ]);
+
+            $product->update([
+                'sku' => 'PROD-' . str_pad($product->id, 6, '0', STR_PAD_LEFT),
+            ]);
+
+            foreach ($p->sections ?? [] as $section) {
+
+                $url = $section->url ?? null;
+
+                if ($section->type === 'text_with_image') {
+                    $url_parts = explode("/", $url);
+                    $file_name = $url_parts[count($url_parts) - 1];
+
+                    $file = File::where('name', $file_name)->first();
+
+                    if ($file) {
+                        $url = $file->file_path_absolute;
+                    }
+                }
+
+                ProductSection::create([
+                    "product_id" => $product->id,
+                    "title" => $section->title ?? null,
+                    "description" => $section->description ?? null,
+                    "type" => $section->type ?? null,
+                    "url" => $url,
+                ]);
+
+            }
+        }
+
+        forget_products_cache();
+
+        return response()->json([
+            "status" => "success"
+        ]);
+    }
+
     public function destroy()
     {
         $validator = Validator::make(request()->all(), [
@@ -77,7 +145,7 @@ class ProductController extends Controller
         $featured_image = request()->featured_image ?? 0;
         $active = (int) request()->active ?? 0;
 
-        if (count($categories) > 0)
+        /*if (count($categories) > 0)
         {
             $dbCategoryNames = DB::table('categories')
                 ->whereIn('name', $categories)
@@ -123,7 +191,7 @@ class ProductController extends Controller
                     "message" => "In-valid tag."
                 ]);
             }
-        }
+        }*/
 
         $product = Product::find($id);
 

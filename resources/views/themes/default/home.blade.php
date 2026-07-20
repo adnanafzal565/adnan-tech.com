@@ -121,6 +121,8 @@
 
                     @endforeach
 
+                    {!! $products->links("pagination::bootstrap-5") !!}
+
                 </div>
 
             </div>
@@ -167,6 +169,7 @@
             height:100%;
             object-fit:cover;
             transition:.4s ease;
+            object-position: right;
         }
 
 

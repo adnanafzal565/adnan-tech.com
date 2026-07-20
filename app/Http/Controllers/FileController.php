@@ -64,12 +64,13 @@ class FileController extends Controller
         }
 
         $type = request()->type;
+        $year = now()->year;
         $uploadedFiles = [];
 
         foreach (request()->file("files") as $file) {
 
             $name = $file->getClientOriginalName();
-            $filePath = "files/" . uniqid() . "." . $file->getClientOriginalExtension();
+            $filePath = "files/" . $year . '/' . uniqid() . "." . $file->getClientOriginalExtension();
 
             $file->storeAs("/" . $type, $filePath);
 
@@ -116,6 +117,7 @@ class FileController extends Controller
         }
 
         $type = request()->type ?? "";
+        $year = now()->year;
         $file = request()->file("file");
 
         if (!in_array($type, ["public", "private"]))
@@ -140,7 +142,7 @@ class FileController extends Controller
 
         if ($file)
         {
-            $file_path = "files/" . uniqid() . "." . $file->getClientOriginalExtension();
+            $file_path = "files/" . $year . '/' . uniqid() . "." . $file->getClientOriginalExtension();
             $file->storeAs("/" . $type, $file_path);
             chmod(storage_path("app/" . $type . "/files"), 0755);
 
@@ -166,7 +168,7 @@ class FileController extends Controller
             $files = DB::table('files')
                 ->where("type", "=", "public")
                 ->orderByDesc('id')
-                ->paginate();
+                ->paginate(1000000);
 
             $files_arr = [];
             foreach ($files as $file)

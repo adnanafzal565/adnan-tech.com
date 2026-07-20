@@ -23,6 +23,10 @@ use App\Http\Middleware\CheckRoutePermission;
 //     return view('welcome');
 // });
 
+// Route::get('/seed_products', function () {
+//     return view('temp/seed_products');
+// });
+
 Route::get("/author/{username}", [AdminController::class, "login"])
     ->name("author");
 

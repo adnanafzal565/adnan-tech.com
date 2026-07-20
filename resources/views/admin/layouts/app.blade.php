@@ -299,7 +299,9 @@
           </form>
         </div>
 
-        <div class="tab-content" id="tab-existing" style="display: none;">
+        <div class="tab-content" id="tab-existing" style="display: none;
+          max-height: 500px;
+          overflow: auto;">
           <div class="media-grid">
             
           </div>

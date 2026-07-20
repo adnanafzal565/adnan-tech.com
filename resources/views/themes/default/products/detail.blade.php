@@ -184,12 +184,14 @@
 
                             <!-- Meta -->
 
-                            <div class="product-meta">
+                            <div class="product-meta mt-4">
 
+                                {{--
                                 <div>
                                     <strong>SKU:</strong>
                                     {{ $product->sku }}
                                 </div>
+                                --}}
 
                                 <div>
                                     <strong>Category:</strong>
@@ -234,7 +236,7 @@
                         </li>
 
 
-                        <li class="nav-item" role="presentation">
+                        <!-- <li class="nav-item" role="presentation">
                             <button class="nav-link"
                                     id="reviews-tab"
                                     data-bs-toggle="tab"
@@ -245,7 +247,7 @@
                                 Reviews
 
                             </button>
-                        </li>
+                        </li> -->
 
                     </ul>
 
@@ -309,7 +311,7 @@
 
 
 
-                        <div class="tab-pane fade"
+                        <!-- <div class="tab-pane fade"
                              id="reviews"
                              role="tabpanel">
 
@@ -321,7 +323,7 @@
                                 No reviews yet.
                             </p>
 
-                        </div>
+                        </div> -->
 
 
                     </div>
@@ -546,6 +548,8 @@
             height:100%;
 
             object-fit:cover;
+
+            object-position: right;
 
         }
 

@@ -43,12 +43,10 @@
             $url = request()->url();
         @endphp
 
-    	<input type="hidden" id="base-url" value="{{ url('/') }}" />
-        <input type="hidden" id="app-name" value="{{ config('config.app_name') }}" />
+    	<input type="hidden" id="app-name" value="{{ config('config.app_name') }}" />
         <input type="hidden" id="user-object" value="{{ json_encode($user) }}" />
 
     	<script>
-            const baseUrl = document.getElementById("base-url").value || "";
             const appName = document.getElementById("app-name").value || "";
             let user = null;
 
