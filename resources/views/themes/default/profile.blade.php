@@ -76,7 +76,7 @@
                     swal.fire("Error", response.data.message, "error")
                 }
             } catch (exp) {
-                if (exp.response.status === 401) {
+                if (exp.response?.status === 401) {
                     window.location.href = baseUrl + "/login?redirect=" + window.location.href
                 } else {
                     swal.fire("Error", exp.message, "error")

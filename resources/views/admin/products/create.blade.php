@@ -110,7 +110,7 @@
         formData.append("active", isActive ? 1 : 0)
         
         const response = await axios.post(
-          baseUrl + "/admin/products/create",
+          baseUrl + "/admin/products/store",
           formData
         )
 

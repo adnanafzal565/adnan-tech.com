@@ -91,7 +91,8 @@ Route::group([
     Route::get("/admin/products/{id}/edit", [ProductController::class, "edit"])
         ->name("admin.products.edit");
 
-    Route::post("/admin/products/store", [ProductController::class, "store"]);
+    Route::post("/admin/products/store", [ProductController::class, "store"])
+        ->name('admin.products.store');
 
     Route::get("/admin/products/create", [ProductController::class, "create"])
         ->name("admin.products.create");
@@ -134,6 +135,9 @@ Route::group([
 
     Route::post("/admin/files/delete", [FileController::class, "destroy"])
         ->name("admin.files.destroy");
+
+    Route::post("/admin/files/bulk_upload", [FileController::class, "bulk_upload"])
+        ->name("admin.files.bulk_upload");
 
     Route::post("/admin/files/upload", [FileController::class, "upload"])
         ->name("admin.files.upload");

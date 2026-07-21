@@ -24,32 +24,64 @@
     <div class="row">
       <div class="col-12">
 
-        <form method="POST" enctype="multipart/form-data"
-          onsubmit="uploadFile(event, function () { window.location.reload(); })">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="text-black">Bulk Upload</h5>
+          </div>
 
-          <label for="file">Choose File</label>
-          <input type="file" name="file" id="file" required>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data"
+              onsubmit="bulkUpload(event);">
 
-          <label for="name">File Name</label>
-          <input type="text" name="name" id="name" placeholder="my-image-{{ now()->year }}">
+              <label>Select file(s)</label>
+              <input type="file" name="files[]" multiple required>
 
-          <label for="alt">Alt Text</label>
-          <input type="text" name="alt" id="alt" placeholder="A beautiful sunset">
+              <label>Type</label>
+              <select name="type" required>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
 
-          <label for="caption">Caption</label>
-          <input type="text" name="caption" id="caption" placeholder="Sunset in Hunza Valley">
+              <button type="submit" name="submit">Bulk Upload</button>
 
-          <label for="description">Description</label>
-          <textarea name="description" id="description" rows="3" placeholder="Describe the image or video..."></textarea>
+            </form>
+          </div>
+        </div>
 
-          <label for="type">Type</label>
-          <select name="type" id="type" required>
-            <option value="public">Public</option>
-            <option value="private">Private</option>
-          </select>
+        <div class="card">
+          <div class="card-header">
+            <h5 class="text-black">Single Upload</h5>
+          </div>
 
-          <button type="submit" name="submit">Upload</button>
-        </form>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data"
+              onsubmit="uploadFile(event, function () { window.location.reload(); })">
+
+              <label for="file">Choose File</label>
+              <input type="file" name="file" id="file" required>
+
+              <label for="name">File Name</label>
+              <input type="text" name="name" id="name" placeholder="my-image-{{ now()->year }}">
+
+              <label for="alt">Alt Text</label>
+              <input type="text" name="alt" id="alt" placeholder="A beautiful sunset">
+
+              <label for="caption">Caption</label>
+              <input type="text" name="caption" id="caption" placeholder="Sunset in Hunza Valley">
+
+              <label for="description">Description</label>
+              <textarea name="description" id="description" rows="3" placeholder="Describe the image or video..."></textarea>
+
+              <label for="type">Type</label>
+              <select name="type" id="type" required>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
+
+              <button type="submit" name="submit">Upload</button>
+            </form>
+          </div>
+        </div>
 
         <form method="GET" action="{{ route('admin.files.index') }}">
             <div class="form-group mt-5">
@@ -115,6 +147,32 @@
   </section>
 
   <script>
+
+    async function bulkUpload(event) {
+      event.preventDefault();
+
+      const form = event.currentTarget
+      form.submit.setAttribute("disabled", "disabled")
+
+      const formData = new FormData(form)
+
+      try {
+        const response = await axios.post(
+          baseUrl + "/admin/files/bulk_upload",
+          formData
+        )
+
+        if (response.data.status == "success") {
+          window.location.reload();
+        } else {
+          swal.fire("Error", response.data.message, "error")
+        }
+      } catch (exp) {
+        swal.fire("Error", exp.message, "error")
+      } finally {
+        form.submit.removeAttribute("disabled")
+      }
+    }
 
     function copyToClipboard(text, id) {
       navigator.clipboard.writeText(text)
