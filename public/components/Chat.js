@@ -8,6 +8,9 @@ function Chat() {
     const [show, setShow] = React.useState(false)
     const [initialized, setInitialized] = React.useState(false)
     const [attachments, setAttachments] = React.useState([])
+    const [unread_notifications, set_unread_notifications] = React.useState(0);
+
+    const token = localStorage.getItem(accessTokenKey);
 
     function attachmentSelected() {
         const files = event.target.files
@@ -46,28 +49,15 @@ function Chat() {
         const form = event.target
         try {
             const formData = new FormData(form)
-            formData.append("time_zone", timeZone)
 
-            const response = await axios.post(
-                baseUrl + "/messages/send",
-                formData,
-                {
-                    headers: {
-                        Authorization: "Bearer " + localStorage.getItem(accessTokenKey)
-                    }
-                }
-            )
-
-            if (response.data.status == "success") {
+            await ajax('/api/messages/send', formData, function (response) {
                 const tempMessages = [...messages]
-                const newMessage = response.data.message_obj
+                const newMessage = response.message_obj
                 tempMessages.push(newMessage)
                 setMessages(tempMessages)
                 setMessage("")
                 setAttachments([])
-            } else {
-                swal.fire("Error", response.data.message, "error")
-            }
+            });
         } catch (exp) {
             swal.fire("Error", exp.message, "error")
         } finally {
@@ -75,32 +65,17 @@ function Chat() {
         }
     }
 
-    async function onInit() {
-        const accessToken = localStorage.getItem(accessTokenKey);
-        if (accessToken == null) {
-            return;
-        }
+    async function mark_as_read() {
+        await ajax('/api/messages/mark_as_read');
+    }
 
+    async function onInit() {
         setFetching(true);
 
         try {
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-            const formData = new FormData()
-            formData.append("time_zone", timeZone)
-
-            const response = await axios.post(
-                baseUrl + "/messages/fetch",
-                formData,
-                {
-                    headers: {
-                        Authorization: "Bearer " + localStorage.getItem(accessTokenKey)
-                    }
-                }
-            )
-
-            if (response.data.status == "success") {
-                const notificationsCount = response.data.notifications_count
-                const newMessages = response.data.messages
+            await ajax('/api/messages/fetch', null, function (response) {
+                const notificationsCount = response.notifications_count
+                const newMessages = response.messages
                 const tempMessages = [...messages]
 
                 for (let a = newMessages.length - 1; a >= 0; a--) {
@@ -109,14 +84,8 @@ function Chat() {
                 setMessages(tempMessages)
                 setInitialized(true)
 
-                if (notificationsCount > 0) {
-                  document.getElementById("message-notification-badge").innerHTML = notificationsCount
-                } else {
-                  document.getElementById("message-notification-badge").innerHTML = ""
-                }
-            } else {
-                // swal.fire("Error", response.data.message, "error")
-            }
+                set_unread_notifications(notificationsCount);
+            });
         } catch (exp) {
             // swal.fire("Error", exp.response?.data?.message || "", "error")
         } finally {
@@ -130,7 +99,8 @@ function Chat() {
 
     React.useEffect(function () {
         if (show) {
-            document.getElementById("message-notification-badge").innerHTML = ""
+            set_unread_notifications(0);
+            mark_as_read();
             
             setTimeout(function () {
                 document.querySelector(".conversation-container").scrollTop = document.querySelector(".conversation-container").scrollHeight
@@ -226,7 +196,7 @@ function Chat() {
                                                         }}>
                                                             <button type="button" onClick={ function () {
                                                                 window.open(
-                                                                    baseUrl + "/messages/buffer_attachment/" + attachment.id,
+                                                                    baseUrl + "/messages/buffer_attachment/" + attachment.id + "/" + token,
                                                                     "_blank"
                                                                 );
                                                               } } className="btn btn-secondary">
@@ -339,7 +309,10 @@ function Chat() {
             }} onClick={ function () {
                 setShow(!show)
             } }>
-                <span className="badge bg-danger" id="message-notification-badge"></span>
+                { unread_notifications > 0 && (
+                    <span className="badge bg-danger" id="message-notification-badge">{ unread_notifications }</span>
+                ) }
+
                 Chat
             </button>
         </>

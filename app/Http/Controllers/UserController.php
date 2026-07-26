@@ -769,12 +769,7 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->profile_image && Storage::exists("public/" . $user->profile_image))
-            $user->profile_image = url("/storage/" . $user->profile_image);
-        else
-            $user->profile_image = "";
-
-        $client_ip = $_SERVER['REMOTE_ADDR'] ?? "";
+        /*$client_ip = $_SERVER['REMOTE_ADDR'] ?? "";
         // $client_ip = "223.123.88.250";
         $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? "";
 
@@ -786,7 +781,7 @@ class UserController extends Controller
 
         $twenty_four_hours_in_seconds = 24 * 60 * 60;
 
-        /*if ($difference >= $twenty_four_hours_in_seconds)
+        if ($difference >= $twenty_four_hours_in_seconds)
         {
             $curl = curl_init();
             curl_setopt_array($curl, [
@@ -848,13 +843,7 @@ class UserController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Data has been fetched.",
-            "user" => [
-                "id" => $user->id,
-                "name" => $user->name ?? "",
-                "email" => $user->email ?? "",
-                "profile_image" => $user->profile_image,
-                "type" => $user->type ?? ""
-            ],
+            "user" => $user,
             "new_messages" => $new_messages
         ]);
     }
@@ -907,13 +896,13 @@ class UserController extends Controller
                 ]);
             }
 
-            if (auth()->attempt([
-                "email" => $user->email,
-                "password" => $password
-            ], true))
-            {
-                if (request()->expectsJson())
-                {
+            // if (auth()->attempt([
+            //     "email" => $user->email,
+            //     "password" => $password
+            // ], true))
+            // {
+                // if (request()->expectsJson())
+                // {
                     $token = $user->createToken(config("config.token_secret"))->plainTextToken;
 
                     return response()->json([
@@ -921,18 +910,18 @@ class UserController extends Controller
                         "message" => "Login successfully.",
                         "access_token" => $token
                     ]);
-                }
+                // }
 
-                return response()->json([
-                    "status" => "success",
-                    "message" => "Login successfully."
-                ]);
-            }
+                // return response()->json([
+                //     "status" => "success",
+                //     "message" => "Login successfully."
+                // ]);
+            // }
 
-            return response()->json([
-                "status" => "error",
-                "message" => "In-valid credentials."
-            ]);
+            // return response()->json([
+            //     "status" => "error",
+            //     "message" => "In-valid credentials."
+            // ]);
         }
 
         return view("theme::login");

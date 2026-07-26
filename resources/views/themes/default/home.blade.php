@@ -108,7 +108,6 @@
 
                                     </div>
 
-
                                     <a href="{{ route('pages.show', ['slug' => $product->slug]) }}" class="btn btn-dark w-100">
                                         View Detail
                                     </a>

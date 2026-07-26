@@ -28,6 +28,8 @@
         <meta property="og:type" content="@yield('type')" />
     @endif
 
+    <meta name="_token" content="{{ csrf_token() }}" />
+
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <link href="{{ asset('themes/' . active_theme() . '/css/style.css?v=' . time()) }}" rel="stylesheet" />
@@ -47,29 +49,16 @@
 </head>
 <body>
 
-    @php
-        $user = null;
-    @endphp
-
-    @if (auth()->check())
-        @php
-            $user = auth()->user();
-        @endphp
-
-        <input type="hidden" id="user" value="{{ json_encode([
-            'id' => $user->id ?? 0,
-            'name' => $user->name ?? '',
-            'email' => $user->email ?? '',
-            'type' => $user->type ?? ''
-        ]) }}" />
-    @endif
+    <input type="hidden" id="route_login" value="{{ route('login') }}" />
+    <input type="hidden" id="route_register" value="{{ route('register') }}" />
+    <input type="hidden" id="route_profile" value="{{ route('pages.show', ['slug' => 'profile']) }}" />
+    <input type="hidden" id="route_admin_dashboard" value="{{ route('admin.dashboard') }}" />
 
     <script>
-        let user = null;
-
-        if (document.getElementById("user") != null) {
-            user = JSON.parse(document.getElementById("user").value);
-        }
+        const route_login = document.getElementById('route_login').value;
+        const route_register = document.getElementById('route_register').value;
+        const route_profile = document.getElementById('route_profile').value;
+        const route_admin_dashboard = document.getElementById('route_admin_dashboard').value;
     </script>
 
     @php
@@ -95,36 +84,7 @@
                         </li>
                     @endforeach
 
-                    @if (auth()->check())
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ auth()->user()->name ?? "" }}
-                            </a>
-
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                                @if (in_array(auth()->user()->type, ['admin', 'super_admin']))
-                                    <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Panel</a></li>
-                                @endif
-
-                                <li><a class="dropdown-item" href="{{ route('pages.show', ['slug' => 'profile']) }}">Profile</a></li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="return do_logout();">
-                                        Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{ route('login') }}">Login</a>
-                        </li>
-
-                        <li>
-                            <a href="{{ route('register') }}">Sign Up</a>
-                        </li>
-                    @endif
+                    <li id="header_user_view_app"></li>
                 </ul>
             </nav>
         </div>
@@ -167,33 +127,25 @@
         </div>
     </footer>
 
+    <script src="//code.tidio.co/kapdevnmnkvcubnn6z7zpiatypsbunjr.js" async></script>
+
+    {{--
     <div id="chat-app"></div>
     <script type="text/babel" src="{{ asset('/components/Chat.js?v=' . time()) }}"></script>
     <link rel="stylesheet" href="{{ asset('/css/chat.css') }}" />
+    --}}
 
-    <script>
-        function do_logout() {
-            localStorage.removeItem(accessTokenKey);
-            return true;
-        }
+    <script type="text/babel">
+        function HeaderUserViewApp() {
 
-        async function onInit() {
-            const accessToken = localStorage.getItem(accessTokenKey)
+            const [loading, set_loading] = React.useState(true);
+            const [state, set_state] = React.useState(globalState.state);
+            const [logging_out, set_logging_out] = React.useState(false);
 
-            try {
-                const response = await axios.post(
-                    baseUrl + "/api/me",
-                    null,
-                    {
-                        headers: {
-                            Authorization: "Bearer " + localStorage.getItem(accessTokenKey)
-                        }
-                    }
-                )
-
-                if (response.data.status == "success") {
-                    window.user = response.data.user;
-                    const unread_notifications = response.data.unread_notifications;
+            async function onInit() {
+                await ajax('/api/me', null, function (response) {
+                    window.user = response.user;
+                    const unread_notifications = response.unread_notifications;
 
                     if (unread_notifications > 0) {
                         document.getElementById("name-notifications-count").innerHTML = `(${unread_notifications})`;
@@ -206,15 +158,101 @@
 
                     // for React
                     globalState.setState({
-                        user: window.user
+                        user: response.user
                     });
-                }
-            } catch (exp) {
-                console.log(exp.message)
+                });
+
+                set_loading(false);
             }
+
+            async function do_logout(event) {
+                event.preventDefault();
+                
+                set_logging_out(true);
+                await ajax('/api/logout', null);
+                localStorage.removeItem(accessTokenKey);
+                set_logging_out(false);
+                window.location.href = baseUrl;
+            }
+
+            React.useEffect(() => {
+                globalState.listen((new_state, updated_state) => {
+                    set_state(new_state);
+                });
+
+                onInit();
+            }, []);
+
+            React.useEffect(() => {
+                document.getElementById('header_user_view_app').className = (state.user ? 'nav-item dropdown' : '');
+            }, [state.user]);
+
+            return (
+                <>
+                    { !loading && (
+                        <>
+                            { state.user ? (
+                                <>
+                                    <a
+                                        className="nav-link dropdown-toggle"
+                                        href="#"
+                                        id="navbarDropdown"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        {state.user.name || ""}
+                                    </a>
+
+                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        {
+                                            ["admin", "super_admin"].includes(state.user.type) && (
+                                                <li>
+                                                    <a className="dropdown-item"
+                                                        href={ route_admin_dashboard }>
+                                                        Admin Panel
+                                                    </a>
+                                                </li>
+                                            )
+                                        }
+
+                                        <li>
+                                            <a className="dropdown-item"
+                                                href={ route_profile }>
+                                                Profile
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#"
+                                                className="dropdown-item"
+                                                onClick={ do_logout }
+                                            >
+                                                { logging_out ? 'Logging out...' : 'Logout' }
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </>
+                            ) : (
+                                <ul>
+                                    <li>
+                                        <a href={ route_login }>Login</a>
+                                    </li>
+
+                                    <li>
+                                        <a href={ route_register }>Sign Up</a>
+                                    </li>
+                                </ul>
+                            ) }
+                        </>
+                    ) }
+                </>
+            );
         }
 
-        window.addEventListener("load", () => onInit());
+        ReactDOM.createRoot(
+            document.getElementById('header_user_view_app')
+        ).render(<HeaderUserViewApp />);
     </script>
 
     <style>

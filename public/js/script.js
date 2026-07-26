@@ -53,7 +53,7 @@ async function ajax(
 ) {
 
     const token = localStorage.getItem(accessTokenKey);
-    const noError = ["/me"];
+    const noError = ["/me", '/api/me', '/api/messages/fetch'];
     const byPassGuestUrls = ['/login'];
 
     try {
@@ -91,7 +91,7 @@ async function ajax(
             } else {
                 if (!noError.includes(url)) {
                     swal.fire("Error", response.data.message, "error");
-                    onError?.(response);
+                    onError?.(response.data);
                 }
             }
         } else if (responseType === "blob") {

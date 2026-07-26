@@ -44,24 +44,17 @@
                 const formData = new FormData(form)
                 form.submit.setAttribute("disabled", "disabled")
 
-                const response = await axios.post(
-                    baseUrl + "/register",
-                    formData
-                )
-
-                if (response.data.status == "success") {
-                    const verification = response.data.verification
-                    swal.fire("Register", response.data.message, "success")
+                await ajax('/api/register', formData, function (response) {
+                    const verification = response.verification;
+                    swal.fire("Register", response.message, "success")
                         .then(function () {
                             if (verification) {
-                                window.location.href = baseUrl + "/email-verification/" + form.email.value
+                                window.location.href = baseUrl + "/email-verification/" + form.email.value;
                             } else {
-                                window.location.href = baseUrl + "/login"
+                                window.location.href = baseUrl + "/login";
                             }
-                        })
-                } else {
-                    swal.fire("Error", response.data.message, "error")
-                }
+                        });
+                });
             } catch (exp) {
                 swal.fire("Error", exp.message, "error")
             } finally {

@@ -23,9 +23,8 @@ use App\Http\Middleware\CheckRoutePermission;
 //     return view('welcome');
 // });
 
-// Route::get('/seed_products', function () {
-//     return view('temp/seed_products');
-// });
+Route::get("/messages/buffer_attachment/{id}/{token?}", [MessageController::class, "buffer_attachment"])
+    ->name("messages.buffer_attachment");
 
 Route::get("/author/{username}", [AdminController::class, "login"])
     ->name("author");
@@ -33,24 +32,15 @@ Route::get("/author/{username}", [AdminController::class, "login"])
 Route::post("/set_timezone", [UserController::class, "set_user_timezone"])
     ->name("timezone.update");
 
+Route::get("/profile", [UserController::class, "profile"])
+    ->name("profile");
+
+Route::get("/change_password", [UserController::class, "change_password"])
+    ->name("change_password");
+
 Route::group([
     "middleware" => [UserAuth::class]
 ], function () {
-    Route::get("/messages/buffer_attachment/{id}", [MessageController::class, "buffer_attachment"])
-        ->name("messages.buffer_attachment");
-
-    Route::post("/messages/fetch", [MessageController::class, "fetch"])
-        ->name("messages.fetch");
-
-    Route::post("/messages/send", [MessageController::class, "send"])
-        ->name("messages.send");
-
-    Route::any("/change_password", [UserController::class, "change_password"])
-        ->name("change_password");
-
-    Route::any("/profile", [UserController::class, "profile"])
-        ->name("profile");
-
     Route::get("/logout", [UserController::class, "logout"])
         ->name("logout");
 });
@@ -64,10 +54,10 @@ Route::get("/reset_password/{email}/{token}", [UserController::class, "reset_pas
 Route::get("/forgot_password", [UserController::class, "forgot_password"])
     ->name("password.request");
 
-Route::any("/register", [UserController::class, "register"])
+Route::get("/register", [UserController::class, "register"])
     ->name("register");
 
-Route::any("/login", [UserController::class, "login"])
+Route::get("/login", [UserController::class, "login"])
     ->name("login");
 
 Route::get("/", [UserController::class, "home"])

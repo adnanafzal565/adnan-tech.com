@@ -5,98 +5,170 @@
     <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
         <div class="row">
             <div class="col-4">
-                @include ("themes/" . active_theme() . "/layouts/profile-left-menu")
+                @include ("theme::layouts/profile-left-menu")
             </div>
 
-            <div class="col-8" id="profile-app">
-                <form onsubmit="saveProfile(event);" enctype="multipart/form-data">
-                    <div class="row mb-5">
-                        <div class="offset-4 col-3">
-                            <img id="profile-image" style="width: 100px;
-                                height: 100px;
-                                object-fit: cover;
-                                border-radius: 50%;
-                                margin-bottom: 20px;
-                                position: relative;
-                                left: 50%;
-                                transform: translateX(-50%);"
-                                src="{{ url('/storage/' . auth()->user()->profile_image) }}"
-                                onerror="this.src = baseUrl + '/img/user-placeholder.png'" />
-
-                            <input type="file" name="profile_image" accept="image/*"
-                                onchange="onChangeProfileImage(event);" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="name" value="{{ auth()->user()->name ?? '' }}" class="form-control" required />
-                    </div>
-
-                    <div class="form-group mt-3 mb-3">
-                        <label class="form-label">Username</label>
-                        <input type="text" name="username" value="{{ auth()->user()->username ?? '' }}" class="form-control" disabled />
-                    </div>
-
-                    <div class="form-group mt-3 mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" value="{{ auth()->user()->email ?? '' }}" class="form-control" disabled />
-                    </div>
-
-                    <input type="submit" name="submit" class="btn btn-outline-primary btn-sm"
-                        value="Save" />
-                </form>
-            </div>
+            <div class="col-8" id="profile_app"></div>
         </div>
     </div>
 
-    <script>
-        async function saveProfile(event) {
-            event.preventDefault()
-            const form = event.currentTarget;
+    <script type="text/babel">
+        function ProfileApp() {
 
-            try {    
-                form.submit.setAttribute("disabled", "disabled");
+            const [state, set_state] = React.useState(globalState.state);
+            const [submitting, set_submitting] = React.useState(false);
+            const [profile_image, set_profile_image] = React.useState(null);
+            const [profile_image_preview, set_profile_image_preview] = React.useState(
+                state.user?.profile_image_absolute
+                    ? state.user.profile_image_absolute
+                    : `${baseUrl}/img/user-placeholder.png`
+            );
 
-                const formData = new FormData(event.target)
-                const response = await axios.post(
-                    baseUrl + "/profile",
-                    formData,
-                    {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                            "Authorization": "Bearer " + localStorage.getItem(accessTokenKey)
-                        }
+            const [name, set_name] = React.useState(state.user?.name || "");
+
+            const on_change_profile_image = (event) => {
+
+                const file = event.target.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                set_profile_image(file);
+                set_profile_image_preview(URL.createObjectURL(file));
+            };
+
+            async function save_profile(event) {
+                event.preventDefault();
+
+                try {
+                    set_submitting(true);
+
+                    const form_data = new FormData()
+
+                    form_data.append("name", name);
+
+                    if (profile_image) {
+                        form_data.append("profile_image", profile_image);
                     }
-                )
 
-                if (response.data.status == "success") {
-                    swal.fire("Profile", response.data.message, "success")
-                } else {
-                    swal.fire("Error", response.data.message, "error")
+                    await ajax('/api/profile', form_data, function (response) {
+                        swal.fire("Profile", response.message, "success");
+                    });
+                } catch (exp) {
+                    if (exp.response?.status === 401) {
+                        window.location.href = baseUrl + "/login?redirect=" + window.location.href
+                    } else {
+                        swal.fire("Error", exp.message, "error")
+                    }
+                } finally {
+                    set_submitting(false);
                 }
-            } catch (exp) {
-                if (exp.response.status === 401) {
-                    window.location.href = baseUrl + "/login?redirect=" + window.location.href
-                } else {
-                    swal.fire("Error", exp.message, "error")
-                }
-            } finally {
-                form.submit.removeAttribute("disabled");
             }
+
+            React.useEffect(() => {
+                globalState.listen((new_state, updated_state) => {
+                    set_state(new_state);
+
+                    if (new_state.user) {
+                        set_name(new_state.user.name);
+                        set_profile_image_preview(new_state.user.profile_image_absolute
+                            ? new_state.user.profile_image_absolute
+                            : `${baseUrl}/img/user-placeholder.png`);
+                    }
+                });
+            }, []);
+
+            const styles = {
+                image: {
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    marginBottom: "20px",
+                    position: "relative",
+                    left: "50%",
+                    transform: "translateX(-50%)"
+                }
+            };
+
+            return (
+                <form onSubmit={save_profile} encType="multipart/form-data">
+
+                    <div className="row mb-5">
+                        <div className="offset-4 col-3">
+
+                            <img
+                                style={ styles.image }
+                                src={profile_image_preview}
+                                onError={(event) => {
+                                    event.target.src = `${baseUrl}/img/user-placeholder.png`;
+                                }}
+                                alt="Profile"
+                            />
+
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={on_change_profile_image}
+                            />
+
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label className="form-label">
+                            Name
+                        </label>
+
+                        <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value={name}
+                            onChange={(event) => set_name(event.target.value)}
+                        />
+                    </div>
+
+                    <div className="form-group mt-3 mb-3">
+                        <label className="form-label">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={state.user?.username || ""}
+                            disabled
+                        />
+                    </div>
+
+                    <div className="form-group mt-3 mb-3">
+                        <label className="form-label">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            className="form-control"
+                            value={state.user?.email || ""}
+                            disabled
+                        />
+                    </div>
+
+                    <input
+                        type="submit"
+                        className="btn btn-outline-primary btn-sm"
+                        value="Save"
+                        disabled={ submitting }
+                    />
+
+                </form>
+            );
         }
 
-        function onChangeProfileImage(event) {
-            const files = event.target.files
-            if (files.length > 0) {
-                const fileReader = new FileReader()
-
-                fileReader.onload = function (event) {
-                    document.getElementById("profile-image").setAttribute("src", event.target.result)
-                }
-     
-                fileReader.readAsDataURL(files[0])
-            }
-        }
+        ReactDOM.createRoot(
+            document.getElementById('profile_app')
+        ).render(<ProfileApp />);
     </script>
 @endsection

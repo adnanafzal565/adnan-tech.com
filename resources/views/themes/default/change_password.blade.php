@@ -6,53 +6,91 @@
     <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
         <div class="row">
             <div class="col-4">
-                @include ("themes/" . active_theme() . "/layouts/profile-left-menu")
+                @include ("theme::layouts/profile-left-menu")
             </div>
 
-            <div class="col-8" id="change-password-app">
-                <form onsubmit="changePassword(event);">
-                    <div class="form-group">
-                        <label class="form-label">Current password</label>
-                        <input type="password" name="current_password" class="form-control" />
-                    </div>
-
-                    <div class="form-group mt-3 mb-3">
-                        <label class="form-label">New password</label>
-                        <input type="password" name="new_password" class="form-control" />
-                    </div>
-
-                    <input type="submit" name="submit" class="btn btn-outline-primary btn-sm"
-                        value="Change password" />
-                </form>
-            </div>
+            <div class="col-8" id="change_password_app"></div>
         </div>
     </div>
 
-    <script>
-        async function changePassword(event) {
-            event.preventDefault()
-            const form = event.currentTarget;
+    <script type="text/babel">
+        function ChangePasswordApp() {
 
-            try {
-                form.submit.setAttribute("disabled", "disabled");
+            const [submitting, set_submitting] = React.useState(false);
 
-                const formData = new FormData(form)
-                const response = await axios.post(
-                    baseUrl + "/change_password",
-                    formData
-                )
+            const [current_password, set_current_password] = React.useState("");
+            const [new_password, set_new_password] = React.useState("");
+            
+            async function change_password(event) {
+                event.preventDefault();
 
-                if (response.data.status == "success") {
-                    swal.fire("Change password", response.data.message, "success")
-                } else {
-                    swal.fire("Error", response.data.message, "error")
+                try {
+                    set_submitting(true);
+
+                    const form_data = new FormData()
+
+                    form_data.append("current_password", current_password);
+                    form_data.append("new_password", new_password);
+
+                    await ajax('/api/change_password', form_data, function (response) {
+                        swal.fire("Change password", response.message, "success");
+                    });
+                } catch (exp) {
+                    if (exp.response?.status === 401) {
+                        window.location.href = baseUrl + "/login?redirect=" + window.location.href
+                    } else {
+                        swal.fire("Error", exp.message, "error")
+                    }
+                } finally {
+                    set_submitting(false);
                 }
-            } catch (exp) {
-                swal.fire("Error", exp.message, "error")
-            } finally {
-                form.removeAttribute("disabled");
             }
+
+            return (
+                <form onSubmit={change_password} encType="multipart/form-data">
+
+                    <div className="form-group">
+                        <label className="form-label">
+                            Current Password
+                        </label>
+
+                        <input
+                            type="password"
+                            className="form-control"
+                            required
+                            value={current_password}
+                            onChange={(event) => set_current_password(event.target.value)}
+                        />
+                    </div>
+
+                    <div className="form-group mt-3">
+                        <label className="form-label">
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            className="form-control"
+                            required
+                            value={new_password}
+                            onChange={(event) => set_new_password(event.target.value)}
+                        />
+                    </div>
+
+                    <input
+                        type="submit"
+                        className="btn btn-outline-primary btn-sm mt-3"
+                        value="Save"
+                        disabled={ submitting }
+                    />
+
+                </form>
+            );
         }
+
+        ReactDOM.createRoot(
+            document.getElementById('change_password_app')
+        ).render(<ChangePasswordApp />);
     </script>
 
 @endsection
