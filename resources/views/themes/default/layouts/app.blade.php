@@ -28,6 +28,8 @@
         <meta property="og:type" content="@yield('type')" />
     @endif
 
+    <meta name="_token" content="{{ csrf_token() }}" />
+
     <link rel="canonical" href="{{ url()->current() }}" />
 
     <link href="{{ asset('themes/' . active_theme() . '/css/style.css?v=' . time()) }}" rel="stylesheet" />
@@ -178,40 +180,24 @@
         }
 
         async function onInit() {
-            const accessToken = localStorage.getItem(accessTokenKey)
+            await ajax('/api/me', null, function (response) {
+                window.user = response.user;
+                const unread_notifications = response.unread_notifications;
 
-            try {
-                const response = await axios.post(
-                    baseUrl + "/api/me",
-                    null,
-                    {
-                        headers: {
-                            Authorization: "Bearer " + localStorage.getItem(accessTokenKey)
-                        }
-                    }
-                )
-
-                if (response.data.status == "success") {
-                    window.user = response.data.user;
-                    const unread_notifications = response.data.unread_notifications;
-
-                    if (unread_notifications > 0) {
-                        document.getElementById("name-notifications-count").innerHTML = `(${unread_notifications})`;
-                    }
-
-                    // for non-React
-                    if (typeof on_user_fetch !== "undefined") {
-                        on_user_fetch();
-                    }
-
-                    // for React
-                    globalState.setState({
-                        user: window.user
-                    });
+                if (unread_notifications > 0) {
+                    document.getElementById("name-notifications-count").innerHTML = `(${unread_notifications})`;
                 }
-            } catch (exp) {
-                console.log(exp.message)
-            }
+
+                // for non-React
+                if (typeof on_user_fetch !== "undefined") {
+                    on_user_fetch();
+                }
+
+                // for React
+                globalState.setState({
+                    user: window.user
+                });
+            });
         }
 
         window.addEventListener("load", () => onInit());

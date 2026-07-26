@@ -5,7 +5,7 @@
     <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
         <div class="row">
             <div class="col-4">
-                @include ("themes/" . active_theme() . "/layouts/profile-left-menu")
+                @include ("theme::layouts/profile-left-menu")
             </div>
 
             <div class="col-8" id="profile-app">
