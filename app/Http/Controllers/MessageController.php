@@ -379,25 +379,36 @@ class MessageController extends Controller
             }
         }
 
-        $notifications_count = 0;
-        $notifications = DB::table("notifications")
+        $notifications_count = DB::table("notifications")
             ->where("user_id", "=", $user->id)
             ->where("type", "=", "new_message")
             ->whereIn("table_id", $message_ids)
-            ->where("is_read", "=", 0);
-
-        $notifications_count = $notifications->count();
-
-        $notifications->update([
-            "is_read" => 1,
-            "updated_at" => now()
-        ]);
+            ->where("is_read", "=", 0)
+            ->count();
 
         return response()->json([
             "status" => "success",
             "message" => "Data has been fetched.",
             "messages" => $messages_arr,
             "notifications_count" => $notifications_count
+        ]);
+    }
+
+    public function mark_as_read()
+    {
+        $user = auth()->user();
+
+        $notifications = DB::table("notifications")
+            ->where("user_id", "=", $user->id)
+            ->where("type", "=", "new_message")
+            ->where("is_read", "=", 0)
+            ->update([
+                "is_read" => 1,
+                "updated_at" => now()->utc()
+            ]);
+
+        return response()->json([
+            "status" => "success"
         ]);
     }
 

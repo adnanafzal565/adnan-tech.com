@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Storage;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -25,7 +27,8 @@ class User extends Authenticatable
         'email',
         'password',
         'type',
-        'email_verified_at'
+        'email_verified_at',
+        'profile_image'
     ];
 
     /**
@@ -54,9 +57,17 @@ class User extends Authenticatable
     protected $appends = [
         "created_at_format",
         "deleted_at_format",
+        'profile_image_absolute'
     ];
 
     public $timestamps = true;
+
+    public function getProfileImageAbsoluteAttribute() {
+        if ($this->profile_image && Storage::exists("public/" . $this->profile_image))
+            return url("/storage/" . $this->profile_image);
+        
+        return $this->profile_image;
+    }
 
     public function getDeletedAtFormatAttribute() {
         $value = $this->deleted_at ?? "";

@@ -38,13 +38,8 @@
                 const formData = new FormData(form)
                 form.submit.setAttribute("disabled", "disabled")
 
-                const response = await axios.post(
-                    baseUrl + "/login",
-                    formData
-                )
-
-                if (response.data.status == "success") {
-                    const accessToken = response.data.access_token
+                await ajax('/api/login', formData, function (response) {
+                    const accessToken = response.access_token
                     localStorage.setItem(accessTokenKey, accessToken)
 
                     const urlSearchParams = new URLSearchParams(window.location.search)
@@ -54,9 +49,7 @@
                     } else {
                         window.location.href = redirect
                     }
-                } else {
-                    swal.fire("Error", response.data.message, "error")
-                }
+                });
             } catch (exp) {
                 swal.fire("Error", exp.message, "error")
             } finally {
