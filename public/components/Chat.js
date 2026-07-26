@@ -10,6 +10,8 @@ function Chat() {
     const [attachments, setAttachments] = React.useState([])
     const [unread_notifications, set_unread_notifications] = React.useState(0);
 
+    const token = localStorage.getItem(accessTokenKey);
+
     function attachmentSelected() {
         const files = event.target.files
         const tempFiles = []
@@ -194,7 +196,7 @@ function Chat() {
                                                         }}>
                                                             <button type="button" onClick={ function () {
                                                                 window.open(
-                                                                    baseUrl + "/messages/buffer_attachment/" + attachment.id,
+                                                                    baseUrl + "/messages/buffer_attachment/" + attachment.id + "/" + token,
                                                                     "_blank"
                                                                 );
                                                               } } className="btn btn-secondary">

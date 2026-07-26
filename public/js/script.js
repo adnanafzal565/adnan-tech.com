@@ -53,7 +53,7 @@ async function ajax(
 ) {
 
     const token = localStorage.getItem(accessTokenKey);
-    const noError = ["/me", '/api/me'];
+    const noError = ["/me", '/api/me', '/api/messages/fetch'];
     const byPassGuestUrls = ['/login'];
 
     try {

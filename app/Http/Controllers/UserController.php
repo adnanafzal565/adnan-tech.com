@@ -745,8 +745,8 @@ class UserController extends Controller
 
     public function logout()
     {
-        // if (request()->expectsJson())
-        // {
+        if (request()->expectsJson())
+        {
             $user = auth()->user();
 
             // $user->tokens()->delete();
@@ -759,10 +759,10 @@ class UserController extends Controller
                 "status" => "success",
                 "message" => "User has been logged-out."
             ]);
-        // }
+        }
 
-        // auth()->logout();
-        // return redirect()->back();
+        auth()->logout();
+        return redirect()->back();
     }
 
     public function me()

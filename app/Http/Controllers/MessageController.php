@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 
 use DB;
 use Storage;
@@ -122,28 +123,28 @@ class MessageController extends Controller
 
         try
         {
-            // Parse the token using Sanctum's PersonalAccessToken model
-            /*$token_record = PersonalAccessToken::findToken($token);
+            if (!$user) {
+                // Parse the token using Sanctum's PersonalAccessToken model
+                $token_record = PersonalAccessToken::findToken($token);
 
-            if (!$token_record)
-            {
-                return response()->json([
-                    "status" => "error",
-                    "message" => "Invalid token"
-                ], 401);
+                if (!$token_record) {
+                    return response()->json([
+                        "status" => "error",
+                        "message" => "Invalid token"
+                    ], 401);
+                }
+
+                // Optionally check for token expiration
+                if ($token_record->expires_at && $token_record->expires_at->isPast()) {
+                    return response()->json([
+                        "status" => "error",
+                        "message" => "Token has expired"
+                    ], 401);
+                }
+
+                // Retrieve the associated user
+                $user = $token_record->tokenable;
             }
-
-            // Optionally check for token expiration
-            if ($token_record->expires_at && $token_record->expires_at->isPast())
-            {
-                return response()->json([
-                    "status" => "error",
-                    "message" => "Token has expired"
-                ], 401);
-            }
-
-            // Retrieve the associated user
-            $user = $token_record->tokenable;*/
 
             $message_attachment = DB::table("message_attachments")
                 ->join("messages", "messages.id", "=", "message_attachments.message_id")
@@ -623,10 +624,81 @@ class MessageController extends Controller
                 "updated_at" => now()->utc()
             ]);
 
+        $messages = DB::table("messages")
+            ->select("messages.*", "message_attachments.id AS attachment_id",
+                "message_attachments.path", "message_attachments.type",
+                "message_attachments.name")
+            ->leftJoin("message_attachments", "message_attachments.message_id", "=", "messages.id")
+            ->where("messages.id", "=", $message_arr['id'])
+            ->paginate();
+
+        $messages_arr = [];
+        foreach ($messages as $message)
+        {
+            if (!empty($time_zone))
+            {
+                $date_time = new \DateTime($message->created_at);
+                $date_time->setTimezone($date_time_zone);
+                $message->created_at = $date_time->format("d M, Y h:i:s a");
+            }
+
+            $message_obj = [
+                "id" => $message->id,
+                "message" => $message->message ?? "",
+                "sender_id" => $message->sender_id,
+                "receiver_id" => $message->receiver_id,
+                "attachments" => [],
+                "created_at" => $message->created_at
+            ];
+
+            $index = -1;
+            for ($a = 0; $a < count($messages_arr); $a++)
+            {
+                if ($messages_arr[$a]["id"] == $message->id)
+                {
+                    $index = $a;
+                    break;
+                }
+            }
+
+            $has_file = ($message->path && Storage::exists("/private/" . $message->path));
+            $file_content = "";
+
+            if ($has_file)
+            {
+                // $file_content = "data:" . $message->type . ";base64," . base64_encode(file_get_contents(storage_path("app/private/" . $message->path)));
+                array_push($message_obj["attachments"], [
+                    // "path" => $file_content,
+                    "id" => $message->attachment_id ?? 0,
+                    "name" => $message->name ?? "",
+                    "type" => $message->type ?? ""
+                ]);
+            }
+
+            if ($index > -1)
+            {
+                if ($has_file)
+                {
+                    array_push($messages_arr[$index]["attachments"], [
+                        // "path" => $file_content,
+                        "id" => $message->attachment_id ?? 0,
+                        "name" => $message->name ?? "",
+                        "type" => $message->type ?? ""
+                    ]);
+                }
+            }
+            else
+            {
+                array_push($messages_arr, (array) $message_obj);
+            }
+        }
+
+        $message = $messages_arr[0];
+
         return response()->json([
             "status" => "success",
             "message" => "Message has been sent.",
-            "message_obj" => (object) $message_arr
+            "message_obj" => $message
         ]);
     }
 

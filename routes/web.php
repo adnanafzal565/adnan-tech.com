@@ -23,6 +23,9 @@ use App\Http\Middleware\CheckRoutePermission;
 //     return view('welcome');
 // });
 
+Route::get("/messages/buffer_attachment/{id}/{token?}", [MessageController::class, "buffer_attachment"])
+    ->name("messages.buffer_attachment");
+
 Route::get("/author/{username}", [AdminController::class, "login"])
     ->name("author");
 
@@ -38,8 +41,8 @@ Route::get("/change_password", [UserController::class, "change_password"])
 Route::group([
     "middleware" => [UserAuth::class]
 ], function () {
-    Route::get("/messages/buffer_attachment/{id}", [MessageController::class, "buffer_attachment"])
-        ->name("messages.buffer_attachment");
+    Route::get("/logout", [UserController::class, "logout"])
+        ->name("logout");
 });
 
 Route::get("/email_verification/{email}", [UserController::class, "email_verification"])
