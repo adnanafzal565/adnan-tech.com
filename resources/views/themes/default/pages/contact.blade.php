@@ -11,6 +11,12 @@
             <p>Have any questions? We’d love to hear from you.</p>
 
             <form onsubmit="doSendMessage(event);" class="contact-form">
+
+                <div style="display: none;">
+                    <input type="text" name="website" autocomplete="off" />
+                    <input type="text" name="contact_time" value="{{ time() }}" />
+                </div>
+
                 <div class="form-group">
                     <label>Your Name</label>
                     <input type="text" name="name" placeholder="Enter your name" required>
@@ -46,9 +52,10 @@
             // when the response is received
             ajax.onreadystatechange = function () {
                 if (this.readyState == 4) {
+                    form.submit.removeAttribute("disabled");
+                    
                     if (this.status == 200) {
                         // display in browser
-                        form.submit.removeAttribute("disabled");
                         const response = JSON.parse(this.responseText);
                         if (response.status == "success") {
                             document.getElementById("msg-success").innerHTML = response.message;

@@ -110,8 +110,16 @@ class UserController extends Controller
         ]);
     }
 
-    public function send_contact_us_message()
+    public function send_contact_us_message(Request $request)
     {
+        $contact_time = (int) ($request->contact_time ?? 0);
+
+        $abort = !empty($request->website) || $contact_time === 0 || ((time() - $contact_time) < 3);
+
+        if ($abort) {
+            abort(404);
+        }
+
         $validator = Validator::make(request()->all(), [
             "name" => "required",
             "email" => "required",
