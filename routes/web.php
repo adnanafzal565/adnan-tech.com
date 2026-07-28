@@ -23,6 +23,15 @@ use App\Http\Middleware\CheckRoutePermission;
 //     return view('welcome');
 // });
 
+// Route::get('/preview', function () {
+    // $mailable = new \App\Mail\VerifyEmailMail("Adnan", 12345);
+    // $mailable = new \App\Mail\WelcomeEmail("Adnan");
+    // return $mailable->render();
+
+    // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
+    // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
+// });
+
 Route::get("/messages/buffer_attachment/{id}/{token?}", [MessageController::class, "buffer_attachment"])
     ->name("messages.buffer_attachment");
 

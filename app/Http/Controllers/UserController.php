@@ -13,6 +13,8 @@ use Validator;
 
 use App\Models\User;
 use App\Jobs\AddUserJob;
+use App\Jobs\SendVerifyEmailJob;
+use App\Jobs\SendWelcomeEmailJob;
 
 class UserController extends Controller
 {
@@ -543,11 +545,10 @@ class UserController extends Controller
             "code" => "required"
         ]);
 
-        if (!$validator->passes() && count($validator->errors()->all()) > 0)
-        {
+        if ($validator->fails()) {
             return response()->json([
                 "status" => "error",
-                "message" => $validator->errors()->all()[0]
+                "message" => $validator->errors()->first()
             ]);
         }
 
@@ -555,25 +556,27 @@ class UserController extends Controller
         $code = request()->code ?? "";
 
         $user = DB::table("users")
-            ->where("email", "=", $email)
-            ->where("verification_code", "=", $code)
+            ->where("email", $email)
+            ->where("verification_code", $code)
             ->first();
 
         if ($user == null)
         {
             return response()->json([
                 "status" => "error",
-                "message" => "Verification code expired."
+                "message" => "Invalid verification code."
             ]);
         }
 
         DB::table("users")
-            ->where("id", "=", $user->id)
+            ->where("id", $user->id)
             ->update([
                 // "verification_code" => null,
                 "email_verified_at" => now()->utc(),
                 "updated_at" => now()->utc()
             ]);
+
+        dispatch(new SendWelcomeEmailJob($user->name, $user->email));
 
         return response()->json([
             "status" => "success",
@@ -861,7 +864,7 @@ class UserController extends Controller
         if (request()->isMethod("post"))
         {
             $validator = Validator::make(request()->all(), [
-                "username" => "required",
+                "email" => "required",
                 "password" => "required"
             ]);
 
@@ -873,18 +876,15 @@ class UserController extends Controller
                 ]);
             }
 
-            $username = request()->username ?? "";
+            $email = request()->email ?? "";
             $password = request()->password ?? "";
 
-            $user = User::where("username", "=", $username)
-                ->orWhere("email", "=", $username)
-                ->first();
+            $user = User::where("email", $email)->first();
 
-            if ($user === null)
-            {
+            if (!$user) {
                 return response()->json([
                     "status" => "error",
-                    "message" => "Username or email does not exist."
+                    "message" => "Email does not exist."
                 ]);
             }
 
@@ -939,7 +939,7 @@ class UserController extends Controller
     {
         $email = request()->email ?? "";
 
-        return view("email-verification", [
+        return view("theme::email_verification", [
             "email" => $email
         ]);
     }
@@ -1002,34 +1002,34 @@ class UserController extends Controller
             ];
 
             $setting_verify_email = DB::table("settings")
-                ->where("key", "=", "verify_email")
-                ->where("value", "=", "yes")
+                ->where("key", "verify_email")
+                ->where("value", "yes")
                 ->first();
 
-            if ($setting_verify_email == null)
-            {
-                $user_arr["email_verified_at"] = now()->utc();
-            }
-            else
-            {
+            if ($setting_verify_email) {
                 $verification_code = Str::random(6);
                 $user_arr["verification_code"] = $verification_code;
 
-                $message = '<p>Your verification code is: <b style="font-size: 30px;">' . $verification_code . '</b></p>';
-                $this->send_mail($email, $name, "Email verification", $message);
+                // $message = '<p>Your verification code is: <b style="font-size: 30px;">' . $verification_code . '</b></p>';
+                // $this->send_mail($email, $name, "Email verification", $message);  
+            } else {
+                $user_arr["email_verified_at"] = now()->utc();
             }
 
             DB::table("users")
                 ->insertGetId($user_arr);
 
-            if ($setting_verify_email == null)
-            {
+            if (!$setting_verify_email) {
+                dispatch(new SendWelcomeEmailJob($name, $email));
+
                 return response()->json([
                     "status" => "success",
                     "message" => "Account has been created. Please login now.",
                     "verification" => false
                 ]);
             }
+
+            dispatch(new SendVerifyEmailJob($name, $email, $user_arr["verification_code"]));
 
             return response()->json([
                 "status" => "success",

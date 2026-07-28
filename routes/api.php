@@ -16,6 +16,8 @@ use App\Http\Middleware\UserAuth;
 // Route::post('/seed_products', [ProductController::class, 'seed']);
 Route::post("/send_contact_us_message", [UserController::class, "send_contact_us_message"]);
 
+Route::post("/verify_email", [UserController::class, "verify_email"]);
+
 Route::post("/register", [UserController::class, "register"]);
 
 Route::post("/login", [UserController::class, "login"]);

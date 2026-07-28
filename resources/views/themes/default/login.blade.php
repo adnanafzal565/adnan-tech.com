@@ -10,12 +10,12 @@
 
                 <form onsubmit="doLogin()">
                     <div class="form-group mt-4">
-                        <label class="form-label">Enter username/email</label>
-                        <input type="text" name="username" class="form-control" required />
+                        <label class="form-label">Enter Email</label>
+                        <input type="email" name="email" class="form-control" required />
                     </div>
 
                     <div class="form-group mt-3">
-                        <label class="form-label">Enter password</label>
+                        <label class="form-label">Enter Password</label>
                         <input type="password" name="password" class="form-control" required />
                     </div>
 
@@ -23,7 +23,7 @@
                 </form>
 
                 <p class="mt-4">
-                    <a href="{{ route('password.request') }}">Forgot password?</a>
+                    <a href="{{ route('password.request') }}">Forgot Password?</a>
                 </p>
             </div>
         </div>

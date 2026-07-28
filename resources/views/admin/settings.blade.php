@@ -22,7 +22,8 @@
       enctype="multipart/form-data"></form>
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-6">
+
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Site Info</h5>
@@ -47,12 +48,34 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    {{--
-    <div class="row">
+      </div>
+
       <div class="col-6">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Account settings</h5>
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-6 col-form-label">Verify email on registration</label>
+              <div class="col-sm-6" style="position: relative; top: 5px;">
+                <label>
+                  Yes
+                  <input type="radio" form="form-settings" name="verify_email" value="yes"
+                    {{ ($settings['verify_email'] ?? '') == 'yes' ? 'checked' : '' }} />
+                </label>
+
+                <label style="margin-left: 10px;">
+                  No
+                  <input type="radio" form="form-settings" name="verify_email" value="no"
+                    {{ ($settings['verify_email'] ?? '') == 'no' ? 'checked' : '' }} />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{--
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">SMTP settings</h5>
@@ -107,8 +130,31 @@
             <div class="row mb-3">
               <label for="inputText" class="col-sm-3 col-form-label">Password</label>
               <div class="col-sm-9">
-                <input type="password" class="form-control" form="form-settings" name="smtp_password" value="{{ $settings['smtp_password'] ?? '' }}" />
-              </div>
+                <div style="position: relative;">
+                    <input 
+                        type="password" 
+                        class="form-control" 
+                        form="form-settings" 
+                        name="smtp_password" 
+                        id="smtp_password"
+                        value="{{ $settings['smtp_password'] ?? '' }}" 
+                        style="padding-right: 40px;"
+                    />
+
+                    <span 
+                        onclick="toggle_password_visibility()" 
+                        style="
+                            position: absolute;
+                            right: 12px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            cursor: pointer;
+                        "
+                    >
+                        <i class="bi bi-eye-slash" id="smtp_password_icon"></i>
+                    </span>
+                </div>
+            </div>
             </div>
 
             <div class="row mb-3">
@@ -126,29 +172,8 @@
             </div>
           </div>
         </div>
-      </div>
-      --}}
+        --}}
 
-      <div class="col-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Account settings</h5>
-            <div class="row mb-3">
-              <label for="inputText" class="col-sm-6 col-form-label">Verify email on registration</label>
-              <div class="col-sm-6" style="position: relative; top: 5px;">
-                <label>
-                  Yes
-                  <input type="radio" form="form-settings" name="verify_email" value="yes" />
-                </label>
-
-                <label style="margin-left: 10px;">
-                  No
-                  <input type="radio" form="form-settings" name="verify_email" value="no" />
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -185,6 +210,19 @@
       } finally {
         form.submit.removeAttribute("disabled")
       }
+    }
+
+    function toggle_password_visibility() {
+        const input = document.getElementById("smtp_password");
+        const icon = document.getElementById("smtp_password_icon");
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.replace("bi-eye-slash", "bi-eye");
+        } else {
+            input.type = "password";
+            icon.classList.replace("bi-eye", "bi-eye-slash");
+        }
     }
 
     /*async function onInit() {
