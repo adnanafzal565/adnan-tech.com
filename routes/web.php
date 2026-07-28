@@ -14,6 +14,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\APIKeyController;
 
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\UserAuth;
@@ -31,6 +32,9 @@ use App\Http\Middleware\CheckRoutePermission;
     // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 // });
+
+Route::get("/api_keys", [APIKeyController::class, "index"])
+    ->name("api_keys.index");
 
 Route::get("/messages/buffer_attachment/{id}/{token?}", [MessageController::class, "buffer_attachment"])
     ->name("messages.buffer_attachment");
@@ -50,6 +54,7 @@ Route::get("/change_password", [UserController::class, "change_password"])
 Route::group([
     "middleware" => [UserAuth::class]
 ], function () {
+    // for admin logout
     Route::get("/logout", [UserController::class, "logout"])
         ->name("logout");
 });

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\APIKeyController;
 
 use App\Http\Middleware\UserAuth;
 
@@ -25,6 +26,12 @@ Route::post("/login", [UserController::class, "login"]);
 Route::group([
     "middleware" => ['auth:sanctum', UserAuth::class]
 ], function () {
+    Route::post("/api_keys/toggle_status", [APIKeyController::class, "toggle_status"]);
+    
+    Route::post("/api_keys/store", [APIKeyController::class, "store"]);
+
+    Route::post("/api_keys", [APIKeyController::class, "fetch"]);
+
     Route::post("/messages/mark_as_read", [MessageController::class, "mark_as_read"]);
     
     Route::post("/messages/fetch", [MessageController::class, "fetch"]);

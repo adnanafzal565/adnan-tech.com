@@ -53,12 +53,14 @@
     <input type="hidden" id="route_register" value="{{ route('register') }}" />
     <input type="hidden" id="route_profile" value="{{ route('pages.show', ['slug' => 'profile']) }}" />
     <input type="hidden" id="route_admin_dashboard" value="{{ route('admin.dashboard') }}" />
+    <input type="hidden" id="route_api_keys" value="{{ route('api_keys.index') }}" />
 
     <script>
         const route_login = document.getElementById('route_login').value;
         const route_register = document.getElementById('route_register').value;
         const route_profile = document.getElementById('route_profile').value;
         const route_admin_dashboard = document.getElementById('route_admin_dashboard').value;
+        const route_api_keys = document.getElementById('route_api_keys').value;
     </script>
 
     @php
@@ -188,53 +190,59 @@
             }, [state.user]);
 
             return (
-                <>
+                <ul>
                     { !loading && (
                         <>
                             { state.user ? (
                                 <>
-                                    <a
-                                        className="nav-link dropdown-toggle"
-                                        href="#"
-                                        id="navbarDropdown"
-                                        role="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                    >
-                                        {state.user.name || ""}
-                                    </a>
+                                    <li>
+                                        <a href={ route_api_keys }>API Keys</a>
+                                    </li>
 
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {
-                                            ["admin", "super_admin"].includes(state.user.type) && (
-                                                <li>
-                                                    <a className="dropdown-item"
-                                                        href={ route_admin_dashboard }>
-                                                        Admin Panel
-                                                    </a>
-                                                </li>
-                                            )
-                                        }
+                                    <li>
+                                        <a
+                                            className="nav-link dropdown-toggle"
+                                            href="#"
+                                            id="navbarDropdown"
+                                            role="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                        >
+                                            {state.user.name || ""}
+                                        </a>
 
-                                        <li>
-                                            <a className="dropdown-item"
-                                                href={ route_profile }>
-                                                Profile
-                                            </a>
-                                        </li>
+                                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            {
+                                                ["admin", "super_admin"].includes(state.user.type) && (
+                                                    <li>
+                                                        <a className="dropdown-item"
+                                                            href={ route_admin_dashboard }>
+                                                            Admin Panel
+                                                        </a>
+                                                    </li>
+                                                )
+                                            }
 
-                                        <li>
-                                            <a href="#"
-                                                className="dropdown-item"
-                                                onClick={ do_logout }
-                                            >
-                                                { logging_out ? 'Logging out...' : 'Logout' }
-                                            </a>
-                                        </li>
-                                    </ul>
+                                            <li>
+                                                <a className="dropdown-item"
+                                                    href={ route_profile }>
+                                                    Profile
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="#"
+                                                    className="dropdown-item"
+                                                    onClick={ do_logout }
+                                                >
+                                                    { logging_out ? 'Logging out...' : 'Logout' }
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 </>
                             ) : (
-                                <ul>
+                                <>
                                     <li>
                                         <a href={ route_login }>Login</a>
                                     </li>
@@ -242,11 +250,11 @@
                                     <li>
                                         <a href={ route_register }>Sign Up</a>
                                     </li>
-                                </ul>
+                                </>
                             ) }
                         </>
                     ) }
-                </>
+                </ul>
             );
         }
 
