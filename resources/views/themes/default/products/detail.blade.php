@@ -1,4 +1,7 @@
 @extends ("theme::layouts/app")
+@section ("title", $product->title)
+@section ("meta_keywords", implode(",", $product->tags))
+@section ("meta_description", $product->excerpt)
 
 @section ("main")
 
