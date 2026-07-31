@@ -47,7 +47,7 @@ class APIKeyController extends Controller
     public function fetch()
     {
         $api_keys = ApiKey::where('user_id', auth()->id())
-            ->orderBy('name', 'ASC')
+            ->orderBy('id', 'desc')
             ->paginate(config("config.PER_PAGE"));
 
         return response()->json([
@@ -69,12 +69,23 @@ class APIKeyController extends Controller
             ]);
         }
 
+        $api_key_same_name = ApiKey::where("user_id", auth()->id())
+            ->where("name", $request->name)
+            ->exists();
+
+        if ($api_key_same_name) {
+            return response()->json([
+                "status" => "error",
+                "message" => "API key with same name already exists in your account."
+            ]);
+        }
+
         $has_api_key = ApiKey::where("user_id", auth()->id())->exists();
 
         $api_key = ApiKey::create([
             "user_id" => auth()->id(),
             "name" => $request->name,
-            "key" => Str::random(64),
+            "key" => Str::uuid()->toString() . Str::random(32),
             "status" => 1,
             "remaining" => $has_api_key
                 ? 0

@@ -1,4 +1,5 @@
 const baseUrl = "http://localhost:8000";
+// const baseUrl = "https://adnan-tech.com";
 const accessTokenKey = "LaravelBoilerplateAccessToken";
 const apiKey = "xxx";
 
@@ -63,9 +64,13 @@ async function ajax(
         }
 
         formData.append("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+
+        const final_url = url.startsWith("http")
+            ? url
+            : baseUrl + url;
         
         const response = await axios.post(
-            baseUrl + url,
+            final_url,
             formData,
             {
                 responseType,

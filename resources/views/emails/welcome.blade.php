@@ -48,7 +48,7 @@
                                     bgcolor="#222"
                                     style="border-radius:6px;">
 
-                                    <a href="{{ url('/') }}"
+                                    <a href="{{ base_url() }}"
                                        style="
                                             display:inline-block;
                                             padding:14px 32px;

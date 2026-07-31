@@ -1,5 +1,7 @@
 <?php
 
+// * * * * * /path/to/php /home/USERNAME/public_html/artisan queue:work --stop-when-empty
+
 // convert instagram post images to 3840x2160 adding white background
 // mkdir -p output
 // for f in *.jpg; do

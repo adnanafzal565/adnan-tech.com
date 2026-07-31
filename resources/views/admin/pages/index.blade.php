@@ -6,12 +6,12 @@
   <div class="pagetitle">
     <div style="display: flex;">
       <h1>Pages</h1>
-      <a href="{{ url('/admin/pages/add') }}" class="btn btn-outline-primary btn-sm ms-3">Add page</a>
+      <a href="{{ route('admin.pages.create') }}" class="btn btn-outline-primary btn-sm ms-3">Add page</a>
     </div>
 
     <nav class="mt-3">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url('/admin') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active">Pages</li>
       </ol>
     </nav>
@@ -47,7 +47,7 @@
                 <td>{{ $page->is_active == 1 ? "Active" : "Inactive" }}</td>
                 <td>{{ date("d F, Y", strtotime($page->updated_at . " UTC")) }}</td>
                 <td>
-                  <a href="{{ url('/admin/pages/' . $page->id . '/edit') }}" class="btn btn-warning">Edit</a>
+                  <a href="{{ route('admin.pages.edit', [ 'id' => $page->id ]) }}" class="btn btn-warning">Edit</a>
 
                   <button type="button" class="btn btn-danger"
                     onclick="deleteData(event, '{{ $page->id }}');">Delete</button>

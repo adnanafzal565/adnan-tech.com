@@ -15,6 +15,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\APIKeyController;
+use App\Http\Controllers\AppController;
 
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\UserAuth;
@@ -32,6 +33,8 @@ use App\Http\Middleware\CheckRoutePermission;
     // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 // });
+
+Route::any("/apps/detail", [AppController::class, "detail"]);
 
 Route::get("/api_keys", [APIKeyController::class, "index"])
     ->name("api_keys.index");
@@ -80,6 +83,12 @@ Route::get("/", [UserController::class, "home"])
 Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
+
+    Route::get("/admin/apps/{id}", [AppController::class, "admin_detail"])
+        ->name("admin.apps.detail");
+
+    Route::get("/admin/apps", [AppController::class, "admin_index"])
+        ->name("admin.apps.index");
 
     Route::post("/admin/products/delete_permanently", [ProductController::class, "delete_permanently"])
         ->name("admin.products.force_delete");

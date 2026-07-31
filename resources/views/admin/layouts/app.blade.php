@@ -74,6 +74,7 @@
   <script src="{{ asset('/js/axios.min.js') }}"></script>
   <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
   <script src="{{ asset('/js/html-react-parser.min.js') }}"></script>
+  <script src="{{ asset('/js/script.js?v=' . time()) }}"></script>
   <script src="{{ asset('/administrator/js/script.js?v=' . time()) }}"></script>
 </head>
 
@@ -96,10 +97,7 @@
     ]) }}" />
   @endif
 
-  <input type="hidden" id="baseUrl" value="{{ url('/') }}" />
-
   <script>
-    const baseUrl = document.getElementById("baseUrl").value;
 
     let user = null;
 
@@ -121,6 +119,10 @@
       });
     }
   </script>
+
+  @if (is_module_exists("EmailRenderer"))
+    @include ("EmailRenderer::app")
+  @endif
 
   <!-- ======= Header ======= -->
   <header id="header-app" class="header fixed-top d-flex align-items-center">

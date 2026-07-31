@@ -31,6 +31,16 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         }
+
+        $includes = [
+            app_path("Helpers/helpers.php"),
+        ];
+        
+        foreach ($includes as $include) {
+            if (file_exists($include)) {
+                require_once $include;
+            }
+        }
     }
 
     /**

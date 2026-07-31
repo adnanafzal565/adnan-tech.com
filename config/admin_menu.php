@@ -11,6 +11,14 @@ return [
     ],
 
     [
+        'title' => 'Apps',
+        'icon' => 'fa fa-code',
+        'url' => '/admin/apps',
+        'active' => 'admin/apps',
+        'permission' => 'admin.apps.index',
+    ],
+
+    [
         'title' => 'Users',
         'icon' => 'fa fa-users',
         'url' => '/admin/users',

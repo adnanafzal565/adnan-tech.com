@@ -15,6 +15,8 @@ use App\Models\User;
 use App\Jobs\AddUserJob;
 use App\Jobs\SendVerifyEmailJob;
 use App\Jobs\SendWelcomeEmailJob;
+use App\Mail\WelcomeEmail;
+use App\Mail\VerifyEmailMail;
 
 class UserController extends Controller
 {
@@ -576,7 +578,10 @@ class UserController extends Controller
                 "updated_at" => now()->utc()
             ]);
 
-        dispatch(new SendWelcomeEmailJob($user->name, $user->email));
+        // dispatch(new SendWelcomeEmailJob($user->name, $user->email));
+
+        Mail::to($user->email)
+            ->send(new WelcomeEmail($user->name));
 
         return response()->json([
             "status" => "success",
@@ -1029,7 +1034,10 @@ class UserController extends Controller
                 ]);
             }
 
-            dispatch(new SendVerifyEmailJob($name, $email, $user_arr["verification_code"]));
+            // dispatch(new SendVerifyEmailJob($name, $email, $user_arr["verification_code"]));
+
+            Mail::to($email)
+                ->send(new VerifyEmailMail($name, $user_arr["verification_code"]));
 
             return response()->json([
                 "status" => "success",

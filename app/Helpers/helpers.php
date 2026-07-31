@@ -7,6 +7,12 @@ use App\Models\Page;
 use App\Models\Product;
 use App\Models\Settings;
 
+function base_url()
+{
+    return "http://localhost:8000";
+    // return "https://adnan-tech.com";
+}
+
 function fetch_routes()
 {
     $routes = [];

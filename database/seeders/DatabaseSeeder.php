@@ -10,6 +10,7 @@ use App\Modules\Category;
 use App\Models\User;
 use App\Models\Page;
 use App\Models\Settings;
+use App\Models\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -42,6 +43,8 @@ class DatabaseSeeder extends Seeder
         }
 
         $super_admin_id = $super_admin->id;
+
+        $this->seed_apps();
 
         $title = Settings::where('key', 'title')->value('value') ?? '';
         if (empty($title)) {
@@ -144,6 +147,26 @@ class DatabaseSeeder extends Seeder
                     "created_at" => now()->utc(),
                     "updated_at" => now()->utc()
                 ]);
+        }
+    }
+
+    private function seed_apps() {
+        $apps = [
+            [
+                "name" => "Email Renderer",
+                "identifier" => "email_renderer"
+            ]
+        ];
+
+        foreach ($apps as $app) {
+            $exists = App::where("identifier", $app["identifier"])->exists();
+
+            if (!$exists) {
+                App::create([
+                    "name" => $app["name"],
+                    "identifier" => $app["identifier"]
+                ]);
+            }
         }
     }
 

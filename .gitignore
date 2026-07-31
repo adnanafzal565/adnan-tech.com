@@ -1,3 +1,4 @@
+app/Modules/EmailRenderer
 *.log
 .env
 .DS_Store
