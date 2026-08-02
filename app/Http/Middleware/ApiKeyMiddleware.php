@@ -32,6 +32,8 @@ class ApiKeyMiddleware
             ], 403);
         }
 
+        $request->api_key = $api_key;
+
         return $next($request);
     }
 }

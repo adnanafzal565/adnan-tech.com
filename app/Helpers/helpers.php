@@ -2,10 +2,62 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Jenssegers\Agent\Agent;
+
 use App\Models\Post;
 use App\Models\Page;
 use App\Models\Product;
 use App\Models\Settings;
+use App\Models\ApiKey;
+use App\Models\ApiKeyRequestLog;
+
+function add_api_key_request_log(
+    $title = "",
+    $content = ""
+)
+{
+    $api_key_str = request()->api_key;
+
+    $api_key = ApiKey::where("key", $api_key_str)
+        ->first();
+
+    if ($api_key) {
+        $ip_address = request()->input("ip");
+
+        if (empty($ip_address)) {
+            $ip_address = request()->ip();
+        }
+
+        $device = request()->input("device");
+
+        if (empty($device)) {
+            $agent = new Agent();
+
+            $device = [
+                "device" => $agent->device(),
+                "platform" => $agent->platform(),
+                "platform_version" => $agent->version($agent->platform()),
+                "browser" => $agent->browser(),
+                "browser_version" => $agent->version($agent->browser()),
+                "is_mobile" => $agent->isMobile(),
+                "is_tablet" => $agent->isTablet(),
+                "is_desktop" => $agent->isDesktop(),
+                "user_agent" => request()->userAgent(),
+            ];
+        } else {
+            $device = json_decode($device, true);
+        }
+
+        ApiKeyRequestLog::create([
+            "api_key_id" => $api_key->id,
+            "title" => $title,
+            "content" => $content,
+            "device" => $device,
+            "ip" => $ip_address,
+            "remaining" => $api_key->remaining
+        ]);
+    }
+}
 
 function api_key_header_key()
 {
