@@ -406,7 +406,7 @@
 
 
                                                                         <td>
-                                                                            {api_key.last_used_at ?? "Never"}
+                                                                            {api_key.last_used_at ? (new Date(api_key.last_used_at).toLocaleString()) : "Never"}
                                                                         </td>
 
 

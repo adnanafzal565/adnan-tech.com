@@ -7,6 +7,11 @@ use App\Models\Page;
 use App\Models\Product;
 use App\Models\Settings;
 
+function api_key_header_key()
+{
+    return "X-API-KEY";
+}
+
 function base_url()
 {
     return "http://localhost:8000";
