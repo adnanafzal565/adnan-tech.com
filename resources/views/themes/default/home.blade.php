@@ -57,7 +57,7 @@
                     @foreach ($products as $product)
 
                         <!-- Product -->
-                        <div class="col-6 col-md-4 col-lg-3">
+                        <div class="col-6 col-md-6 col-lg-4">
 
                             <div class="product-card h-100">
 

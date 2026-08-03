@@ -8,6 +8,7 @@ use DB;
 use View;
 use Storage;
 use Validator;
+use App\Models\App;
 use App\Models\Post;
 use App\Models\Page;
 
@@ -129,6 +130,18 @@ class PageController extends Controller
                     "product" => $product
                 ]);
             }
+        }
+
+        if (view()->exists("theme::pages/" . $slug)) {
+            $data = [];
+
+            return view("theme::pages/" . $slug, $data);
+        }
+
+        if ($slug === "apps") {
+            return view("theme::apps/index", [
+                "apps" => App::orderBy("name", "ASC")->get()
+            ]);
         }
 
         abort(404, "Page not found.");

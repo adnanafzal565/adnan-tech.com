@@ -17,22 +17,26 @@ class ApiKeyMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $api_key = $request->header(api_key_header_key());
+        $api_key_str = $request->header(api_key_header_key());
 
-        $updated = ApiKey::where("key", $api_key)
+        $api_key = ApiKey::where("key", $api_key_str)
             ->where("remaining", ">", 0)
-            ->decrement("remaining", 1, [
-                "last_used_at" => now()->utc()
-            ]);
+            ->first();
 
-        if ($updated === 0) {
+        if (!$api_key) {
             return response()->json([
                 "status" => "error",
                 "message" => "API credits exhausted."
             ], 403);
         }
 
-        $request->api_key = $api_key;
+        $api_key->decrement("remaining");
+
+        $api_key->last_used_at = now()->utc();
+        $api_key->save();
+
+        $request->api_key = $api_key->key;
+        $request->api_user = $api_key->user;
 
         return $next($request);
     }

@@ -80,6 +80,8 @@
 
 <body>
 
+  <input type="hidden" id="api_key_header_key" value="{{ api_key_header_key() }}" />
+
   @php
     $user = null;
   @endphp
@@ -100,9 +102,21 @@
   <script>
 
     let user = null;
+    const api_key_header_key = document.getElementById("api_key_header_key").value;
 
     if (document.getElementById("user") != null) {
       user = JSON.parse(document.getElementById("user").value);
+    }
+
+    async function onInit() {
+      await ajax('/me', null, function (response) {
+          user = response.user;
+
+          // for React
+          globalState.setState({
+              user: response.user
+          });
+      });
     }
 
     if (user != null) {
@@ -117,6 +131,8 @@
           "timezone": timezone
         })
       });
+
+      onInit();
     }
   </script>
 

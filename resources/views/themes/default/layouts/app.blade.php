@@ -54,18 +54,24 @@
     <input type="hidden" id="route_profile" value="{{ route('pages.show', ['slug' => 'profile']) }}" />
     <input type="hidden" id="route_admin_dashboard" value="{{ route('admin.dashboard') }}" />
     <input type="hidden" id="route_api_keys" value="{{ route('api_keys.index') }}" />
-
+    <input type="hidden" id="api_key_header_key" value="{{ api_key_header_key() }}" />
+    
     <script>
         const route_login = document.getElementById('route_login').value;
         const route_register = document.getElementById('route_register').value;
         const route_profile = document.getElementById('route_profile').value;
         const route_admin_dashboard = document.getElementById('route_admin_dashboard').value;
         const route_api_keys = document.getElementById('route_api_keys').value;
+        const api_key_header_key = document.getElementById("api_key_header_key").value;
     </script>
 
     @php
         $title_parts = explode(" ", site_title());
     @endphp
+
+    @if (is_module_exists("EmailRenderer"))
+        @include ("EmailRenderer::app")
+    @endif
 
     <!-- Header -->
     <header class="site-header">

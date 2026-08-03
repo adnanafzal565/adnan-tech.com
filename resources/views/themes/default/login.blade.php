@@ -23,7 +23,14 @@
                 </form>
 
                 <p class="mt-4">
-                    <a href="{{ route('password.request') }}">Forgot Password?</a>
+                    Don't have an account?
+                    <a href="{{ route('register') }}"
+                        class="text-dark">Register</a>
+                </p>
+
+                <p class="mt-4">
+                    <a href="{{ route('password.request') }}"
+                        class="text-dark">Forgot Password?</a>
                 </p>
             </div>
         </div>

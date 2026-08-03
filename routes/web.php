@@ -34,7 +34,8 @@ use App\Http\Middleware\CheckRoutePermission;
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 // });
 
-Route::any("/apps/detail", [AppController::class, "detail"]);
+Route::any("/apps/detail", [AppController::class, "detail"])
+    ->name("apps.detail");
 
 Route::get("/api_keys", [APIKeyController::class, "index"])
     ->name("api_keys.index");
@@ -57,6 +58,8 @@ Route::get("/change_password", [UserController::class, "change_password"])
 Route::group([
     "middleware" => [UserAuth::class]
 ], function () {
+    Route::post("/me", [UserController::class, "me"]);
+
     // for admin logout
     Route::get("/logout", [UserController::class, "logout"])
         ->name("logout");

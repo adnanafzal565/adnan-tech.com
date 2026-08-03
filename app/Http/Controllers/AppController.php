@@ -10,7 +10,9 @@ class AppController extends Controller
 {
     public function detail(Request $request)
     {
-        $app = App::findOrFail($request->id);
+        $app = App::where("id", $request->id)
+            ->orWhere("identifier", $request->identifier)
+            ->firstOrFail();
 
         $data = collect();
 
