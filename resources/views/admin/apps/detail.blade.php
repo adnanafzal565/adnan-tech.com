@@ -33,18 +33,14 @@
           </div>
         </div>
 
-        <div id="app_detail_app"></div>
+        @if ($app->identifier === "email_renderer" && is_module_exists("EmailRenderer"))
+          @include("EmailRenderer::admin/templates_list", [
+            "data" => $data
+          ])
+        @endif
         
       </div>
     </div>
   </section>
-
-  @if ($app->identifier === "email_renderer")
-    <script type="text/babel">
-      ReactDOM.createRoot(
-        document.getElementById("app_detail_app")
-      ).render(<EmailTemplates />);
-    </script>
-  @endif
 
 @endsection

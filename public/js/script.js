@@ -54,8 +54,14 @@ async function ajax(
 ) {
 
     const token = localStorage.getItem(accessTokenKey);
-    const noError = ["/me", '/api/me', '/api/messages/fetch'];
+    const noError = ["/me", '/api/me', '/api/messages/fetch', '/apps/email_renderer/templates/my'];
     const byPassGuestUrls = ['/login'];
+
+    const final_url = url.startsWith("http")
+        ? url
+        : baseUrl + url;
+
+    const pathname = new URL(final_url).pathname;
 
     try {
 
@@ -64,10 +70,6 @@ async function ajax(
         }
 
         formData.append("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-        const final_url = url.startsWith("http")
-            ? url
-            : baseUrl + url;
         
         const response = await axios.post(
             final_url,
@@ -94,7 +96,7 @@ async function ajax(
             if (response.data.status == "success") {
                 onSuccess?.(response.data);
             } else {
-                if (!noError.includes(url)) {
+                if (!noError.includes(pathname)) {
                     swal.fire("Error", response.data.message, "error");
                     onError?.(response.data);
                 }
@@ -106,7 +108,7 @@ async function ajax(
 
         console.log(exp)
 
-        if (!noError.includes(url)) {
+        if (!noError.includes(pathname)) {
             if (exp.response?.data?.message) {
                 swal.fire("Error", exp.response?.data?.message, "error");
             } else if (exp.response?.status == 401) {

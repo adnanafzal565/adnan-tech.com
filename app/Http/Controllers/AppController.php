@@ -41,8 +41,16 @@ class AppController extends Controller
     {
         $app = App::findOrFail($request->id);
 
+        $data = collect();
+
+        if ($app->identifier === "email_renderer" && is_module_exists("EmailRenderer")) {
+            $data = (new \App\Modules\EmailRenderer\Services\EmailRendererService())
+                ->fetch_templates();
+        }
+
         return view("admin/apps/detail", [
-            "app" => $app
+            "app" => $app,
+            "data" => $data
         ]);
     }
 

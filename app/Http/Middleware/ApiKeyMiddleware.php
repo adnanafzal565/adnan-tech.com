@@ -21,6 +21,7 @@ class ApiKeyMiddleware
 
         $api_key = ApiKey::where("key", $api_key_str)
             ->where("remaining", ">", 0)
+            ->where("status", 1)
             ->first();
 
         if (!$api_key) {
