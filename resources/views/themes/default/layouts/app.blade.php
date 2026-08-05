@@ -45,6 +45,7 @@
     <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
     <script src="{{ asset('/js/axios.min.js') }}"></script>
     <script src="{{ asset('/js/fontawesome.js') }}"></script>
+    <script src="{{ asset('/js/html-to-image.js') }}"></script>
     <script src="{{ asset('/js/script.js?v=' . time()) }}"></script>
 </head>
 <body>
@@ -54,6 +55,7 @@
     <input type="hidden" id="route_profile" value="{{ route('pages.show', ['slug' => 'profile']) }}" />
     <input type="hidden" id="route_admin_dashboard" value="{{ route('admin.dashboard') }}" />
     <input type="hidden" id="route_api_keys" value="{{ route('api_keys.index') }}" />
+    <input type="hidden" id="route_apps_detail" value="{{ route('apps.detail') }}" />
     <input type="hidden" id="api_key_header_key" value="{{ api_key_header_key() }}" />
     
     <script>
@@ -62,6 +64,7 @@
         const route_profile = document.getElementById('route_profile').value;
         const route_admin_dashboard = document.getElementById('route_admin_dashboard').value;
         const route_api_keys = document.getElementById('route_api_keys').value;
+        const route_apps_detail = document.getElementById('route_apps_detail').value;
         const api_key_header_key = document.getElementById("api_key_header_key").value;
     </script>
 
