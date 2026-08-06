@@ -31,6 +31,7 @@
     <meta name="_token" content="{{ csrf_token() }}" />
 
     <link rel="canonical" href="{{ url()->current() }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('/img/favicon.ico') }}" />
 
     <link href="{{ asset('themes/' . active_theme() . '/css/style.css?v=' . time()) }}" rel="stylesheet" />
     <script src="{{ asset('themes/' . active_theme() . '/js/app.js') }}"></script>

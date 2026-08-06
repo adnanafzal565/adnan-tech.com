@@ -4,12 +4,20 @@ use Illuminate\Support\Facades\Route;
 
 use Jenssegers\Agent\Agent;
 
+use App\Models\App;
 use App\Models\Post;
 use App\Models\Page;
 use App\Models\Product;
 use App\Models\Settings;
 use App\Models\ApiKey;
 use App\Models\ApiKeyRequestLog;
+
+function get_cached_apps()
+{
+    return cache()->rememberForever("apps", function () {
+        return App::orderBy("name", "ASC")->get();
+    });
+}
 
 function add_api_key_request_log(
     $title = "",
@@ -221,13 +229,13 @@ function get_cached_product($slug = "")
     // });
 }
 
-function get_cached_products($limit = 16)
+function get_cached_products()
 {
     // $page = (int) (request()->page ?? 1);
     // return cache()->rememberForever("products_" . $page, function () use ($limit) {
         $posts = Product::where("is_active", "=", 1)
             ->orderBy("id", "desc")
-            ->paginate($limit);
+            ->paginate(config("config.PER_PAGE"));
 
         return $posts;
     // });
@@ -245,7 +253,7 @@ function forget_posts_cache()
     }
 }
 
-function get_cached_posts($limit = 15)
+function get_cached_posts()
 {
     $page = (int) (request()->page ?? 1);
     return cache()->rememberForever("posts_" . $page, function () {
@@ -256,7 +264,7 @@ function get_cached_posts($limit = 15)
             ->whereNull("posts.deleted_at")
             ->orderBy("posts.is_featured", "desc")
             ->orderBy("posts.id", "desc")
-            ->paginate();
+            ->paginate(config("config.PER_PAGE"));
 
         foreach ($posts as $key => $value)
         {

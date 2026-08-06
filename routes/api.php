@@ -30,6 +30,8 @@ Route::group([
     
     Route::post("/api_keys/store", [APIKeyController::class, "store"]);
 
+    Route::post("/api_keys/all", [APIKeyController::class, "fetch_all"]);
+
     Route::post("/api_keys", [APIKeyController::class, "fetch"]);
 
     Route::post("/messages/mark_as_read", [MessageController::class, "mark_as_read"]);

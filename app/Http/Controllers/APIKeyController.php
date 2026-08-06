@@ -44,6 +44,19 @@ class APIKeyController extends Controller
         return view('theme::api_keys/index');
     }
 
+    public function fetch_all()
+    {
+        $api_keys = ApiKey::where('user_id', auth()->id())
+            ->where("status", 1)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'api_keys' => $api_keys,
+        ]);
+    }
+
     public function fetch()
     {
         $api_keys = ApiKey::where('user_id', auth()->id())

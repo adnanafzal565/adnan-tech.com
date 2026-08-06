@@ -27,6 +27,54 @@
     --}}
 
     @php
+        $apps = get_cached_apps();
+    @endphp
+
+    @if (count($apps) > 0)
+        <div class="container apps">
+
+            <div class="header">
+                <h1>Applications</h1>
+                <p>View and manage available applications.</p>
+            </div>
+
+            <div class="apps_grid">
+
+                @foreach ($apps as $app)
+
+                    <div class="app_card">
+
+                        <div>
+                            <div class="app_icon">
+                                {{ $app->name[0] }}
+                            </div>
+
+                            <div class="app_name">
+                                {{ $app->name }}
+                            </div>
+
+                            {{--
+                            <div class="identifier">
+                                {{ $app->identifier }}
+                            </div>
+                            --}}
+
+                        </div>
+
+                        <a href="{{ route('apps.detail', [ 'identifier' => $app->identifier ]) }}" class="btn btn-dark">
+                            Open App
+                        </a>
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
+        </div>
+    @endif
+
+    @php
         $products = get_cached_products();
     @endphp
 
