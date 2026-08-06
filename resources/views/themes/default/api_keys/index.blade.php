@@ -7,7 +7,7 @@
 
     <script type="text/babel">
 
-        function APIKeysApp() {
+        function ApiKeysApp() {
             const [submitting, set_submitting] = React.useState(false);
             const [loading, set_loading] = React.useState(true);
             const [api_keys, set_api_keys] = React.useState([]);
@@ -327,6 +327,10 @@
                                                             <th>
                                                                 Last Used
                                                             </th>
+
+                                                            <th>
+                                                                Actions
+                                                            </th>
                                                         </tr>
 
                                                     </thead>
@@ -335,11 +339,11 @@
                                                     <tbody>
 
                                                         {
-                                                            api_keys.map(function (api_key) {
+                                                            api_keys.map(function (api_key, index) {
 
                                                                 return (
 
-                                                                    <tr key={api_key.id}>
+                                                                    <tr key={index}>
 
                                                                         <td>
                                                                             { api_key.name }
@@ -409,6 +413,12 @@
                                                                             {api_key.last_used_at ? (new Date(api_key.last_used_at).toLocaleString()) : "Never"}
                                                                         </td>
 
+                                                                        <td>
+                                                                            { api_key.last_used_at && (
+                                                                                <a className="btn btn-dark btn-sm"
+                                                                                    href={ `${ baseUrl }/api_keys/${ api_key.id }/history` }>History</a>
+                                                                            ) }
+                                                                        </td>
 
                                                                     </tr>
 
@@ -511,7 +521,7 @@
 
         ReactDOM.createRoot(
             document.getElementById("api_keys_app")
-        ).render(<APIKeysApp />)
+        ).render(<ApiKeysApp />)
     </script>
 
 @endsection

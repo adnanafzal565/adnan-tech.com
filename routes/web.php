@@ -14,7 +14,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\APIKeyController;
+use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AppController;
 
 use App\Http\Middleware\Admin;
@@ -37,7 +37,9 @@ use App\Http\Middleware\CheckRoutePermission;
 Route::any("/apps/detail", [AppController::class, "detail"])
     ->name("apps.detail");
 
-Route::get("/api_keys", [APIKeyController::class, "index"])
+Route::get("/api_keys/{id}/history", [ApiKeyController::class, "history"]);
+
+Route::get("/api_keys", [ApiKeyController::class, "index"])
     ->name("api_keys.index");
 
 Route::get("/messages/buffer_attachment/{id}/{token?}", [MessageController::class, "buffer_attachment"])

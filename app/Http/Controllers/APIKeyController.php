@@ -6,10 +6,54 @@ use Illuminate\Http\Request;
 
 use Str;
 use Validator;
-use App\Models\ApiKey;
 
-class APIKeyController extends Controller
+use App\Models\ApiKey;
+use App\Models\ApiKeyRequestLog;
+
+class ApiKeyController extends Controller
 {
+    public function fetch_history(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "id" => "required"
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "status" => "error",
+                "message" => $validator->errors()->first()
+            ]);
+        }
+
+        $api_key = ApiKey::where("id", $request->id)
+            ->where("user_id", auth()->id())
+            ->first();
+
+        if (!$api_key) {
+            return response()->json([
+                "status" => "error",
+                "message" => "API key not found."
+            ]);
+        }
+
+        $history = ApiKeyRequestLog::where("api_key_id", $api_key->id)
+            ->orderBy("id", "desc")
+            ->paginate(config("config.PER_PAGE"));
+
+        return response()->json([
+            "status" => "success",
+            "api_key" => $api_key,
+            "history" => $history,
+        ]);
+    }
+
+    public function history(Request $request)
+    {
+        return view("theme::api_keys/history", [
+            "id" => $request->id
+        ]);
+    }
+
     public function toggle_status(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -25,7 +69,14 @@ class APIKeyController extends Controller
 
         $api_key = ApiKey::where("id", $request->id)
             ->where("user_id", auth()->id())
-            ->firstOrFail();
+            ->first();
+
+        if (!$api_key) {
+            return response()->json([
+                "status" => "error",
+                "message" => "API key not found."
+            ]);
+        }
 
 
         $api_key->update([
