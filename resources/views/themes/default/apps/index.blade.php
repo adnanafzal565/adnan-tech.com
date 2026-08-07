@@ -45,4 +45,6 @@
 
     </div>
 
+    @include ("theme::pricing")
+
 @endsection

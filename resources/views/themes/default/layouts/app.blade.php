@@ -46,7 +46,6 @@
     <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
     <script src="{{ asset('/js/axios.min.js') }}"></script>
     <script src="{{ asset('/js/fontawesome.js') }}"></script>
-    <script src="{{ asset('/js/html-to-image.js') }}"></script>
     <script src="{{ asset('/js/script.js?v=' . time()) }}"></script>
 </head>
 <body>

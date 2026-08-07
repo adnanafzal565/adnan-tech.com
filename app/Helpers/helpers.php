@@ -12,6 +12,139 @@ use App\Models\Settings;
 use App\Models\ApiKey;
 use App\Models\ApiKeyRequestLog;
 
+function price_per_request($plan)
+{
+    if (!empty($plan['is_custom']) || empty($plan['price']) || empty($plan['requests'])) {
+        return null;
+    }
+    $per = $plan['price'] / $plan['requests'];
+    return $per < 0.01
+        ? '$' . number_format($per, 4)
+        : format_currency($per);
+}
+
+function format_currency($amount)
+{
+    if ($amount === null) {
+        return '—';
+    }
+
+    $currency = env("CURRENCY_CODE");
+
+    $symbol = $currency === 'USD' ? '$' : $currency . ' ';
+    $decimals = (floor($amount) == $amount) ? 0 : 4;
+    return $symbol . number_format($amount, $decimals);
+}
+
+function format_number($count)
+{
+    return $count === null ? '—' : number_format($count);
+}
+
+function get_faqs()
+{
+    $free_requests = config("config.free_api_requests_per_key");
+    
+    return [
+        [
+            'question' => 'Do my API request credits expire?',
+            'answer' => "No. Credits are yours once purchased — there's no expiry date and no monthly subscription. Use them at your own pace.",
+        ],
+        [
+            'question' => 'What happens when I run out of requests?',
+            'answer' => "API calls beyond your remaining balance are rejected until you buy more credits. We don't auto-upgrade your plan or charge overage fees — you're always in control of what you spend.",
+        ],
+        [
+            'question' => 'What counts as an API request?',
+            'answer' => "Each call to any API endpoint deducts one credit from your balance, regardless of response size. Failed requests due to invalid authentication don't count; failed requests due to invalid input do.",
+        ],
+        [
+            'question' => "What's the rate limit, and is it different from my credit balance?",
+            'answer' => "Yes — separate things. Your credit balance is the total number of requests you can make before topping up. The rate limit caps how many requests per second you can send, to keep the API stable for everyone. Each plan lists its own rate limit above.",
+        ],
+        [
+            'question' => 'Is there a monthly fee on top of the credits?',
+            'answer' => "No. You pay once for a block of credits and that's it — no recurring charges, no subscription to cancel.",
+        ],
+        [
+            'question' => 'Can I get a refund on unused credits?',
+            'answer' => "We don't offer refunds once a purchase is made. Because credits never expire, there's no time pressure to use them — you can spread usage out for as long as you like.",
+        ],
+        [
+            'question' => 'I need more than your largest plan offers — what are my options?',
+            'answer' => 'Our Custom plan covers high-volume or bespoke needs: negotiated per-request pricing, custom rate limits, and a dedicated account manager. Reach out and we\'ll put together a package that fits.',
+        ],
+        [
+            'question' => 'Do I get any free requests to try the API first?',
+            'answer' => "Yes — your first API key includes {$free_requests} free requests, no card required, so you can test the integration before buying credits.",
+        ],
+    ];
+}
+
+function get_comparison_rows()
+{
+    return [
+        ['label' => 'Price', 'value' => fn (array $p) => !empty($p['is_custom']) ? 'Custom' : format_currency($p['price'] ?? null)],
+        ['label' => 'API requests included', 'value' => fn (array $p) => !empty($p['is_custom']) ? 'Flexible' : format_number($p['requests'] ?? null)],
+        ['label' => 'Price per request', 'value' => fn (array $p) => price_per_request($p) ?? '—'],
+        ['label' => 'Rate limit', 'value' => fn (array $p) => $p['rate_limit'] ?? '—'],
+        ['label' => 'Support', 'value' => fn (array $p) => $p['support'] ?? '—'],
+        ['label' => 'Uptime SLA', 'value' => fn (array $p) => $p['uptime_sla'] ?? '—'],
+        ['label' => 'Credit expiry', 'value' => fn (array $p) => 'Never'],
+        ['label' => 'Monthly fee', 'value' => fn (array $p) => 'None'],
+    ];
+}
+
+function get_plans()
+{
+    return [
+        [
+            'id' => 'starter', 'name' => 'Starter',
+            'description' => 'For side projects and testing.',
+            'price' => 99, 'requests' => 50000,
+            'rate_limit' => '10 requests/sec',
+            'support' => 'Priority support',
+            'uptime_sla' => '99.99%',
+            // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support'],
+            'cta_label' => 'Buy credits', 'cta_url' => '/checkout?plan=starter',
+            'popular' => false,
+        ],
+        [
+            'id' => 'growth', 'name' => 'Growth',
+            'description' => 'For growing products with steady traffic.',
+            'price' => 249, 'requests' => 150000,
+            'rate_limit' => '25 requests/sec',
+            'support' => 'Priority support',
+            'uptime_sla' => '99.99%',
+            // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support', 'Priority queue'],
+            'cta_label' => 'Buy credits', 'cta_url' => '/checkout?plan=growth',
+            'popular' => false,
+        ],
+        [
+            'id' => 'professional', 'name' => 'Professional',
+            'description' => 'For teams running production workloads.',
+            'price' => 499, 'requests' => 350000,
+            'rate_limit' => '50 requests/sec',
+            'support' => 'Priority support',
+            'uptime_sla' => '99.99%',
+            // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support', 'Priority queue', 'Team seats'],
+            'cta_label' => 'Buy credits', 'cta_url' => '/checkout?plan=professional',
+            'popular' => true,
+        ],
+        [
+            'id' => 'enterprise', 'name' => 'Enterprise',
+            'description' => 'For high-volume, mission-critical usage.',
+            'price' => 999, 'requests' => 800000,
+            'rate_limit' => '100 requests/sec',
+            'support' => 'Priority support',
+            'uptime_sla' => '99.99%',
+            // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support', 'Priority queue', 'Team seats', 'Dedicated account manager'],
+            'cta_label' => 'Buy credits', 'cta_url' => '/checkout?plan=enterprise',
+            'popular' => false,
+        ],
+    ];
+}
+
 function get_cached_apps()
 {
     return cache()->rememberForever("apps", function () {

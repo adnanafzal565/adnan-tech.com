@@ -19,7 +19,7 @@ class AppController extends Controller
         if ($app->identifier === "email_renderer") {
             if (is_module_exists("EmailRenderer")) {
                 $data = (new \App\Modules\EmailRenderer\Services\EmailRendererService())
-                    ->fetch_templates();
+                    ->fetch_groups();
             }
         }
 

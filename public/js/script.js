@@ -54,7 +54,8 @@ async function ajax(
 ) {
 
     const token = localStorage.getItem(accessTokenKey);
-    const noError = ["/me", '/api/me', '/api/messages/fetch', '/apps/email_renderer/templates/my'];
+    const noError = ['/me', '/api/me', '/api/messages/fetch', '/apps/email_renderer/templates/my',
+        '/api/api_keys/all'];
     const byPassGuestUrls = ['/login'];
 
     const final_url = url.startsWith("http")
