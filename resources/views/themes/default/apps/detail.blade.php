@@ -15,7 +15,11 @@
             
             <div class="col-12">
                 
-                <div id="app_detail_app"></div>
+                <div id="app_detail_app">
+                    @if ($app->identifier === "email_renderer")
+                        @include ("EmailRenderer::templates_list")
+                    @endif
+                </div>
 
             </div>
 

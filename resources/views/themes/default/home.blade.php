@@ -53,12 +53,6 @@
                                 {{ $app->name }}
                             </div>
 
-                            {{--
-                            <div class="identifier">
-                                {{ $app->identifier }}
-                            </div>
-                            --}}
-
                         </div>
 
                         <a href="{{ route('apps.detail', [ 'identifier' => $app->identifier ]) }}" class="btn btn-dark">
