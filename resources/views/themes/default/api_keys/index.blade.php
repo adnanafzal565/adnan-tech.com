@@ -3,7 +3,15 @@
 
 @section ("main")
 
-    <div id="api_keys_app"></div>
+    <div class="container py-5">
+        <div id="api_keys_app">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="spinner-border"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="text/babel">
 
@@ -192,7 +200,7 @@
             };
 
             return (
-                <div className="container">
+                <>
 
                     <div className="row justify-content-center mt-5">
                         <div className="col-lg-6 col-md-8 col-12">
@@ -515,7 +523,7 @@
                         </div>
                     </div>
 
-                </div>
+                </>
             );
         }
 

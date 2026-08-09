@@ -2,6 +2,11 @@
     --color-primary: #222;
 }
 
+.username {
+    display: inline-block;
+    min-width: 7ch;
+}
+
 .pagination .page-item .page-link {
     color: var(--color-primary) !important;
 }
