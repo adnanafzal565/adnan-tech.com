@@ -6,8 +6,8 @@
     <div class="container apps">
 
         <div class="header">
-            <h1>Applications</h1>
-            <p>View and manage available applications.</p>
+            <h1>APIs</h1>
+            <p>View and manage available APIs.</p>
         </div>
 
         <div class="apps_grid">
@@ -34,7 +34,7 @@
                     </div>
 
                     <a href="{{ route('apps.detail', [ 'identifier' => $app->identifier ]) }}" class="btn btn-dark">
-                        Open App
+                        Open API
                     </a>
 
                 </div>
