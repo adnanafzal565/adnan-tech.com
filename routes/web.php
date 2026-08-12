@@ -34,7 +34,7 @@ use App\Http\Middleware\CheckRoutePermission;
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 // });
 
-Route::any("/apps/detail", [AppController::class, "detail"])
+Route::any("/apps/detail/{identifier?}", [AppController::class, "detail"])
     ->name("apps.detail");
 
 Route::get("/api_keys/{id}/history", [ApiKeyController::class, "history"]);

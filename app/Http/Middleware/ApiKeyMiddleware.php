@@ -17,7 +17,7 @@ class ApiKeyMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $api_key_str = $request->header(api_key_header_key());
+        $api_key_str = $request->header(api_key_header_key()) ?? $request->query("api_key");
 
         $api_key = ApiKey::where("key", $api_key_str)
             ->where("remaining", ">", 0)
