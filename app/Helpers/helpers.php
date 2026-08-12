@@ -241,18 +241,32 @@ function is_module_exists($name)
     return class_exists("App\\Modules\\" . $name . "\\" . $name . "ServiceProvider");
 }
 
-function fetch_setting($key)
+function fetch_setting($keys)
 {
-    return cache()->rememberForever($key, function () use ($key) {
-        $setting = DB::table("settings")
-            ->where("key", "=", $key)
-            ->first();
+    $is_single = !is_array($keys);
 
-        if ($setting == null)
-            return "";
+    $keys = $is_single ? [$keys] : $keys;
 
-        return $setting->value ?? "";
+    $cache_key = "settings_" . md5(json_encode($keys));
+
+    $result = cache()->rememberForever($cache_key, function () use ($keys) {
+
+        $settings = Settings::whereIn("key", $keys)
+            ->pluck("value", "key")
+            ->toArray();
+
+        $data = [];
+
+        foreach ($keys as $key) {
+            $data[$key] = $settings[$key] ?? "";
+        }
+
+        return $data;
     });
+
+    return $is_single
+        ? ($result[$keys[0]] ?? "")
+        : $result;
 }
 
 function set_setting($key, $value)

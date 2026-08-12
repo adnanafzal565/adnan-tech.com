@@ -26,6 +26,13 @@ const globalState = {
     }
 }
 
+function headline(text) {
+    return text
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .replace(/\b\w/g, char => char.toUpperCase());
+}
+
 function truncate_text(text, length = 4) {
     return text.length > length
         ? text.substring(0, length) + "..."

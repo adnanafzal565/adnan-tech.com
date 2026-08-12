@@ -16,13 +16,13 @@ class SettingsController extends Controller
     {
         $admin = auth()->user();
 
-        $smtp_host = request()->smtp_host ?? "";
-        $smtp_port = request()->smtp_port ?? "";
-        $smtp_encryption = request()->smtp_encryption ?? "";
-        $smtp_username = request()->smtp_username ?? "";
-        $smtp_password = request()->smtp_password ?? "";
-        $smtp_from = request()->smtp_from ?? "";
-        $smtp_from_name = request()->smtp_from_name ?? "";
+        // $smtp_host = request()->smtp_host ?? "";
+        // $smtp_port = request()->smtp_port ?? "";
+        // $smtp_encryption = request()->smtp_encryption ?? "";
+        // $smtp_username = request()->smtp_username ?? "";
+        // $smtp_password = request()->smtp_password ?? "";
+        // $smtp_from = request()->smtp_from ?? "";
+        // $smtp_from_name = request()->smtp_from_name ?? "";
         $verify_email = request()->verify_email ?? "";
         $title = request()->title ?? "";
         $logo = request()->file("logo");
@@ -44,14 +44,20 @@ class SettingsController extends Controller
         }
 
         set_setting("verify_email", $verify_email);
-        set_setting("smtp_host", $smtp_host);
-        set_setting("smtp_port", $smtp_port);
-        set_setting("smtp_encryption", $smtp_encryption);
-        set_setting("smtp_username", $smtp_username);
-        set_setting("smtp_password", $smtp_password);
-        set_setting("smtp_from", $smtp_from);
-        set_setting("smtp_from_name", $smtp_from_name);
+        // set_setting("smtp_host", $smtp_host);
+        // set_setting("smtp_port", $smtp_port);
+        // set_setting("smtp_encryption", $smtp_encryption);
+        // set_setting("smtp_username", $smtp_username);
+        // set_setting("smtp_password", $smtp_password);
+        // set_setting("smtp_from", $smtp_from);
+        // set_setting("smtp_from_name", $smtp_from_name);
         set_setting("title", $title);
+
+        set_setting("facebook", request()->facebook ?? "");
+        set_setting("instagram", request()->instagram ?? "");
+        set_setting("youtube", request()->youtube ?? "");
+        set_setting("github", request()->github ?? "");
+        set_setting("linkedin", request()->linkedin ?? "");
 
         return response()->json([
             "status" => "success",

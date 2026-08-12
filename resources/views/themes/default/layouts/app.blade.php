@@ -22,7 +22,7 @@
         <meta property="og:description" content="@yield('meta_description')" />
     @endif
 
-    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:url" content="{{ url()->full() }}" />
 
     @hasSection("type")
         <meta property="og:type" content="@yield('type')" />
@@ -149,8 +149,13 @@
           <div class="footer-column">
             <h4>Follow Us</h4>
             <ul>
-              <li><a href="https://web.facebook.com/ComputerProgrammingTutorial" target="_blank">Facebook</a></li>
-              <li><a href="https://youtube.com/c/AdnanAfzal565" target="_blank">YouTube</a></li>
+                @php
+                    $social_links = fetch_setting(["facebook", "instagram", "youtube", "github", "linkedin"]);
+                @endphp
+
+                @foreach ($social_links as $key => $value)
+                    <li><a href="{{ $value }}" target="_blank">{{ ucfirst($key) }}</a></li>
+                @endforeach
             </ul>
           </div>
 

@@ -175,6 +175,57 @@
         --}}
 
       </div>
+
+      <div class="col-6">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Social links</h5>
+            
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">Facebook</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" form="form-settings" name="facebook"
+                  value="{{ $settings['facebook'] ?? '' }}" />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">Instagram</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" form="form-settings" name="instagram"
+                  value="{{ $settings['instagram'] ?? '' }}" />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">YouTube</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" form="form-settings" name="youtube"
+                  value="{{ $settings['youtube'] ?? '' }}" />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">GitHub</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" form="form-settings" name="github"
+                  value="{{ $settings['github'] ?? '' }}" />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">LinkedIn</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" form="form-settings" name="linkedin"
+                  value="{{ $settings['linkedin'] ?? '' }}" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
     </div>
 
     @if ($can_update)
@@ -200,8 +251,8 @@
         )
 
         if (response.data.status == "success") {
-          // swal.fire("Save settings", response.data.message, "success")
-          window.location.reload();
+          swal.fire("Save settings", response.data.message, "success")
+            .then(() => window.location.reload());
         } else {
           swal.fire("Error", response.data.message, "error")
         }
