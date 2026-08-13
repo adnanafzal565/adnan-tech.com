@@ -141,8 +141,13 @@
           <div class="footer-column">
             <h4>Contact Us</h4>
             <ul>
-              <li>Email: <a href="mailto:support@adnan-tech.com">support@adnan-tech.com</a></li>
-              <li>WhatsApp: +923105461304</li>
+                @php
+                    $contact_information = fetch_setting(["email", "whatsapp"]);
+                @endphp
+
+                @foreach ($contact_information as $key => $value)
+                    <li>{{ map_string($key) }}: {{ $value }}</li>
+                @endforeach
             </ul>
           </div>
 
@@ -154,7 +159,7 @@
                 @endphp
 
                 @foreach ($social_links as $key => $value)
-                    <li><a href="{{ $value }}" target="_blank">{{ ucfirst($key) }}</a></li>
+                    <li><a href="{{ $value }}" target="_blank">{{ map_string($key) }}</a></li>
                 @endforeach
             </ul>
           </div>

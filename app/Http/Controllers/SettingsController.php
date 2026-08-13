@@ -59,6 +59,9 @@ class SettingsController extends Controller
         set_setting("github", request()->github ?? "");
         set_setting("linkedin", request()->linkedin ?? "");
 
+        set_setting("email", request()->email ?? "");
+        set_setting("whatsapp", request()->whatsapp ?? "");
+
         return response()->json([
             "status" => "success",
             "message" => "Settings has been saved."

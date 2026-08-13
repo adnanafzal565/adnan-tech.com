@@ -12,6 +12,58 @@ use App\Models\Settings;
 use App\Models\ApiKey;
 use App\Models\ApiKeyRequestLog;
 
+function map_string($key)
+{
+    $keys = [
+        "facebook" => "Facebook",
+        "instagram" => "Instagram",
+        "youtube" => "YouTube",
+        "github" => "GitHub",
+        "linkedin" => "LinkedIn",
+        "twitter" => "Twitter",
+        "x" => "X",
+        "tiktok" => "TikTok",
+        "pinterest" => "Pinterest",
+        "reddit" => "Reddit",
+        "whatsapp" => "WhatsApp",
+        "telegram" => "Telegram",
+        "discord" => "Discord",
+        "twitch" => "Twitch",
+        "snapchat" => "Snapchat",
+        "threads" => "Threads",
+        "medium" => "Medium",
+        "stackoverflow" => "Stack Overflow",
+        "stackexchange" => "Stack Exchange",
+        "behance" => "Behance",
+        "dribbble" => "Dribbble",
+        "vimeo" => "Vimeo",
+        "quora" => "Quora",
+        "skype" => "Skype",
+        "tumblr" => "Tumblr",
+        "flickr" => "Flickr",
+        "weibo" => "Weibo",
+        "wechat" => "WeChat",
+        "vk" => "VK",
+        "line" => "LINE",
+        "kakao" => "KakaoTalk",
+        "patreon" => "Patreon",
+        "substack" => "Substack",
+        "gitlab" => "GitLab",
+        "bitbucket" => "Bitbucket",
+        "npm" => "npm",
+        "docker" => "Docker",
+        "producthunt" => "Product Hunt",
+        "google" => "Google",
+        "google_maps" => "Google Maps",
+        "google_play" => "Google Play",
+        "apple" => "Apple",
+        "apple_music" => "Apple Music",
+        "spotify" => "Spotify",
+    ];
+
+    return $keys[$key] ?? ucfirst($key);
+}
+
 function price_per_request($plan)
 {
     if (!empty($plan['is_custom']) || empty($plan['price']) || empty($plan['requests'])) {

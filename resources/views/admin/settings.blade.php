@@ -55,7 +55,7 @@
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Account settings</h5>
+            <h5 class="card-title">Account Settings</h5>
             <div class="row mb-3">
               <label for="inputText" class="col-sm-6 col-form-label">Verify email on registration</label>
               <div class="col-sm-6" style="position: relative; top: 5px;">
@@ -180,7 +180,7 @@
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Social links</h5>
+            <h5 class="card-title">Social Links</h5>
             
             <div class="row mb-3">
               <label class="col-sm-3 col-form-label">Facebook</label>
@@ -226,6 +226,32 @@
         </div>
 
       </div>
+
+      <div class="col-6">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Contact Information</h5>
+            
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">Email</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" form="form-settings" name="email"
+                  value="{{ $settings['email'] ?? '' }}" />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">WhatsApp</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" form="form-settings" name="whatsapp"
+                  value="{{ $settings['whatsapp'] ?? '' }}" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     @if ($can_update)
