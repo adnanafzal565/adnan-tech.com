@@ -301,8 +301,7 @@ function fetch_setting($keys)
 
     $cache_key = "settings_" . md5(json_encode($keys));
 
-    $result = cache()->rememberForever($cache_key, function () use ($keys) {
-
+    return cache()->rememberForever($cache_key, function () use ($keys, $is_single) {
         $settings = Settings::whereIn("key", $keys)
             ->pluck("value", "key")
             ->toArray();
@@ -313,12 +312,10 @@ function fetch_setting($keys)
             $data[$key] = $settings[$key] ?? "";
         }
 
-        return $data;
+        return $is_single
+            ? ($data[$keys[0]] ?? "")
+            : $data;
     });
-
-    return $is_single
-        ? ($result[$keys[0]] ?? "")
-        : $result;
 }
 
 function set_setting($key, $value)
@@ -333,6 +330,10 @@ function set_setting($key, $value)
     );
 
     cache()->forget($key);
+
+    $cache_key = "settings_" . md5(json_encode([$key]));
+
+    cache()->forget($cache_key);
 }
 
 function has_post_permission()
