@@ -28,6 +28,7 @@
               <th>Status</th>
               <th>Remaining</th>
               <th>Last Used At</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -39,6 +40,11 @@
                 <td>{{ $api_key->status === 1 ? "Active" : "Inactive" }}</td>
                 <td>{{ $api_key->remaining }}</td>
                 <td>{{ $api_key->last_used_at_format }}</td>
+
+                <td>
+                  <a href="{{ route('admin.api_keys.edit', [ 'id' => $api_key->id ]) }}"
+                    class="btn btn-warning">Edit</a>
+                </td>
               </tr>
             @endforeach
           </tbody>

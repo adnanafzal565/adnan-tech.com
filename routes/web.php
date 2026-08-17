@@ -89,6 +89,12 @@ Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
 
+    Route::post("/admin/api_keys/update", [ApiKeyController::class, "update"])
+        ->name("admin.api_keys.update");
+
+    Route::get("/admin/api_keys/{id}/edit", [ApiKeyController::class, "edit"])
+        ->name("admin.api_keys.edit");
+
     Route::get("/admin/api_keys", [ApiKeyController::class, "admin_index"])
         ->name("admin.api_keys.index");
 

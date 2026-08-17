@@ -12,6 +12,47 @@ use App\Models\ApiKeyRequestLog;
 
 class ApiKeyController extends Controller
 {
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "id" => "required",
+            "remaining" => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "status" => "error",
+                "message" => $validator->errors()->first()
+            ]);
+        }
+
+        $api_key = ApiKey::find($request->id);
+
+        if (!$api_key) {
+            return response()->json([
+                "status" => "error",
+                "message" => "API key not found."
+            ]);
+        }
+
+        $api_key->remaining = $request->remaining;
+        $api_key->save();
+
+        return response()->json([
+            "status" => "success",
+            "message" => "API key has been updated."
+        ]);
+    }
+
+    public function edit(Request $request)
+    {
+        $api_key = ApiKey::findOrFail($request->id);
+
+        return view('admin/api_keys/edit', [
+            "api_key" => $api_key
+        ]);
+    }
+
     public function fetch_history(Request $request)
     {
         $validator = Validator::make($request->all(), [
