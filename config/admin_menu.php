@@ -19,6 +19,14 @@ return [
     ],
 
     [
+        'title' => 'API Keys',
+        'icon' => 'fa fa-key',
+        'url' => '/admin/api_keys',
+        'active' => 'admin/api_keys',
+        'permission' => 'admin.api_keys.index',
+    ],
+
+    [
         'title' => 'Users',
         'icon' => 'fa fa-users',
         'url' => '/admin/users',

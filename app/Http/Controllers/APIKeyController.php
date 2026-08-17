@@ -90,6 +90,19 @@ class ApiKeyController extends Controller
         ]);
     }
 
+    public function admin_index()
+    {
+        set_timezone();
+
+        $api_keys = ApiKey::with(["user"])
+            ->orderBy("id", "desc")
+            ->paginate(config("config.PER_PAGE"));
+
+        return view('admin/api_keys/index', [
+            "api_keys" => $api_keys
+        ]);
+    }
+
     public function index()
     {
         return view('theme::api_keys/index');

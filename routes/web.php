@@ -89,6 +89,9 @@ Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
 
+    Route::get("/admin/api_keys", [ApiKeyController::class, "admin_index"])
+        ->name("admin.api_keys.index");
+
     Route::get("/admin/apps/{id}", [AppController::class, "admin_detail"])
         ->name("admin.apps.detail");
 
