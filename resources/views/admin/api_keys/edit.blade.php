@@ -3,6 +3,10 @@
 
 @section ("main")
 
+    @php
+      $can_update = auth()->user()->has_route_access('admin.api_keys.update');
+    @endphp
+
     <div class="pagetitle">
 
         <div style="display: flex;">
@@ -31,15 +35,17 @@
                             <div class="row mb-3">
                               <label class="col-sm-3 col-form-label">Remaining</label>
                               <div class="col-sm-9">
-                                <input type="text" class="form-control" name="remaining"
+                                <input type="number" min="0" step="any" class="form-control" name="remaining"
                                   value="{{ $api_key->remaining }}" />
                               </div>
                             </div>
                         </div>
 
-                        <div class="card-footer">
-                            <button type="submit" name="submit" class="btn btn-primary">Save</button>
-                        </div>
+                        @if ($can_update)
+                          <div class="card-footer">
+                              <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                          </div>
+                        @endif
                     </div>
                 </form>
             </div>

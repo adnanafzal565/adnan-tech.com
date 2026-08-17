@@ -3,6 +3,10 @@
 
 @section ("main")
 
+  @php
+    $can_edit = auth()->user()->has_route_access('admin.api_keys.edit');
+  @endphp
+
   <div class="pagetitle">
 
     <div style="display: flex;">
@@ -28,7 +32,10 @@
               <th>Status</th>
               <th>Remaining</th>
               <th>Last Used At</th>
-              <th>Actions</th>
+
+              @if ($can_edit)
+                <th>Actions</th>
+              @endif
             </tr>
           </thead>
 
@@ -41,10 +48,12 @@
                 <td>{{ $api_key->remaining }}</td>
                 <td>{{ $api_key->last_used_at_format }}</td>
 
-                <td>
-                  <a href="{{ route('admin.api_keys.edit', [ 'id' => $api_key->id ]) }}"
-                    class="btn btn-warning">Edit</a>
-                </td>
+                @if ($can_edit)
+                  <td>
+                    <a href="{{ route('admin.api_keys.edit', [ 'id' => $api_key->id ]) }}"
+                      class="btn btn-warning">Edit</a>
+                  </td>
+                @endif
               </tr>
             @endforeach
           </tbody>
