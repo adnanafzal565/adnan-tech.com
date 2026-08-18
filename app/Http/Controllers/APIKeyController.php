@@ -131,16 +131,40 @@ class ApiKeyController extends Controller
         ]);
     }
 
-    public function admin_index()
+    public function admin_index(Request $request)
     {
         set_timezone();
 
-        $api_keys = ApiKey::with(["user"])
-            ->orderBy("id", "desc")
+        $q = strtolower($request->q ?? "");
+
+        $api_keys = ApiKey::with(["user"]);
+            
+        if (!empty($q)) {
+            $api_keys = $api_keys->where(function ($query) use ($q) {
+                $query->where("name", "LIKE", "%" . $q . "%")
+                    ->orWhereHas("user", function ($query2) use ($q) {
+                        $query2->where("name", "LIKE", "%" . $q . "%");
+                    });
+
+                if (preg_match('/^(>=|<=|>|<|=|!=)\s*(\d+(?:\.\d+)?)$/', trim($q), $matches)) {
+                    $operator = $matches[1];
+                    $value = (float) $matches[2];
+
+                    $query->orWhere("remaining", $operator, $value);
+                } elseif (strtolower(trim($q)) === "active") {
+                    $query->orWhere("status", 1);
+                } elseif (strtolower(trim($q)) === "inactive") {
+                    $query->orWhere("status", 0);
+                }
+            });
+        }
+
+        $api_keys = $api_keys->orderBy("id", "desc")
             ->paginate(config("config.PER_PAGE"));
 
         return view('admin/api_keys/index', [
-            "api_keys" => $api_keys
+            "api_keys" => $api_keys,
+            "q" => $q
         ]);
     }
 

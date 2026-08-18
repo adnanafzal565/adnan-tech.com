@@ -24,7 +24,23 @@
   <section class="section">
     <div class="row">
       <div class="col-12">
-        <table class="table table-bordered table-responsive">
+
+        <form method="GET" action="{{ route('admin.api_keys.index') }}">
+          <div class="row g-2">
+              <div class="col">
+                  <input type="text" class="form-control" name="q" placeholder="Search by key name, user name, status, remaining..."
+                    value="{{ $q }}" />
+              </div>
+
+              <div class="col-auto">
+                  <button type="submit" class="btn btn-primary">
+                      Submit
+                  </button>
+              </div>
+          </div>
+        </form>
+
+        <table class="table table-bordered table-responsive mt-3">
           <thead>
             <tr>
               <th>User</th>

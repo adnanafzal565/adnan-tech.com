@@ -71,7 +71,7 @@ function price_per_request($plan)
     }
     $per = $plan['price'] / $plan['requests'];
     return $per < 0.01
-        ? '$' . number_format($per, 4)
+        ? '$' . number_format($per, 5)
         : format_currency($per);
 }
 
@@ -153,7 +153,7 @@ function get_plans()
         [
             'id' => 'starter', 'name' => 'Starter',
             'description' => 'For side projects and testing.',
-            'price' => 99, 'requests' => 50000,
+            'price' => 99, 'requests' => 1000000,
             'rate_limit' => '10 requests/sec',
             'support' => 'Priority support',
             'uptime_sla' => '99.99%',
@@ -164,7 +164,7 @@ function get_plans()
         [
             'id' => 'growth', 'name' => 'Growth',
             'description' => 'For growing products with steady traffic.',
-            'price' => 249, 'requests' => 150000,
+            'price' => 249, 'requests' => 3000000,
             'rate_limit' => '25 requests/sec',
             'support' => 'Priority support',
             'uptime_sla' => '99.99%',
@@ -175,7 +175,7 @@ function get_plans()
         [
             'id' => 'professional', 'name' => 'Professional',
             'description' => 'For teams running production workloads.',
-            'price' => 499, 'requests' => 350000,
+            'price' => 499, 'requests' => 7000000,
             'rate_limit' => '50 requests/sec',
             'support' => 'Priority support',
             'uptime_sla' => '99.99%',
@@ -186,7 +186,7 @@ function get_plans()
         [
             'id' => 'enterprise', 'name' => 'Enterprise',
             'description' => 'For high-volume, mission-critical usage.',
-            'price' => 999, 'requests' => 800000,
+            'price' => 999, 'requests' => 16000000,
             'rate_limit' => '100 requests/sec',
             'support' => 'Priority support',
             'uptime_sla' => '99.99%',
