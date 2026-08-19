@@ -58,6 +58,7 @@ This API makes that easier by providing ready-to-use email templates that you ca
 - API key management and usage tracking.
 - Request history.
 - Code examples for PHP, JavaScript, TypeScript, Python, Node.js, Java, C#, Go, and cURL.
+- Rate limiting.
 
 ### How It Works
 
