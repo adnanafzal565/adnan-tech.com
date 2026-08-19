@@ -34,7 +34,7 @@
                     </div>
 
                     <a href="{{ route('apps.detail', [ 'identifier' => $app->identifier ]) }}" class="btn btn-dark">
-                        Open API
+                        View Details
                     </a>
 
                 </div>

@@ -390,6 +390,7 @@
     }
 
     .pricing-comparison-table thead th {
+      text-align: center;
       font-size: 0.9375rem;
       font-weight: 700;
       color: #111827;

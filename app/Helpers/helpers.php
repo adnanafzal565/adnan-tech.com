@@ -12,6 +12,50 @@ use App\Models\Settings;
 use App\Models\ApiKey;
 use App\Models\ApiKeyRequestLog;
 
+if (!function_exists('canonical_url')) {
+    /**
+     * Build a canonical URL for the current request:
+     * - Forces the canonical scheme + host (from config('app.url'))
+     * - Normalizes trailing slashes
+     * - Strips known non-content query params (tracking, session, ad-click IDs)
+     * - Keeps any remaining query params (assumed content-relevant, e.g. pagination,
+     *   filters) in a consistent, sorted order so equivalent URLs canonicalize the same way
+     */
+    function canonical_url(): string
+    {
+        // Params that never affect page content — always stripped.
+        $denylist = [
+            'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+            'gclid', 'fbclid', 'msclkid', 'mc_cid', 'mc_eid',
+            'ref', 'source', 'affiliate',
+            'session_id', 'sessionid', 'phpsessid', 'sid',
+        ];
+
+        $path = request()->getPathInfo();
+
+        // Normalize trailing slash (keep root "/" as-is).
+        if ($path !== '/' && str_ends_with($path, '/')) {
+            $path = rtrim($path, '/');
+        }
+
+        $query = request()->query();
+
+        // Case-insensitive removal of denylisted params.
+        $query = array_filter(
+            $query,
+            fn ($value, $key) => !in_array(strtolower($key), $denylist, true),
+            ARRAY_FILTER_USE_BOTH
+        );
+
+        // Consistent ordering so ?b=2&a=1 and ?a=1&b=2 canonicalize identically.
+        ksort($query);
+
+        $base = rtrim(config('app.url'), '/') . $path;
+
+        return empty($query) ? $base : $base . '?' . http_build_query($query);
+    }
+}
+
 function map_string($key)
 {
     $keys = [

@@ -30,7 +30,7 @@
 
     <meta name="_token" content="{{ csrf_token() }}" />
 
-    <link rel="canonical" href="{{ url()->full() }}" />
+    <link rel="canonical" href="{{ canonical_url() }}" />
     <link rel="icon" type="image/x-icon" href="{{ asset('/img/favicon.ico') }}" />
 
     <link href="{{ asset('themes/' . active_theme() . '/css/style.css?v=' . time()) }}" rel="stylesheet" />
