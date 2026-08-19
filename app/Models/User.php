@@ -28,7 +28,8 @@ class User extends Authenticatable
         'password',
         'type',
         'email_verified_at',
-        'profile_image'
+        'profile_image',
+        'plan'
     ];
 
     /**

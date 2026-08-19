@@ -308,7 +308,26 @@ class UserController extends Controller
         $id = request()->id ?? 0;
         $name = request()->name ?? "";
         $type = request()->type ?? "";
+        $plan = request()->plan ?? "";
         $routes = request()->routes ?? [];
+
+        if (!empty($plan)) {
+            $flag = false;
+            $plans = get_plans();
+            foreach ($plans as $p) {
+                if ($plan === $p["id"]) {
+                    $flag = true;
+                    break;
+                }
+            }
+
+            if (!$flag) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Invalid plan."
+                ]);
+            }
+        }
 
         $user = User::where("id", $id)
             ->where("type", "!=", "super_admin")
@@ -333,6 +352,7 @@ class UserController extends Controller
 
         $user->name = $name;
         $user->type = $type;
+        $user->plan = $plan;
         $user->save();
 
         return response()->json([

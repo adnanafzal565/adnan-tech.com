@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text("verification_code")->nullable();
             $table->enum("type", ["user", "admin", "super_admin"])->default("user");
             $table->boolean("is_block")->default(0);
+            $table->string("plan")->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

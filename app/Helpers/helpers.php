@@ -155,6 +155,7 @@ function get_plans()
             'description' => 'For side projects and testing.',
             'price' => 99, 'requests' => 1000000,
             'rate_limit' => '10 requests/sec',
+            'requests_per_second' => 10,
             'support' => 'Priority support',
             'uptime_sla' => '99.99%',
             // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support'],
@@ -166,6 +167,7 @@ function get_plans()
             'description' => 'For growing products with steady traffic.',
             'price' => 249, 'requests' => 3000000,
             'rate_limit' => '25 requests/sec',
+            'requests_per_second' => 25,
             'support' => 'Priority support',
             'uptime_sla' => '99.99%',
             // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support', 'Priority queue'],
@@ -177,6 +179,7 @@ function get_plans()
             'description' => 'For teams running production workloads.',
             'price' => 499, 'requests' => 7000000,
             'rate_limit' => '50 requests/sec',
+            'requests_per_second' => 50,
             'support' => 'Priority support',
             'uptime_sla' => '99.99%',
             // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support', 'Priority queue', 'Team seats'],
@@ -188,6 +191,7 @@ function get_plans()
             'description' => 'For high-volume, mission-critical usage.',
             'price' => 999, 'requests' => 16000000,
             'rate_limit' => '100 requests/sec',
+            'requests_per_second' => 100,
             'support' => 'Priority support',
             'uptime_sla' => '99.99%',
             // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support', 'Priority queue', 'Team seats', 'Dedicated account manager'],
@@ -209,7 +213,8 @@ function add_api_key_request_log(
     $content = ""
 )
 {
-    $api_key_str = request()->api_key;
+    // $api_key_str = request()->api_key;
+    $api_key_str = request()->attributes->get("api_key");
 
     $api_key = ApiKey::where("key", $api_key_str)
         ->first();

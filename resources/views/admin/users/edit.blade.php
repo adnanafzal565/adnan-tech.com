@@ -6,6 +6,7 @@
   @php
     $can_update = auth()->user()->has_route_access('admin.users.update');
     $can_change_password = auth()->user()->has_route_access('admin.users.change_password');
+    $plans = get_plans();
   @endphp
 
   <div class="pagetitle">
@@ -52,6 +53,21 @@
                     onchange="onchange_type(event.target.value || '');">
                     <option value="user" {{ $user->type === 'user' ? 'selected' : '' }}>User</option>
                     <option value="admin" {{ $user->type === 'admin' ? 'selected' : '' }}>Admin</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Plan</label>
+                <div class="col-sm-10">
+                  <select class="form-control" name="plan">
+                    <option value="">Select Plan</option>
+
+                    @foreach ($plans as $plan)
+                      <option value="{{ $plan['id'] }}" {{ $user->plan === $plan['id'] ? 'selected' : '' }}>
+                        {{ $plan['name'] }}
+                      </option>
+                    @endforeach
                   </select>
                 </div>
               </div>
