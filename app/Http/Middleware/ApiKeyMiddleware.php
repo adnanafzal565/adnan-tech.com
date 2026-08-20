@@ -53,7 +53,7 @@ class ApiKeyMiddleware
         }
 
         // $requests_per_minute = $requests_per_second * 60;
-        $rate_limit_key = "api:" . $api_key->user->id;
+        $rate_limit_key = "api:" . $api_key->key;
 
         $allowed = RateLimiter::attempt(
             $rate_limit_key,
