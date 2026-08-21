@@ -8,12 +8,20 @@ use DB;
 use View;
 use Storage;
 use Validator;
+
 use App\Models\App;
 use App\Models\Post;
 use App\Models\Page;
+use App\Services\FormAttemptService;
 
 class PageController extends Controller
 {
+    public function __construct(
+        protected FormAttemptService $form_attempt_service
+    ) {
+        // 
+    }
+
     public function destroy()
     {
         $validator = Validator::make(request()->all(), [
@@ -71,6 +79,8 @@ class PageController extends Controller
                 if ($page->slug === 'reset-password') {
                     $data['email'] = request()->email ?? "";
                     $data['token'] = request()->token ?? "";
+                } else if ($page->slug === 'contact') {
+                    $data['token'] = $this->form_attempt_service->create("contact_us");
                 }
 
                 return view("theme::pages/" . $page->slug, $data);

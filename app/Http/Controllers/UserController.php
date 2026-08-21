@@ -17,9 +17,16 @@ use App\Jobs\SendVerifyEmailJob;
 use App\Jobs\SendWelcomeEmailJob;
 use App\Mail\WelcomeEmail;
 use App\Mail\VerifyEmailMail;
+use App\Services\FormAttemptService;
 
 class UserController extends Controller
 {
+    public function __construct(
+        protected FormAttemptService $form_attempt_service
+    ) {
+        // 
+    }
+
     public function set_user_timezone()
     {
         session()->put(
@@ -136,6 +143,11 @@ class UserController extends Controller
                 "message" => "Error in sending your message."
             ]);
         }
+
+        $this->form_attempt_service->validate(
+            token: $request->token,
+            form_type: "contact_us"
+        );
 
         $name = request()->name ?? "";
         $email = request()->email ?? "";
@@ -1009,6 +1021,11 @@ class UserController extends Controller
                 ]);
             }
 
+            $this->form_attempt_service->validate(
+                token: $request->token,
+                form_type: "registration"
+            );
+
             $name = request()->name ?? "";
             $email = request()->email ?? "";
             $username = strtok($email, "@");
@@ -1072,6 +1089,10 @@ class UserController extends Controller
             ]);
         }
 
-        return view("theme::register");
+        $token = $this->form_attempt_service->create("registration");
+
+        return view("theme::register", [
+            "token" => $token,
+        ]);
     }
 }
