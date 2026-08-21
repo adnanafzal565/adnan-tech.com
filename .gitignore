@@ -1,3 +1,6 @@
+*.zip
+*.tar
+*.tar.gz
 adnan-tech_com.sql
 app/Modules/EmailRenderer
 *.log

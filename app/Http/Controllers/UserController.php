@@ -144,6 +144,10 @@ class UserController extends Controller
             ]);
         }
 
+        $this->form_attempt_service->validate_rate_limit(
+            form_type: "contact_us"
+        );
+
         $this->form_attempt_service->validate(
             token: $request->token,
             form_type: "contact_us"
@@ -1020,6 +1024,10 @@ class UserController extends Controller
                     "message" => "Error in registration."
                 ]);
             }
+
+            $this->form_attempt_service->validate_rate_limit(
+                form_type: "registration"
+            );
 
             $this->form_attempt_service->validate(
                 token: $request->token,

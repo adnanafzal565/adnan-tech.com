@@ -1,5 +1,8 @@
 <?php
 
+// ln -s "$(pwd)/app/Modules/EmailRenderer/assets/js" "public/modules/EmailRenderer/js"
+// ln -s "$(pwd)/app/Modules/EmailRenderer/assets/img" "public/modules/EmailRenderer/img"
+
 // * * * * * /path/to/php /home/USERNAME/public_html/artisan queue:work --stop-when-empty
 
 // convert instagram post images to 3840x2160 adding white background
