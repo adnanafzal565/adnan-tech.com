@@ -12,9 +12,17 @@
 
             <form onsubmit="doSendMessage(event);" class="contact-form">
 
-                <div style="display: none;">
-                    <input type="text" name="website" autocomplete="off" />
-                    <input type="text" name="contact_time" value="{{ time() }}" />
+                <div style="position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;">
+                    <label for="website">Website</label>
+
+                    <textarea name="website" rows="1"
+                        tabindex="-1"
+                        style="resize: none;
+                            min-height: fit-content;
+                            font-family: sans-serif;
+                            font-size: 14px;"
+                     
+                        oninput="this.value = this.value.replace(/\n/g, '')"></textarea>
                 </div>
 
                 <div class="form-group">

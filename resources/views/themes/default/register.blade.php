@@ -9,6 +9,20 @@
                 <h2>Register</h2>
 
                 <form onsubmit="doRegister()">
+
+                    <div style="position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;">
+                        <label for="website">Website</label>
+
+                        <textarea name="website" rows="1"
+                            tabindex="-1"
+                            style="resize: none;
+                                min-height: fit-content;
+                                font-family: sans-serif;
+                                font-size: 14px;"
+                         
+                            oninput="this.value = this.value.replace(/\n/g, '')"></textarea>
+                    </div>
+                
                     <div class="form-group mt-4">
                         <label class="form-label">Enter Name</label>
                         <input type="text" name="name" class="form-control" required />
