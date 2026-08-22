@@ -2,13 +2,15 @@
 @section ("title", "Profile")
 
 @section ("main")
-    <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
+    <div class="container py-5">
         <div class="row">
-            <div class="col-4">
+            <div class="col-12 col-lg-4 mb-3">
                 @include ("theme::layouts/profile-left-menu")
             </div>
 
-            <div class="col-8" id="profile_app"></div>
+            <div class="col-12 col-lg-8" id="profile_app">
+                <div class="spinner-border"></div>
+            </div>
         </div>
     </div>
 

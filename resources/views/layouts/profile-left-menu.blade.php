@@ -3,13 +3,13 @@
 @endphp
 
 <ul class="list-group profile-left-menu">
-    <li class="list-group-item {{ $path == 'profile' ? 'active' : '' }}">
-        <a href="{{ url('/profile') }}">Profile</a>
+    <li class="list-group-item {{ $path === 'profile' ? 'active' : '' }}">
+        <a href="{{ route('profile') }}">Profile</a>
         
     </li>
 
-    <li class="list-group-item {{ $path == 'change_password' ? 'active' : '' }}">
-        <a href="{{ url('/change_password') }}">Change password</a>
+    <li class="list-group-item {{ $path === 'change_password' ? 'active' : '' }}">
+        <a href="{{ route('change_password') }}">Change Password</a>
     </li>
 </ul>
 

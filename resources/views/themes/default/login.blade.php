@@ -3,9 +3,9 @@
 
 @section ("main")
 
-    <div class="container mt-4 mb-4">
+    <div class="container py-5">
         <div class="row">
-            <div class="offset-4 col-4">
+            <div class="offset-lg-4 col-12 col-lg-4">
                 <h2>Login</h2>
 
                 <form onsubmit="doLogin()">

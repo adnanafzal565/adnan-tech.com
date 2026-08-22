@@ -79,10 +79,10 @@ class ApiKeyMiddleware
 
         $remaining_attempts = RateLimiter::remaining($rate_limit_key, $requests_per_minute);
 
-        // $api_key->decrement("remaining");
+        $api_key->decrement("remaining");
 
-        // $api_key->last_used_at = now()->utc();
-        // $api_key->save();
+        $api_key->last_used_at = now()->utc();
+        $api_key->save();
 
         $request->attributes->set("api_key", $api_key->key);
         $request->attributes->set("api_user", $api_key->user);

@@ -169,7 +169,7 @@
 
             const styles = {
                 table: {
-                    tableLayout: "fixed",
+                    // tableLayout: "fixed",
                     width: "100%",
                 },
 
@@ -197,6 +197,11 @@
                     justifyContent: "center",
                     cursor: "pointer",
                 },
+
+                card_footer: {
+                    maxWidth: "100%",
+                    overflow: "auto"
+                }
             };
 
             return (
@@ -446,7 +451,8 @@
 
                                 </div>
 
-                                <div className="card-footer bg-white d-flex justify-content-between align-items-center">
+                                <div className="card-footer bg-white d-flex justify-content-between align-items-center"
+                                    style={ styles.card_footer }>
 
                                     <div>
 

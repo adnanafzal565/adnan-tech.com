@@ -5,7 +5,35 @@
 
     <input type="hidden" id="id" value="{{ $id }}" />
 
-    <div id="api_key_history_app"></div>
+    <div id="api_key_history_app">
+        <div class="container">
+            <div class="row justify-content-center mt-4">
+                <div class="col-12">
+
+                    <div class="card shadow-sm border-0 mb-5">
+
+                        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+
+                            <h4 class="mb-0">
+                                API Key history
+                            </h4>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-dark" role="status"></div>
+                                <p class="mt-3 mb-0 text-muted">
+                                    Loading history...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="text/babel">
 
@@ -51,7 +79,7 @@
 
             const styles = {
                 table: {
-                    tableLayout: "fixed",
+                    // tableLayout: "fixed",
                     width: "100%",
                 },
 
@@ -67,6 +95,11 @@
                     fontFamily: "monospace",
                     maxWidth: "100%",
                 },
+
+                card_footer: {
+                    maxWidth: "100%",
+                    overflow: "auto"
+                }
             };
 
             return (
@@ -214,7 +247,8 @@
 
                                 </div>
 
-                                <div className="card-footer bg-white d-flex justify-content-between align-items-center">
+                                <div className="card-footer bg-white d-flex justify-content-between align-items-center"
+                                    style={ styles.card_footer }>
 
                                     <div>
 
