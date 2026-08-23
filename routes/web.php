@@ -233,6 +233,9 @@ Route::group([
     Route::get("/admin/messages", [MessageController::class, "index"])
         ->name("admin.messages.index");
 
+    Route::post("/admin/users/login_as", [UserController::class, "login_as"])
+        ->name("admin.users.login_as");
+
     Route::post("/admin/users/delete_permanently", [UserController::class, "delete_permanently"])
         ->name("admin.users.force_delete");
 

@@ -23,8 +23,46 @@ class UserController extends Controller
 {
     public function __construct(
         protected FormAttemptService $form_attempt_service
-    ) {
+    )
+    {
         // 
+    }
+
+    public function login_as(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "id" => "required"
+        ]);
+
+        if ($validator->fails())
+        {
+            return response()->json([
+                "status" => "error",
+                "message" => $validator->errors()->first()
+            ]);
+        }
+
+        $me = auth()->user();
+        $id = request()->id ?? 0;
+
+        $user = User::withTrashed()
+            ->where("id", $id)
+            ->where("type", "!=", "super_admin")
+            ->first();
+
+        if (!$user) {
+            return response()->json([
+                "status" => "error",
+                "message" => "User does not exist."
+            ]);
+        }
+
+        $token = $user->createToken(config("config.token_secret"))->plainTextToken;
+
+        return response()->json([
+            "status" => "success",
+            "access_token" => $token
+        ]);
     }
 
     public function set_user_timezone()

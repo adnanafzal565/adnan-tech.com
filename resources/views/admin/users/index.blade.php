@@ -9,6 +9,7 @@
     $can_delete = auth()->user()->has_route_access('admin.users.destroy');
     $can_block = auth()->user()->has_route_access('admin.users.block');
     $can_see_trash = auth()->user()->has_route_access('admin.users.trash');
+    $can_login_as = auth()->user()->has_route_access('admin.users.login_as');
   @endphp
 
   <div class="pagetitle">
@@ -66,20 +67,24 @@
                 @if ($can_edit || $can_delete || $can_block)
                 <td>
                   @if ($can_edit)
-                  <a href="{{ route('admin.users.edit', ['id' => $user->id]) }}"
-                    class="btn btn-warning">Edit</a>
+                    <a href="{{ route('admin.users.edit', ['id' => $user->id]) }}"
+                      class="btn btn-warning">Edit</a>
                   @endif
 
                   @if ($can_block)
-                  @if ($user->is_block)
-                    <button type="button" class="btn btn-success" onclick="unBlockUser(event, '{{ $user->id }}', '{{ $user->name }}');">Un-block</button>
-                  @else
-                    <button type="button" class="btn btn-info" onclick="blockUser(event, '{{ $user->id }}', '{{ $user->name }}');">Block</button>
-                  @endif
+                    @if ($user->is_block)
+                      <button type="button" class="btn btn-success" onclick="unBlockUser(event, '{{ $user->id }}', '{{ $user->name }}');">Un-block</button>
+                    @else
+                      <button type="button" class="btn btn-info" onclick="blockUser(event, '{{ $user->id }}', '{{ $user->name }}');">Block</button>
+                    @endif
                   @endif
                   
                   @if ($can_delete)
-                  <button type="button" class="btn btn-danger" onclick="deleteUser(event, '{{ $user->id }}', '{{ $user->name }}')">Delete</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteUser(event, '{{ $user->id }}', '{{ $user->name }}')">Delete</button>
+                  @endif
+
+                  @if ($can_login_as)
+                    <button type="button" class="btn btn-primary" onclick="login_as(event, '{{ $user->id }}', '{{ $user->name }}')">Login</button>
                   @endif
                 </td>
                 @endif
@@ -93,119 +98,172 @@
     </div>
   </section>
 
-  <script>
-    function blockUser(event, id, name) {
-      const node = event.currentTarget;
+  @if ($can_login_as)
+    <script>
+      function login_as(event, id, name) {
+        const node = event.currentTarget;
 
-      swal.fire({
-        title: "Block user: " + name,
-        text: "This user won't be able to access the platform.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, do it!"
-      }).then(async function (result) {
-        if (result.isConfirmed) {
-          node.setAttribute("disabled", "disabled");
+        swal.fire({
+          title: "Login as: " + name,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, do it!"
+        }).then(async function (result) {
+          if (result.isConfirmed) {
+            node.setAttribute("disabled", "disabled");
+     
+            const formData = new FormData();
+            formData.append("id", id);
+     
+            try {
+              const response = await axios.post(
+                baseUrl + "/admin/users/login_as",
+                formData
+              );
    
-          const formData = new FormData();
-          formData.append("id", id);
-   
-          try {
-            const response = await axios.post(
-              baseUrl + "/admin/users/block",
-              formData
-            );
- 
-            if (response.data.status == "success") {
-              node.remove();
-            } else {
-              swal.fire("Error", response.data.message, "error");
+              if (response.data.status == "success") {
+                const accessToken = response.data.access_token;
+                localStorage.setItem(accessTokenKey, accessToken);
+
+                window.open(
+                  baseUrl,
+                  "_blank"
+                );
+              } else {
+                swal.fire("Error", response.data.message, "error");
+              }
+            } catch (exp) {
+              swal.fire("Error", exp.message, "error");
+            } finally {
+              node.removeAttribute("disabled");
             }
-          } catch (exp) {
-            swal.fire("Error", exp.message, "error");
-          } finally {
-            node.removeAttribute("disabled");
           }
-        }
-      });
-    }
+        });
+      }
+    </script>
+  @endif
 
-    function unBlockUser(event, id, name) {
-      const node = event.currentTarget;
+  @if ($can_block)
+    <script>
+      function blockUser(event, id, name) {
+        const node = event.currentTarget;
 
-      swal.fire({
-        title: "Un-block user: " + name,
-        text: "This user will be able to access the platform.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, do it!"
-      }).then(async function (result) {
-        if (result.isConfirmed) {
-          node.setAttribute("disabled", "disabled");
+        swal.fire({
+          title: "Block user: " + name,
+          text: "This user won't be able to access the platform.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, do it!"
+        }).then(async function (result) {
+          if (result.isConfirmed) {
+            node.setAttribute("disabled", "disabled");
+     
+            const formData = new FormData();
+            formData.append("id", id);
+     
+            try {
+              const response = await axios.post(
+                baseUrl + "/admin/users/block",
+                formData
+              );
    
-          const formData = new FormData();
-          formData.append("id", id);
+              if (response.data.status == "success") {
+                node.remove();
+              } else {
+                swal.fire("Error", response.data.message, "error");
+              }
+            } catch (exp) {
+              swal.fire("Error", exp.message, "error");
+            } finally {
+              node.removeAttribute("disabled");
+            }
+          }
+        });
+      }
+
+      function unBlockUser(event, id, name) {
+        const node = event.currentTarget;
+
+        swal.fire({
+          title: "Un-block user: " + name,
+          text: "This user will be able to access the platform.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, do it!"
+        }).then(async function (result) {
+          if (result.isConfirmed) {
+            node.setAttribute("disabled", "disabled");
+     
+            const formData = new FormData();
+            formData.append("id", id);
+     
+            try {
+              const response = await axios.post(
+                baseUrl + "/admin/users/un_block",
+                formData
+              );
    
-          try {
-            const response = await axios.post(
-              baseUrl + "/admin/users/un_block",
-              formData
-            );
- 
-            if (response.data.status == "success") {
-              node.remove();
-            } else {
-              swal.fire("Error", response.data.message, "error");
+              if (response.data.status == "success") {
+                node.remove();
+              } else {
+                swal.fire("Error", response.data.message, "error");
+              }
+            } catch (exp) {
+              swal.fire("Error", exp.message, "error");
+            } finally {
+              node.removeAttribute("disabled");
             }
-          } catch (exp) {
-            swal.fire("Error", exp.message, "error");
-          } finally {
-            node.removeAttribute("disabled");
           }
-        }
-      });
-    }
+        });
+      }
+    </script>
+  @endif
 
-    function deleteUser(event, id, name) {
-      const node = event.currentTarget;
+  @if ($can_delete)
+    <script>
+      function deleteUser(event, id, name) {
+        const node = event.currentTarget;
 
-      swal.fire({
-        title: "Delete user: " + name,
-        text: "Are you sure you want to delete this user ?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then(async function (result) {
-        if (result.isConfirmed) {
-          node.setAttribute("disabled", "disabled");
-          try {
-            const formData = new FormData()
-            formData.append("id", id)
+        swal.fire({
+          title: "Delete user: " + name,
+          text: "Are you sure you want to delete this user ?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then(async function (result) {
+          if (result.isConfirmed) {
+            node.setAttribute("disabled", "disabled");
+            try {
+              const formData = new FormData()
+              formData.append("id", id)
 
-            const response = await axios.post(
-              baseUrl + "/admin/users/delete",
-              formData
-            )
+              const response = await axios.post(
+                baseUrl + "/admin/users/delete",
+                formData
+              )
 
-            if (response.data.status == "success") {
-              node.parentElement.parentElement.remove();
-            } else {
-              swal.fire("Error", response.data.message, "error")
+              if (response.data.status == "success") {
+                node.parentElement.parentElement.remove();
+              } else {
+                swal.fire("Error", response.data.message, "error")
+              }
+            } catch (exp) {
+              swal.fire("Error", exp.message, "error")
+            } finally {
+              node.removeAttribute("disabled");
             }
-          } catch (exp) {
-            swal.fire("Error", exp.message, "error")
-          } finally {
-            node.removeAttribute("disabled");
           }
-        }
-      })
-    }
-  </script>
+        })
+      }
+    </script>
+  @endif
 
 @endsection

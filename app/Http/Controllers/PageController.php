@@ -18,7 +18,8 @@ class PageController extends Controller
 {
     public function __construct(
         protected FormAttemptService $form_attempt_service
-    ) {
+    )
+    {
         // 
     }
 
