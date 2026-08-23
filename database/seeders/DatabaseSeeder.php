@@ -155,6 +155,10 @@ class DatabaseSeeder extends Seeder
             [
                 "name" => "Email Renderer",
                 "identifier" => "email_renderer"
+            ],
+            [
+                "name" => "Job Runner",
+                "identifier" => "job_runner"
             ]
         ];
 
@@ -168,6 +172,8 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+        cache()->forget("apps");
     }
 
     private function set_categories()

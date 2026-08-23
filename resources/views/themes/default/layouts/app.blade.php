@@ -76,6 +76,10 @@
         @include ("EmailRenderer::app")
     @endif
 
+    @if (is_module_exists("JobRunner"))
+        @include ("JobRunner::app")
+    @endif
+
     <!-- Header -->
     <header class="site-header">
         <div class="container header-inner">

@@ -17,6 +17,8 @@
 
                 @if ($app->identifier === "email_renderer")
                     @include ("EmailRenderer::templates_list")
+                @elseif ($app->identifier === "job_runner")
+                    @include ("JobRunner::index")
                 @endif
 
             </div>

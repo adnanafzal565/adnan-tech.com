@@ -4,6 +4,7 @@ ads.txt
 *.tar.gz
 adnan-tech_com.sql
 app/Modules/EmailRenderer
+app/Modules/JobRunner
 *.log
 .env
 .DS_Store

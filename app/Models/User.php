@@ -130,6 +130,11 @@ class User extends Authenticatable
         return in_array($route_name, $this->allowed_routes(), true);
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(\App\Modules\JobRunner\Models\Job::class, "user_id", "id");
+    }
+
     public function route_permissions()
     {
         return $this->hasMany(RoutePermission::class, 'user_id', 'id');

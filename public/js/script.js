@@ -67,8 +67,11 @@ async function ajax(
 ) {
 
     const token = localStorage.getItem(accessTokenKey);
-    const noError = ['/me', '/api/me', '/api/messages/fetch', '/apps/email_renderer/templates/my',
-        '/api/api_keys/all'];
+    const noError = [
+        '/me', '/api/me', '/api/messages/fetch',
+        '/apps/email_renderer/templates/my',
+        '/api/api_keys/all', '/apps/job_runner/jobs/fetch'
+    ];
     const byPassGuestUrls = ['/login'];
 
     const final_url = url.startsWith("http")
@@ -92,7 +95,7 @@ async function ajax(
                 responseType,
                 headers: {
                     Authorization: "Bearer " + token,
-                    "x-api-key": apiKey
+                    // "x-api-key": apiKey
                 },
                 onUploadProgress: (progressEvent) => {
                     if (onProgress) {
