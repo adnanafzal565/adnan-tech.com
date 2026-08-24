@@ -133,6 +133,11 @@ class User extends Authenticatable
         return in_array($route_name, $this->allowed_routes(), true);
     }
 
+    public function api_keys()
+    {
+        return $this->hasMany(ApiKey::class, "user_id", "id");
+    }
+
     public function templates()
     {
         return $this->hasMany(\App\Modules\EmailRenderer\Models\TemplateModel::class, "user_id", "id");
