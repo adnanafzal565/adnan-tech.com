@@ -29,7 +29,10 @@ class User extends Authenticatable
         'type',
         'email_verified_at',
         'profile_image',
-        'plan'
+        'plan',
+        'webhook_secret_hash',
+        'webhook_secret_encrypted',
+        'webhook_secret_generated_at'
     ];
 
     /**

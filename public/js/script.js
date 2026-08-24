@@ -115,8 +115,8 @@ async function ajax(
             } else {
                 if (!noError.includes(pathname)) {
                     swal.fire("Error", response.data.message, "error");
-                    onError?.(response.data);
                 }
+                onError?.(response.data);
             }
         } else if (responseType === "blob") {
             onSuccess?.(response);

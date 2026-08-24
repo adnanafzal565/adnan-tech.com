@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ApiKeyController;
+use App\Http\Controllers\WebhookController;
 
 use App\Http\Middleware\UserAuth;
 
@@ -26,6 +27,9 @@ Route::post("/login", [UserController::class, "login"]);
 Route::group([
     "middleware" => ['auth:sanctum', UserAuth::class]
 ], function () {
+    Route::post('/webhooks/generate', [WebhookController::class, 'generate']);
+    Route::post('/webhooks/delete', [WebhookController::class, 'delete']);
+
     Route::post("/api_keys/history", [ApiKeyController::class, "fetch_history"]);
 
     Route::post("/api_keys/toggle_status", [ApiKeyController::class, "toggle_status"]);

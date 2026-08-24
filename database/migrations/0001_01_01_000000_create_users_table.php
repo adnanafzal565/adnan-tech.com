@@ -24,6 +24,12 @@ return new class extends Migration
             $table->enum("type", ["user", "admin", "super_admin"])->default("user");
             $table->boolean("is_block")->default(0);
             $table->string("plan")->nullable();
+
+            // Stores a SHA-256 hash of the secret only — never the plaintext.
+            $table->string('webhook_secret_hash', 64)->nullable()->unique();
+            $table->text('webhook_secret_encrypted')->nullable();
+            $table->timestamp('webhook_secret_generated_at')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

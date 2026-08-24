@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 use Jenssegers\Agent\Agent;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 use App\Models\App;
 use App\Models\Post;
@@ -11,6 +13,31 @@ use App\Models\Product;
 use App\Models\Settings;
 use App\Models\ApiKey;
 use App\Models\ApiKeyRequestLog;
+
+/**
+ * Decrypt a user's stored webhook secret for attaching to an
+ * outgoing request. Returns null if it can't be decrypted (e.g.
+ * APP_KEY was rotated since it was encrypted) rather than throwing,
+ * so a bad secret never breaks the job run itself.
+ */
+function decrypt_webhook_secret(string $encrypted): ?string
+{
+    try {
+        return Crypt::decryptString($encrypted);
+    } catch (DecryptException $e) {
+        return null;
+    }
+}
+
+
+/**
+ * Hash a plaintext secret for storage/lookup. Only this hash is
+ * ever persisted — the plaintext secret is never stored.
+ */
+function hash_secret(string $plain_secret): string
+{
+    return hash('sha256', $plain_secret);
+}
 
 if (!function_exists('canonical_url')) {
     /**
@@ -583,11 +610,14 @@ function active_theme()
     });
 }
 
-function set_timezone()
+if (!function_exists("set_timezone"))
 {
-    $timezone = request()->timezone ?? "";
-    if (empty($timezone))
-        $timezone = session(config("config.session_timezone_key")) ?? "";
-    if (!empty($timezone) && in_array($timezone, timezone_identifiers_list()))
-        date_default_timezone_set($timezone);
+    function set_timezone()
+    {
+        $timezone = request()->timezone ?? "";
+        if (empty($timezone))
+            $timezone = session(config("config.session_timezone_key")) ?? "";
+        if (!empty($timezone) && in_array($timezone, timezone_identifiers_list()))
+            date_default_timezone_set($timezone);
+    }
 }
