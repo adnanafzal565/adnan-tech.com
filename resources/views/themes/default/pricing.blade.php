@@ -31,7 +31,10 @@
       {{-- Plan cards --}}
       <div class="row g-4 justify-content-center">
           @foreach($plans as $plan)
-              @php $per_request = price_per_request($plan); @endphp
+              @php
+                $per_request = price_per_request($plan);
+              @endphp
+
               <div class="col-12 col-sm-6 col-lg-3">
                   <div class="plan-card
                       {{ !empty($plan['popular']) ? 'plan-card-popular' : '' }}
@@ -57,9 +60,7 @@
                           @endif
                       </div>
 
-                      @if($per_request)
-                          <div class="plan-card-equivalent">{{ $per_request }} / request</div>
-                      @endif
+                      <div class="plan-card-equivalent">{{ $per_request }} / request</div>
 
                       <ul class="plan-card-stats">
                           <li>
@@ -95,13 +96,15 @@
                           </ul>
                       @endif
 
-                      <div class="plan-card-cta mt-3">
-                          <button type="button"
-                            onclick="onclick_cta('{{ json_encode($plan) }}');"
-                            class="btn w-100 {{ !empty($plan['popular']) ? 'btn-primary' : 'btn-outline-primary' }}">
-                              {{ $plan['cta_label'] ?? (!empty($plan['is_custom']) ? 'Contact sales' : 'Buy credits') }}
-                          </button>
-                      </div>
+                      @if ($plan["id"] !== "trial")
+                        <div class="plan-card-cta mt-3">
+                            <button type="button"
+                              onclick="onclick_cta('{{ json_encode($plan) }}');"
+                              class="btn w-100 {{ !empty($plan['popular']) ? 'btn-primary' : 'btn-outline-primary' }}">
+                                {{ $plan['cta_label'] ?? (!empty($plan['is_custom']) ? 'Contact sales' : 'Buy credits') }}
+                            </button>
+                        </div>
+                      @endif
                   </div>
               </div>
           @endforeach

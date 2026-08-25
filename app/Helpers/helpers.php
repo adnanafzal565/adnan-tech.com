@@ -138,7 +138,7 @@ function map_string($key)
 function price_per_request($plan)
 {
     if (!empty($plan['is_custom']) || empty($plan['price']) || empty($plan['requests'])) {
-        return null;
+        return '$0';
     }
     $per = $plan['price'] / $plan['requests'];
     return $per < 0.01
@@ -222,6 +222,19 @@ function get_plans()
 {
     return [
         [
+            'id' => 'trial', 'name' => 'Trial',
+            'description' => 'For trying out the API.',
+            'price' => 0, 'requests' => 50,
+            'rate_limit' => '100 requests/min',
+            // 'requests_per_second' => 10,
+            'requests_per_minute' => 100,
+            'support' => 'Priority support',
+            'uptime_sla' => '99.99%',
+            // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support'],
+            'cta_label' => 'Buy credits', 'cta_url' => '/checkout?plan=trial',
+            'popular' => false,
+        ],
+        [
             'id' => 'starter', 'name' => 'Starter',
             'description' => 'For side projects and testing.',
             'price' => 99, 'requests' => 1000000,
@@ -234,7 +247,7 @@ function get_plans()
             'cta_label' => 'Buy credits', 'cta_url' => '/checkout?plan=starter',
             'popular' => false,
         ],
-        [
+        /*[
             'id' => 'growth', 'name' => 'Growth',
             'description' => 'For growing products with steady traffic.',
             'price' => 249, 'requests' => 3000000,
@@ -246,7 +259,7 @@ function get_plans()
             // 'features' => ['REST + GraphQL access', 'Usage dashboard', 'Webhook support', 'Priority queue'],
             'cta_label' => 'Buy credits', 'cta_url' => '/checkout?plan=growth',
             'popular' => false,
-        ],
+        ],*/
         [
             'id' => 'professional', 'name' => 'Professional',
             'description' => 'For teams running production workloads.',
