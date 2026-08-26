@@ -1,5 +1,7 @@
 <?php
 
+# grip <- to preview README.md files: http://localhost:6419
+
 // ln -s "$(pwd)/app/Modules/EmailRenderer/assets/js" "public/modules/EmailRenderer/js"
 // ln -s "$(pwd)/app/Modules/EmailRenderer/assets/img" "public/modules/EmailRenderer/img"
 
