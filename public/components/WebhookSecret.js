@@ -155,7 +155,7 @@ function WebhookSecret ({
                                 <div style={style.warning} className="mb-3">
                                     <strong>Important:</strong> You will not be able
                                     to see this secret again. Copy and store it
-                                    somewhere secure before closing this dialog.
+                                    somewhere secure (e.g., in your .env file) before closing this dialog.
                                 </div>
 
                                 <label className="form-label fw-semibold">

@@ -149,12 +149,6 @@ class PageController extends Controller
             return view("theme::pages/" . $slug, $data);
         }
 
-        if ($slug === "apps") {
-            return view("theme::apps/index", [
-                "apps" => App::orderBy("name", "ASC")->get()
-            ]);
-        }
-
         abort(404, "Page not found.");
     }
 

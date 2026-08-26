@@ -62,4 +62,13 @@ class AppController extends Controller
             "apps" => $apps
         ]);
     }
+
+    public function index()
+    {
+        $apps = App::orderBy("name", "ASC")->get();
+
+        return view("theme::apps/index", [
+            "apps" => $apps
+        ]);
+    }
 }
