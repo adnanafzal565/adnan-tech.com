@@ -37,7 +37,7 @@
 
                 <td>
                   <a href="{{ route('admin.apps.detail', [ 'id' => $app->id ]) }}"
-                    class="btn btn-dark">View</a>
+                    class="btn btn-dark btn-sm">View</a>
                 </td>
               </tr>
             @endforeach

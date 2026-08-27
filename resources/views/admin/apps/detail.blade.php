@@ -37,6 +37,10 @@
           @include("EmailRenderer::admin/templates_list", [
             "data" => $data
           ])
+        @elseif ($app->identifier === "job_runner" && is_module_exists("JobRunner"))
+          @include("JobRunner::admin/jobs", [
+            "data" => $data
+          ])
         @endif
         
       </div>

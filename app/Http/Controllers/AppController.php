@@ -16,11 +16,9 @@ class AppController extends Controller
 
         $data = collect();
 
-        if ($app->identifier === "email_renderer") {
-            if (is_module_exists("EmailRenderer")) {
-                $data = (new \App\Modules\EmailRenderer\Services\EmailRendererService())
-                    ->fetch_groups();
-            }
+        if ($app->identifier === "email_renderer" && is_module_exists("EmailRenderer")) {
+            $data = (new \App\Modules\EmailRenderer\Services\EmailRendererService())
+                ->fetch_groups();
         }
 
         if ($request->expectsJson()) {
@@ -39,6 +37,7 @@ class AppController extends Controller
 
     public function admin_detail(Request $request)
     {
+        set_timezone();
         $app = App::findOrFail($request->id);
 
         $data = collect();
@@ -46,6 +45,9 @@ class AppController extends Controller
         if ($app->identifier === "email_renderer" && is_module_exists("EmailRenderer")) {
             $data = (new \App\Modules\EmailRenderer\Services\EmailRendererService())
                 ->fetch_templates();
+        } else if ($app->identifier === "job_runner" && is_module_exists("JobRunner")) {
+            $data = (new \App\Modules\JobRunner\Services\JobRunnerService())
+                ->fetch_jobs();
         }
 
         return view("admin/apps/detail", [
