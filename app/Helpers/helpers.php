@@ -611,6 +611,13 @@ function site_title()
     });
 }
 
+function admin_email()
+{
+    return cache()->rememberForever('admin_email', function () {
+        return DB::table('settings')->where('key', 'admin_email')->value('value') ?? '';
+    });
+}
+
 function active_theme()
 {
     if (!Schema::hasTable('settings'))
@@ -625,8 +632,13 @@ function active_theme()
 
 if (!function_exists("set_timezone"))
 {
-    function set_timezone()
+    function set_timezone($timezone = "")
     {
+        if (!empty($timezone)) {
+            date_default_timezone_set($timezone);
+            return;
+        }
+        
         $timezone = request()->timezone ?? "";
         if (empty($timezone))
             $timezone = session(config("config.session_timezone_key")) ?? "";

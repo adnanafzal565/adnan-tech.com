@@ -236,7 +236,7 @@
             <div class="row mb-3">
               <label class="col-sm-3 col-form-label">Email</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" form="form-settings" name="email"
+                <input type="email" class="form-control" form="form-settings" name="email"
                   value="{{ $settings['email'] ?? '' }}" />
               </div>
             </div>
@@ -250,6 +250,22 @@
             </div>
           </div>
         </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Admin Information</h5>
+            
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">Email</label>
+              <div class="col-sm-9">
+                <input type="email" class="form-control" form="form-settings" name="admin_email"
+                  value="{{ $settings['admin_email'] ?? '' }}" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
     </div>

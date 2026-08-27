@@ -62,6 +62,8 @@ class SettingsController extends Controller
         set_setting("email", request()->email ?? "");
         set_setting("whatsapp", request()->whatsapp ?? "");
 
+        set_setting("admin_email", request()->admin_email ?? "");
+
         return response()->json([
             "status" => "success",
             "message" => "Settings has been saved."

@@ -25,14 +25,21 @@ use App\Http\Middleware\CheckRoutePermission;
 //     return view('welcome');
 // });
 
-// Route::get('/preview', function () {
+Route::get('/preview', function () {
+    set_timezone();
+
+    // dd(admin_email());
+
+    $meta_data = \App\Modules\JobRunner\Models\JobMetaData::where("id", 7)->first();
+    $mailable = new \App\Modules\JobRunner\Mails\JobRequestMail($meta_data);
+
     // $mailable = new \App\Mail\VerifyEmailMail("Adnan", 12345);
     // $mailable = new \App\Mail\WelcomeEmail("Adnan");
-    // return $mailable->render();
+    return $mailable->render();
 
     // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
-// });
+});
 
 Route::get("/apps", [AppController::class, "index"])
     ->name("apps.index");
