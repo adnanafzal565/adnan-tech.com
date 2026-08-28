@@ -140,6 +140,10 @@
     @include ("EmailRenderer::app")
   @endif
 
+  @if (is_module_exists("JobRunner"))
+    @include ("JobRunner::app")
+  @endif
+
   <!-- ======= Header ======= -->
   <header id="header-app" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
