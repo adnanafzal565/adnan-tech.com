@@ -84,7 +84,7 @@ class ApiKeyMiddleware
         $api_key->last_used_at = now()->utc();
         $api_key->save();
 
-        $request->attributes->set("api_key", $api_key->key);
+        $request->attributes->set("api_key", $api_key);
         $request->attributes->set("api_user", $api_key->user);
 
         $response = $next($request);
