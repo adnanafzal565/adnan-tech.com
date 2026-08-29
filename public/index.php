@@ -1,5 +1,25 @@
 <?php
 
+// ffmpeg -i "input.mp4" \
+// -vf "subtitles=subtitles.srt:force_style='FontName=Arial,FontSize=16,PrimaryColour=&H00FFFFFF,BackColour=&H80000000,BorderStyle=4,Outline=0,Shadow=0,Alignment=2,MarginV=10'" \
+// -c:v libx264 -crf 18 -preset medium \
+// -c:a copy \
+// output.mp4
+
+// subtitles.srt
+
+// 1
+// 00:00:00,000 --> 00:00:02,000
+// Line 1
+
+// 2
+// 00:00:02,000 --> 00:00:06,000
+// Line 2
+
+// 3
+// 00:00:06,000 --> 00:00:11,000
+// Line 3
+
 # grip <- to preview README.md files: http://localhost:6419
 
 // ln -s "$(pwd)/app/Modules/EmailRenderer/assets/js" "public/modules/EmailRenderer/js"
