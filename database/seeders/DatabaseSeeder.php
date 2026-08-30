@@ -45,11 +45,7 @@ class DatabaseSeeder extends Seeder
         $super_admin_id = $super_admin->id;
 
         $this->seed_apps();
-
-        $title = Settings::where('key', 'title')->value('value') ?? '';
-        if (empty($title)) {
-            set_setting('title', 'Laravel Boilerplate');
-        }
+        $this->seed_settings();
 
         $menus = DB::table("menus")->count();
         if ($menus <= 0)
@@ -67,7 +63,7 @@ class DatabaseSeeder extends Seeder
                 ->insertGetId([
                     "menu_id" => $id,
                     "title" => "Home",
-                    "url" => "http://localhost:8000",
+                    "url" => "https://adnan-tech.com",
                     "order" => 1,
                     "created_at" => now()->utc(),
                     "updated_at" => now()->utc()
@@ -77,7 +73,7 @@ class DatabaseSeeder extends Seeder
                 ->insertGetId([
                     "menu_id" => $id,
                     "title" => "About",
-                    "url" => "http://localhost:8000/about",
+                    "url" => "https://adnan-tech.com/about",
                     "order" => 2,
                     "created_at" => now()->utc(),
                     "updated_at" => now()->utc()
@@ -87,7 +83,7 @@ class DatabaseSeeder extends Seeder
                 ->insertGetId([
                     "menu_id" => $id,
                     "title" => "Contact us",
-                    "url" => "http://localhost:8000/contact",
+                    "url" => "https://adnan-tech.com/contact",
                     "order" => 3,
                     "created_at" => now()->utc(),
                     "updated_at" => now()->utc()
@@ -147,6 +143,30 @@ class DatabaseSeeder extends Seeder
                     "created_at" => now()->utc(),
                     "updated_at" => now()->utc()
                 ]);
+        }
+    }
+
+    private function seed_settings()
+    {
+        $default_settings = [
+            "title" => "AdnanTech",
+            "facebook" => "https://web.facebook.com/adnan.afzal.12532/",
+            "instagram" => "https://www.instagram.com/adnanafzaltahir/",
+            "youtube" => "https://youtube.com/c/AdnanAfzal565",
+            "github" => "https://github.com/adnanafzal565",
+            "linkedin" => "https://www.linkedin.com/in/adnan-afzal-88612110a/",
+            "email" => "support@adnan-tech.com",
+            "whatsapp" => "+923156041304",
+            "admin_email" => "adnanafzal565@gmail.com"
+        ];
+
+        foreach ($default_settings as $key => $value) {
+            Settings::firstOrCreate(
+                ["key" => $key],
+                ["value" => $value]
+            );
+
+            cache()->forget($key);
         }
     }
 
