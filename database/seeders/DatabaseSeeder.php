@@ -151,13 +151,15 @@ class DatabaseSeeder extends Seeder
     }
 
     private function seed_apps() {
+        // App::where("id", ">", 0)->delete();
+
         $apps = [
             [
-                "name" => "Email Renderer",
+                "name" => "Email Renderer API",
                 "identifier" => "email_renderer"
             ],
             [
-                "name" => "Job Runner",
+                "name" => "Job Runner API",
                 "identifier" => "job_runner"
             ]
         ];
