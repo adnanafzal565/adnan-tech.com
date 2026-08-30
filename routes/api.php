@@ -18,6 +18,10 @@ use App\Http\Middleware\UserAuth;
 // Route::post('/seed_products', [ProductController::class, 'seed']);
 Route::post("/send_contact_us_message", [UserController::class, "send_contact_us_message"]);
 
+Route::post("/reset_password", [UserController::class, "reset_password"]);
+
+Route::post("/send_password_reset_link", [UserController::class, "send_password_reset_link"]);
+
 Route::post("/verify_email", [UserController::class, "verify_email"]);
 
 Route::post("/register", [UserController::class, "register"]);

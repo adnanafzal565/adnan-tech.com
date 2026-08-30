@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Http;
+
 use DB;
 use Str;
 use View;
@@ -751,22 +753,42 @@ class UserController extends Controller
             ]);
         }
 
+        DB::table("password_reset_tokens")
+            ->where("email", $email)
+            ->delete();
+
         // $reset_token = time() . md5($email);
         $reset_token = Str::random(60);
 
-        $message = "<p>Please click the link below to reset your password</p>";
-        $message .= "<a href='" . url("/reset-password?email=" . $email . "&token=" . $reset_token) . "'>";
-            $message .= "Reset password";
-        $message .= "</a>";
+        // $message = "<p>Please click the link below to reset your password</p>";
+        // $message .= "<a href='" . url("/reset-password?email=" . $email . "&token=" . $reset_token) . "'>";
+        //     $message .= "Reset password";
+        // $message .= "</a>";
 
-        $mail_error = $this->send_mail($email, $user->name, "Password reset link", $message);
-        if (!empty($mail_error))
-        {
-            return response()->json([
-                "status" => "error",
-                "message" => $mail_error
-            ]);
-        }
+        $reset_url = route("password.reset", ["email" => $email, "token" => $reset_token]);
+        $app_url = url("/");
+        $support_email = admin_email();
+
+        $response = Http::withHeaders([
+            "X-API-KEY" => env("API_KEY"),
+        ])->get(env("EMAIL_RENDERER_API") . "/32/render?app_name=" . env("APP_NAME") . "&user_name={$user->name}&reset_url=$reset_url&expiry_minutes=10&app_url=$app_url&support_email=$support_email&current_year=" . date("Y"));
+
+        $response = $response->json();
+
+        // $mail_error = $this->send_mail($email, $user->name, "Password reset link", $message);
+        // if (!empty($mail_error))
+        // {
+        //     return response()->json([
+        //         "status" => "error",
+        //         "message" => $mail_error
+        //     ]);
+        // }
+
+        Mail::send([], [], function ($message) use ($email, $response) {
+            $message->to($email)
+                ->subject($response["subject"])
+                ->html($response["html"]);
+        });
 
         DB::table("password_reset_tokens")
             ->insertGetId([
@@ -1027,7 +1049,7 @@ class UserController extends Controller
         $token = request()->token ?? "";
         $email = request()->email ?? "";
 
-        return view("reset-password", [
+        return view("theme::reset_password", [
             "email" => $email,
             "token" => $token
         ]);
@@ -1074,14 +1096,22 @@ class UserController extends Controller
 
             $name = request()->name ?? "";
             $email = request()->email ?? "";
-            $username = strtok($email, "@");
+            $username = strtok($email, "@") . "_" . Str::lower(Str::random(6));
             $password = request()->password ?? "";
 
-            if (User::where("username", $username)->exists())
+            if (User::withTrashed()->where("username", $username)->exists())
             {
                 return response()->json([
                     "status" => "error",
                     "message" => "Username already exists."
+                ]);
+            }
+
+            if (User::withTrashed()->where("email", $email)->exists())
+            {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Email already exists."
                 ]);
             }
 
@@ -1114,7 +1144,10 @@ class UserController extends Controller
                 ->insertGetId($user_arr);
 
             if (!$setting_verify_email) {
-                dispatch(new SendWelcomeEmailJob($name, $email));
+                // dispatch(new SendWelcomeEmailJob($name, $email));
+
+                Mail::to($email)
+                    ->send(new SendWelcomeEmailJob($name, $email));
 
                 return response()->json([
                     "status" => "success",

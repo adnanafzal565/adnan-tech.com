@@ -38,7 +38,7 @@
                 form.submit.setAttribute("disabled", "disabled")
 
                 const response = await axios.post(
-                    baseUrl + "/api/reset-password",
+                    baseUrl + "/api/reset_password",
                     formData
                 )
 

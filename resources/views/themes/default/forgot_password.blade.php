@@ -30,7 +30,7 @@
                 form.submit.setAttribute("disabled", "disabled")
 
                 const response = await axios.post(
-                    baseUrl + "/api/send-password-reset-link",
+                    baseUrl + "/api/send_password_reset_link",
                     formData
                 )
 
