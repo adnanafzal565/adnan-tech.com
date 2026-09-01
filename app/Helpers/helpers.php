@@ -466,10 +466,30 @@ function forget_post_cache($slug = "")
     cache()->forget("post_" . $slug);
 }
 
+function forget_featured_post_cache()
+{
+    cache()->forget("featured_post");
+}
+
+function get_cached_featured_post()
+{
+    return cache()->rememberForever("featured_post", function () {
+        return Post::where("is_active", 1)
+            ->where("is_featured", 1)
+            ->first();
+    });
+}
+
 function get_cached_post($slug = "")
 {
     return cache()->rememberForever("post_" . $slug, function () use ($slug) {
-        $post = DB::table("posts")
+
+        return Post::with(["user"])
+            ->where("slug", "=", $slug)
+            ->where("is_active", 1)
+            ->first();
+
+        /*$post = DB::table("posts")
             ->select("posts.*", "users.name AS user_name", "files.file_path")
             ->join("users", "users.id", "=", "posts.user_id")
             ->leftJoin("files", "files.id", "=", "posts.image_id")
@@ -488,7 +508,7 @@ function get_cached_post($slug = "")
             return null;
         }
 
-        return Post::map($post);
+        return Post::map($post);*/
     });
 }
 
@@ -551,7 +571,7 @@ function get_cached_posts()
     $page = (int) (request()->page ?? 1);
     return cache()->rememberForever("posts_" . $page, function () {
 
-        return Post::where("posts.is_active", "=", 1)
+        return Post::where("is_active", "=", 1)
             ->orderBy("is_featured", "desc")
             ->orderBy("id", "desc")
             ->paginate(config("config.PER_PAGE"));

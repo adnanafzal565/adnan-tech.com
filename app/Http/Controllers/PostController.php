@@ -306,6 +306,7 @@ class PostController extends Controller
 
         forget_posts_cache();
         forget_post_cache($post->slug);
+        forget_featured_post_cache();
 
         return response()->json([
             "status" => "success",
@@ -513,7 +514,8 @@ class PostController extends Controller
     {
         set_timezone();
 
-        $posts = Post::orderBy("id", "desc")
+        $posts = Post::with(["user"])
+            ->orderBy("id", "desc")
             ->paginate(config("config.PER_PAGE"));
 
         return view("theme::posts/index", [

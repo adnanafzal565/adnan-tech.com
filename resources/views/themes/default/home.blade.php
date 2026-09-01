@@ -4,7 +4,7 @@
 
     @php
         $recentPosts = get_cached_posts();
-        $featuredPost = null;
+        $featuredPost = get_cached_featured_post();
     @endphp
      
     <section class="latest-posts">
@@ -31,16 +31,17 @@
                     {{-- Featured post --}}
                     @if ($featuredPost)
                         <div class="col-md-8">
-                            <a href="{{ route('blog.show', $featuredPost->slug) }}" class="lp-featured">
+                            <a href="{{ route('pages.show', ['slug' => $featuredPost->slug]) }}" class="lp-featured">
                                 <div class="lp-featured-media">
                                     <img
-                                        src="{{ $featuredPost->image_url }}"
+                                        src="{{ $featuredPost->image?->file_path_absolute ?? '' }}"
                                         alt="{{ $featuredPost->title }}"
                                         loading="lazy"
+                                        onerror="this.src = '{{ asset('img/user-placeholder.png') }}';"
                                     >
                                 </div>
                                 <p class="lp-meta">
-                                    {{ $featuredPost->category }} &middot; {{ $featuredPost->published_at->format('M j, Y') }}
+                                    {{ implode(", ", $featuredPost->categories) }} &middot; {{ $featuredPost->updated_at_format }}
                                 </p>
                                 <h3 class="font-display lp-featured-title">
                                     {{ $featuredPost->title }}

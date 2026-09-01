@@ -12,6 +12,9 @@
         <h4 class="font-display lp-list-title">
             {{ $post->title }}
         </h4>
+        <p class="lp-list-excerpt">
+            {{ $post->excerpt }}
+        </p>
         <p class="lp-list-date">
             {{ $post->updated_at_format }}
         </p>
