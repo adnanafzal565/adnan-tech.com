@@ -14,6 +14,7 @@ use Storage;
 use Validator;
 
 use App\Models\User;
+use App\Models\Post;
 use App\Jobs\AddUserJob;
 use App\Jobs\SendVerifyEmailJob;
 use App\Jobs\SendWelcomeEmailJob;
@@ -28,6 +29,24 @@ class UserController extends Controller
     )
     {
         // 
+    }
+
+    public function view_profile($username)
+    {
+        $user = User::where("username", $username)->first();
+
+        if (!$user) {
+            abort(404);
+        }
+
+        $posts = Post::where("user_id", $user->id)
+            ->orderBy("id", "desc")
+            ->paginate(config("config.PER_PAGE"));
+
+        return view("theme::view_profile", [
+            "user" => $user,
+            "posts" => $posts
+        ]);
     }
 
     public function login_as(Request $request)

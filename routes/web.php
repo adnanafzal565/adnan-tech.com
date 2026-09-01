@@ -60,7 +60,7 @@ Route::get("/api_keys", [ApiKeyController::class, "index"])
 Route::get("/messages/buffer_attachment/{id}/{token?}", [MessageController::class, "buffer_attachment"])
     ->name("messages.buffer_attachment");
 
-Route::get("/author/{username}", [AdminController::class, "login"])
+Route::get("/author/{username}", [UserController::class, "view_profile"])
     ->name("author");
 
 Route::post("/set_timezone", [UserController::class, "set_user_timezone"])
