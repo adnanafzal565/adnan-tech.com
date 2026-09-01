@@ -550,7 +550,13 @@ function get_cached_posts()
 {
     $page = (int) (request()->page ?? 1);
     return cache()->rememberForever("posts_" . $page, function () {
-        $posts = DB::table("posts")
+
+        return Post::where("posts.is_active", "=", 1)
+            ->orderBy("is_featured", "desc")
+            ->orderBy("id", "desc")
+            ->paginate(config("config.PER_PAGE"));
+
+        /*$posts = DB::table("posts")
             ->select("posts.*", "files.file_path")
             ->leftJoin("files", "files.id", "=", "posts.image_id")
             ->where("posts.is_active", "=", 1)
@@ -564,7 +570,7 @@ function get_cached_posts()
             $posts[$key] = Post::map($value);
         }
 
-        return $posts;
+        return $posts;*/
     });
 }
 

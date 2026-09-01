@@ -2,6 +2,75 @@
 
 @section ("main")
 
+    @php
+        $recentPosts = get_cached_posts();
+        $featuredPost = null;
+    @endphp
+     
+    <section class="latest-posts">
+        <div class="container" style="max-width: 1140px;">
+     
+            {{-- Section header --}}
+            <div class="d-flex align-items-end justify-content-between gap-3 lp-header">
+                <h2 class="font-display">From the journal</h2>
+                <a href="{{ route('blog.index') }}" class="lp-all-link flex-shrink-0">All posts</a>
+            </div>
+     
+            @if (!$featuredPost && (!isset($recentPosts) || $recentPosts->isEmpty()))
+     
+                {{-- Empty state --}}
+                <div class="lp-empty text-center py-5">
+                    <p class="mb-2">No stories yet</p>
+                    <p>Check back soon — new posts will appear here.</p>
+                </div>
+     
+            @else
+     
+                <div class="row gy-5">
+     
+                    {{-- Featured post --}}
+                    @if ($featuredPost)
+                        <div class="col-md-8">
+                            <a href="{{ route('blog.show', $featuredPost->slug) }}" class="lp-featured">
+                                <div class="lp-featured-media">
+                                    <img
+                                        src="{{ $featuredPost->image_url }}"
+                                        alt="{{ $featuredPost->title }}"
+                                        loading="lazy"
+                                    >
+                                </div>
+                                <p class="lp-meta">
+                                    {{ $featuredPost->category }} &middot; {{ $featuredPost->published_at->format('M j, Y') }}
+                                </p>
+                                <h3 class="font-display lp-featured-title">
+                                    {{ $featuredPost->title }}
+                                </h3>
+                                <p class="lp-excerpt mb-0">
+                                    {{ $featuredPost->excerpt }}
+                                </p>
+                            </a>
+                        </div>
+                    @endif
+     
+                    {{-- Recent posts list --}}
+                    @if (isset($recentPosts) && $recentPosts->isNotEmpty())
+                        <div class="col-md-4">
+                            <div class="d-flex flex-column">
+                                @foreach ($recentPosts as $post)
+                                    @include ("theme::posts/single", [
+                                        "post" => $post
+                                    ])
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+     
+                </div>
+     
+            @endif
+        </div>
+    </section>
+
     <!-- Main Content -->
     {{--
     <main class="container">

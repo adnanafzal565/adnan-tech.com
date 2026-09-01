@@ -13,6 +13,36 @@ class Post extends Model
     
     protected $table = "posts";
 
+    protected $fillable = [
+        'user_id',
+        'title',
+        'slug',
+        'excerpt',
+        'content',
+        'categories',
+        'tags',
+        'image_id',
+        'is_active',
+        'is_featured',
+    ];
+
+    protected $casts = [
+        'categories' => 'array',
+        'tags' => 'array',
+    ];
+
+    protected $appends = [
+        "updated_at_format",
+    ];
+
+    public function getUpdatedAtFormatAttribute() {
+        $value = $this->updated_at ?? "";
+        if ($value) {
+            $value = date("M j, Y", strtotime($value));
+        }
+        return $value ?? '';
+    }
+
     public function image()
     {
         return $this->belongsTo(File::class, 'image_id', 'id');

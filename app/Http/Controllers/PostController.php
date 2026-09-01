@@ -509,6 +509,18 @@ class PostController extends Controller
         ]);
     }
 
+    public function index()
+    {
+        set_timezone();
+
+        $posts = Post::orderBy("id", "desc")
+            ->paginate(config("config.PER_PAGE"));
+
+        return view("theme::posts/index", [
+            "posts" => $posts
+        ]);
+    }
+
     public function admin_index()
     {
         set_timezone();

@@ -25,7 +25,7 @@ use App\Http\Middleware\CheckRoutePermission;
 //     return view('welcome');
 // });
 
-Route::get('/preview', function () {
+/*Route::get('/preview', function () {
     set_timezone();
 
     // dd(admin_email());
@@ -39,7 +39,10 @@ Route::get('/preview', function () {
 
     // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
-});
+});*/
+
+Route::get("/blogs", [PostController::class, "index"])
+    ->name("blog.index");
 
 Route::get("/apps", [AppController::class, "index"])
     ->name("apps.index");
