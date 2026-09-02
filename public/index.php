@@ -1,5 +1,27 @@
 <?php
 
+// split video in 1 minute each
+
+// for file in *.mp4; do
+//     mkdir -p "${file%.*}"
+//     ffmpeg -i "$file" \
+//         -map 0 \
+//         -c copy \
+//         -f segment \
+//         -segment_time 60 \
+//         -reset_timestamps 1 \
+//         "${file%.*}/part_%03d.mp4"
+// done
+
+// compress video
+
+// ffmpeg -i "admin 2.mov" \
+// -c:v libx264 -crf 20 -preset medium \
+// -c:a aac -b:a 192k \
+// "admin 2.mp4"
+
+// add subtitle
+
 // ffmpeg -i "input.mp4" \
 // -vf "subtitles=subtitles.srt:force_style='FontName=Arial,FontSize=16,PrimaryColour=&H00FFFFFF,BackColour=&H80000000,BorderStyle=4,Outline=0,Shadow=0,Alignment=2,MarginV=10'" \
 // -c:v libx264 -crf 18 -preset medium \
