@@ -117,7 +117,6 @@
     }
     .post-detail .pd-author-card .pd-avatar { width: 56px; height: 56px; }
     .post-detail .pd-author-card p { margin: 0; }
-    .post-detail .pd-author-card .pd-author-bio { color: var(--pd-muted); font-size: .9375rem; margin-top: .375rem; }
   </style>
    
   <div class="post-detail">
@@ -166,11 +165,6 @@
                       <a href="{{ route('author', ['username' => $post->user->username ?? '']) }}" class="pd-author-link">
                           {{ $post->user->name }}
                       </a>
-                      {{--
-                      @if (!empty($post->user->bio))
-                          <p class="pd-author-bio">{{ $post->user->bio }}</p>
-                      @endif
-                      --}}
                   </div>
               </div>
           @endif

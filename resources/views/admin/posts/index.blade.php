@@ -61,13 +61,13 @@
                 </td>
 
                 <td>
-                  @foreach (json_decode($post->categories ?? "[]") as $category)
+                  @foreach ($post->categories as $category)
                     {{ $category }}
                   @endforeach
                 </td>
 
                 <td>
-                  @foreach (json_decode($post->tags ?? "[]") as $tag)
+                  @foreach ($post->tags as $tag)
                     {{ $tag }}
                   @endforeach
                 </td>

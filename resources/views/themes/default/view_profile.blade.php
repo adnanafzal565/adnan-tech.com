@@ -18,12 +18,6 @@
                 >
                 <div>
                     <h1 class="font-display ad-name">{{ $user->name }}</h1>
-                    
-                    {{--
-                    @if (!empty($user->bio))
-                        <p class="ad-bio">{{ $user->bio }}</p>
-                    @endif
-                    --}}
 
                     @if (isset($posts))
                         <p class="ad-count">{{ $posts->total() ?? $posts->count() }} {{ Str::plural('post', $posts->total() ?? $posts->count()) }}</p>
@@ -120,13 +114,6 @@
             font-size: 2.25rem;
             line-height: 1.15;
             margin-bottom: .5rem;
-        }
-        .author-detail .ad-bio {
-            color: var(--ad-muted);
-            font-size: 1rem;
-            line-height: 1.6;
-            max-width: 60ch;
-            margin: 0;
         }
         .author-detail .ad-count {
             color: var(--ad-faint);
