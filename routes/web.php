@@ -16,6 +16,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\NotificationController;
 
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\UserAuth;
@@ -103,6 +104,9 @@ Route::get("/", [UserController::class, "home"])
 Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
+
+    Route::get("/admin/notifications", [NotificationController::class, "admin_index"])
+        ->name("admin.notifications.index");
 
     Route::post("/admin/api_keys/update", [ApiKeyController::class, "update"])
         ->name("admin.api_keys.update");

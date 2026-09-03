@@ -27,6 +27,14 @@ return [
     ],
 
     [
+        'title' => 'Notifications',
+        'icon' => 'fa fa-bell',
+        'url' => '/admin/notifications',
+        'active' => 'admin/notifications',
+        'permission' => 'admin.notifications.index',
+    ],
+
+    [
         'title' => 'Users',
         'icon' => 'fa fa-users',
         'url' => '/admin/users',

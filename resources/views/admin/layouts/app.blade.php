@@ -226,6 +226,10 @@
                 @if ($unread_contact_us > 0)
                   <span class="badge bg-primary badge-notification">{{ $unread_contact_us }}</span>
                 @endif
+              @elseif ($item['title'] === 'Notifications')
+                @if ($unread_notifications > 0)
+                  <span class="badge bg-primary badge-notification">{{ $unread_notifications }}</span>
+                @endif
               @endif
             </a>
           </li>

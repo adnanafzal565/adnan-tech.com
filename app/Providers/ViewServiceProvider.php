@@ -28,12 +28,23 @@ class ViewServiceProvider extends ServiceProvider
             return;
         }
 
-        $unread_contact_us = DB::table("contact_us")
-            ->where("is_read", "=", 0)
-            ->count();
+        View::composer("admin/layouts/app", function ($view) {
 
-        View::composer("admin/layouts/app", function ($view) use ($unread_contact_us) {
+            $unread_notifications = 0;
+
+            if (auth()->check()) {
+                $unread_notifications = auth()->user()
+                    ->notifications()
+                    ->where("is_read", 0)
+                    ->count();
+            }
+
+            $unread_contact_us = DB::table("contact_us")
+                ->where("is_read", "=", 0)
+                ->count();
+
             $view->with("unread_contact_us", $unread_contact_us);
+            $view->with("unread_notifications", $unread_notifications);
         });
     }
 }
