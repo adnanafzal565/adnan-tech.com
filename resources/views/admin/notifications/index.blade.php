@@ -3,6 +3,10 @@
 
 @section ("main")
 
+  @php
+    $can_mark_as_unread = auth()->user()->has_route_access('admin.notifications.mark_as_unread');
+  @endphp
+
   <div class="pagetitle">
     <div style="display: flex;">
       <h1>Notifications</h1>
@@ -28,6 +32,10 @@
               <th>Entity</th>
               <th>Status</th>
               <th>Received At</th>
+
+              @if ($can_mark_as_unread)
+                <th>Actions</th>
+              @endif
             </tr>
           </thead>
 
@@ -44,6 +52,19 @@
                 </td>
                 <td>{{ $notification->is_read ? "Read" : "Unread" }}</td>
                 <td>{{ $notification->created_at_format }}</td>
+
+                @if ($can_mark_as_unread)
+                  <td>
+
+                    @if ($notification->is_read)
+                      <button type="button" class="btn btn-success btn-sm"
+                        onclick="mark_as_unread(event, '{{ $notification->id }}');">
+                        Mark as unread
+                      </button>
+                    @endif
+                    
+                  </td>
+                @endif
               </tr>
             @endforeach
           </tbody>
@@ -53,5 +74,35 @@
       </div>
     </div>
   </section>
+
+  @if ($can_mark_as_unread)
+    <script>
+      async function mark_as_unread(event, id) {
+        const node = event.currentTarget;
+
+        node.setAttribute("disabled", "disabled");
+     
+        const formData = new FormData();
+        formData.append("id", id);
+ 
+        try {
+          const response = await axios.post(
+            baseUrl + "/admin/notifications/mark_as_unread",
+            formData
+          );
+
+          if (response.data.status === "success") {
+            node.remove();
+          } else {
+            swal.fire("Error", response.data.message, "error");
+          }
+        } catch (exp) {
+          swal.fire("Error", exp.message, "error");
+        } finally {
+          node.removeAttribute("disabled");
+        }
+      }
+    </script>
+  @endif
 
 @endsection

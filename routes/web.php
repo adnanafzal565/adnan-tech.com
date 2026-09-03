@@ -105,6 +105,8 @@ Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
 
+    Route::post("/admin/notifications/mark_as_unread", [NotificationController::class, "mark_as_unread"]);
+
     Route::get("/admin/notifications", [NotificationController::class, "admin_index"])
         ->name("admin.notifications.index");
 
