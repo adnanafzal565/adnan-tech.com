@@ -1,0 +1,175 @@
+/* Plaintext theme — deliberately undesigned. One stylesheet, all pages. */
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #000000;
+  background: #ffffff;
+  margin: 20px;
+}
+
+h1 {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+}
+
+h2 {
+  font-size: 16px;
+  margin: 20px 0 10px 0;
+}
+
+h3 {
+  font-size: 14px;
+  margin: 0 0 5px 0;
+}
+
+a {
+  color: #0000EE;
+}
+
+a:visited {
+  color: #551A8B;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #000000;
+  margin: 15px 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table th,
+table td {
+  border: 1px solid #000000;
+  padding: 6px;
+  text-align: left;
+  vertical-align: top;
+}
+
+table th {
+  background: #eeeeee;
+  font-weight: bold;
+}
+
+nav a {
+  margin-right: 4px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 3px;
+}
+
+button {
+  padding: 3px 10px;
+}
+
+img {
+  border: 1px solid #000000;
+  object-fit: cover;
+  object-position: top;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Header */
+
+.site-header table {
+  border: none;
+  margin-bottom: 10px;
+}
+
+.site-header table td {
+  border: none;
+  padding: 0;
+}
+
+/* Footer */
+
+footer p {
+  font-size: 12px;
+  color: #333333;
+}
+
+/* Post detail page */
+
+.post-detail img {
+  width: 100%;
+  max-width: 500px;
+  display: block;
+}
+
+.post-detail .meta {
+  color: #555555;
+  font-size: 12px;
+  margin: 0 0 15px 0;
+}
+
+/* Shared rich-content styling — used by post detail and static pages */
+
+.content p {
+  margin: 0 0 12px 0;
+}
+
+.content blockquote {
+  border-left: 3px solid #000000;
+  margin: 15px 0;
+  padding: 5px 15px;
+  color: #333333;
+  background: #f5f5f5;
+}
+
+.content code {
+  font-family: 'Courier New', Courier, monospace;
+  background: #eeeeee;
+  border: 1px solid #cccccc;
+  padding: 1px 4px;
+  font-size: 0.95em;
+}
+
+.content pre {
+  background: #eeeeee;
+  border: 1px solid #cccccc;
+  padding: 10px;
+  overflow-x: auto;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.content pre code {
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+/* Forms */
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.form-success {
+  color: green;
+}
