@@ -54,6 +54,7 @@ class PostController extends Controller
 
         forget_posts_cache();
         forget_post_cache($post->slug);
+        forget_featured_post_cache();
 
         $post->forceDelete();
 
@@ -130,6 +131,7 @@ class PostController extends Controller
 
         forget_posts_cache();
         forget_post_cache($post->slug);
+        forget_featured_post_cache();
 
         $post->delete();
 

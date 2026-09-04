@@ -7,24 +7,22 @@
         $featuredPost = get_cached_featured_post();
     @endphp
      
-    <section class="latest-posts">
-        <div class="container" style="max-width: 1140px;">
-     
-            {{-- Section header --}}
-            <div class="d-flex align-items-end justify-content-between gap-3 lp-header">
-                <h2 class="font-display">From the journal</h2>
-                <a href="{{ route('blog.index') }}" class="lp-all-link flex-shrink-0">All posts</a>
-            </div>
-     
-            @if (!$featuredPost && (!isset($recentPosts) || $recentPosts->isEmpty()))
-     
+    @if ($featuredPost || $recentPosts->count() > 0)
+        <section class="latest-posts">
+            <div class="container" style="max-width: 1140px;">
+         
+                {{-- Section header --}}
+                <div class="d-flex align-items-end justify-content-between gap-3 lp-header py-5">
+                    <h2 class="font-display">From the journal</h2>
+                    <a href="{{ route('blog.index') }}" class="lp-all-link flex-shrink-0">All posts</a>
+                </div>
+        
+         
                 {{-- Empty state --}}
-                <div class="lp-empty text-center py-5">
+                <!-- <div class="lp-empty text-center py-5">
                     <p class="mb-2">No stories yet</p>
                     <p>Check back soon — new posts will appear here.</p>
-                </div>
-     
-            @else
+                </div> -->
      
                 <div class="row gy-5">
      
@@ -38,6 +36,7 @@
                                         alt="{{ $featuredPost->title }}"
                                         loading="lazy"
                                         onerror="this.src = '{{ asset('img/user-placeholder.png') }}';"
+                                        style="width: 100%;"
                                     >
                                 </div>
                                 <p class="lp-meta">
@@ -67,10 +66,10 @@
                     @endif
      
                 </div>
-     
-            @endif
-        </div>
-    </section>
+
+            </div>
+        </section>
+    @endif
 
     <!-- Main Content -->
     {{--
