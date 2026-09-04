@@ -35,6 +35,14 @@ return [
     ],
 
     [
+        'title' => 'Cache Manager',
+        'icon' => 'fas fa-bolt',
+        'url' => '/admin/caches',
+        'active' => 'admin/caches',
+        'permission' => 'admin.caches.index',
+    ],
+
+    [
         'title' => 'Users',
         'icon' => 'fa fa-users',
         'url' => '/admin/users',

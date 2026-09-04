@@ -20,10 +20,20 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\CacheController;
 
 Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
+
+    Route::get("/admin/caches", [CacheController::class, "index"])
+        ->name("admin.caches.index");
+
+    Route::post("/admin/caches/forget", [CacheController::class, "forget"])
+        ->name("admin.caches.forget");
+
+    Route::post("/admin/caches/clear", [CacheController::class, "clear"])
+        ->name("admin.caches.clear");
 
     Route::post("/admin/notifications/mark_as_unread", [NotificationController::class, "mark_as_unread"]);
 
