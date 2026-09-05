@@ -182,3 +182,31 @@ footer p {
 .form-success {
   color: green;
 }
+
+/* Profile sidebar menu */
+
+.profile-left-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #000000;
+}
+
+.profile-left-menu li {
+  border-bottom: 1px solid #000000;
+}
+
+.profile-left-menu li:last-child {
+  border-bottom: none;
+}
+
+.profile-left-menu li a {
+  display: block;
+  padding: 6px 10px;
+  text-decoration: none;
+}
+
+.profile-left-menu li.active a {
+  font-weight: bold;
+  background: #eeeeee;
+}
