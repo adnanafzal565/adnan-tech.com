@@ -24,7 +24,7 @@
 
 // ffmpeg -i "input.mp4" \
 // -vf "subtitles=subtitles.srt:force_style='FontName=Arial,FontSize=16,PrimaryColour=&H00FFFFFF,BackColour=&H80000000,BorderStyle=4,Outline=0,Shadow=0,Alignment=2,MarginV=10'" \
-// -c:v libx264 -crf 18 -preset medium \
+// -c:v libx264 -crf 1 -preset medium \
 // -c:a copy \
 // output.mp4
 

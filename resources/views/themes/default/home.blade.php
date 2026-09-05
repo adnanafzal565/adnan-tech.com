@@ -103,8 +103,8 @@
         <div class="container apps">
 
             <div class="header">
-                <h1>APIs</h1>
-                <p>View and manage available APIs.</p>
+                <h1>Apps</h1>
+                <p>View and manage available apps.</p>
             </div>
 
             <div class="apps_grid">
