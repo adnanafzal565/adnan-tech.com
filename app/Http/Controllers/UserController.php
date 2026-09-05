@@ -784,30 +784,32 @@ class UserController extends Controller
         //     $message .= "Reset password";
         // $message .= "</a>";
 
-        $reset_url = route("password.reset", ["email" => $email, "token" => $reset_token]);
-        $app_url = url("/");
-        $support_email = admin_email();
+        if (config("app.env") === "production") {
+            $reset_url = route("password.reset", ["email" => $email, "token" => $reset_token]);
+            $app_url = url("/");
+            $support_email = admin_email();
 
-        $response = Http::withHeaders([
-            "X-API-KEY" => env("API_KEY"),
-        ])->get(env("EMAIL_RENDERER_API") . "/32/render?app_name=" . env("APP_NAME") . "&user_name={$user->name}&reset_url=$reset_url&expiry_minutes=10&app_url=$app_url&support_email=$support_email&current_year=" . date("Y"));
+            $response = Http::withHeaders([
+                "X-API-KEY" => env("API_KEY"),
+            ])->get(env("EMAIL_RENDERER_API") . "/32/render?app_name=" . env("APP_NAME") . "&user_name={$user->name}&reset_url=$reset_url&expiry_minutes=10&app_url=$app_url&support_email=$support_email&current_year=" . date("Y"));
 
-        $response = $response->json();
+            $response = $response->json();
 
-        // $mail_error = $this->send_mail($email, $user->name, "Password reset link", $message);
-        // if (!empty($mail_error))
-        // {
-        //     return response()->json([
-        //         "status" => "error",
-        //         "message" => $mail_error
-        //     ]);
-        // }
+            // $mail_error = $this->send_mail($email, $user->name, "Password reset link", $message);
+            // if (!empty($mail_error))
+            // {
+            //     return response()->json([
+            //         "status" => "error",
+            //         "message" => $mail_error
+            //     ]);
+            // }
 
-        Mail::send([], [], function ($message) use ($email, $response) {
-            $message->to($email)
-                ->subject($response["subject"])
-                ->html($response["html"]);
-        });
+            Mail::send([], [], function ($message) use ($email, $response) {
+                $message->to($email)
+                    ->subject($response["subject"])
+                    ->html($response["html"]);
+            });
+        }
 
         DB::table("password_reset_tokens")
             ->insertGetId([
