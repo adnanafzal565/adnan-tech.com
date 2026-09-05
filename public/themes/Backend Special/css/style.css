@@ -59,6 +59,21 @@ nav a {
   margin-right: 4px;
 }
 
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+}
+
+.form-group input[type="checkbox"],
+.form-group input[type="radio"] {
+  width: fit-content;
+}
+
+.form-group {
+  margin-top: 20px;
+}
+
 input,
 button,
 select,

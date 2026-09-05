@@ -207,10 +207,10 @@ class UserController extends Controller
             form_type: "contact_us"
         );
 
-        $this->form_attempt_service->validate(
-            token: $request->token,
-            form_type: "contact_us"
-        );
+        // $this->form_attempt_service->validate(
+        //     token: $request->token,
+        //     form_type: "contact_us"
+        // );
 
         $name = request()->name ?? "";
         $email = request()->email ?? "";
@@ -1108,10 +1108,10 @@ class UserController extends Controller
                 form_type: "registration"
             );
 
-            $this->form_attempt_service->validate(
-                token: $request->token,
-                form_type: "registration"
-            );
+            // $this->form_attempt_service->validate(
+            //     token: $request->token,
+            //     form_type: "registration"
+            // );
 
             $name = request()->name ?? "";
             $email = request()->email ?? "";
@@ -1165,8 +1165,10 @@ class UserController extends Controller
             if (!$setting_verify_email) {
                 // dispatch(new SendWelcomeEmailJob($name, $email));
 
-                Mail::to($email)
-                    ->send(new SendWelcomeEmailJob($name, $email));
+                if (config("app.env") === "production") {
+                    Mail::to($email)
+                        ->send(new SendWelcomeEmailJob($name, $email));
+                }
 
                 return response()->json([
                     "status" => "success",
@@ -1177,8 +1179,10 @@ class UserController extends Controller
 
             // dispatch(new SendVerifyEmailJob($name, $email, $user_arr["verification_code"]));
 
-            Mail::to($email)
-                ->send(new VerifyEmailMail($name, $user_arr["verification_code"]));
+            if (config("app.env") === "production") {
+                Mail::to($email)
+                    ->send(new VerifyEmailMail($name, $user_arr["verification_code"]));
+            }
 
             return response()->json([
                 "status" => "success",
