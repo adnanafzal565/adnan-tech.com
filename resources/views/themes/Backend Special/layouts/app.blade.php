@@ -173,9 +173,7 @@
                           role="button"
                       >
                         { state.user?.name || "" }
-                      </a>
-
-                      |
+                      </a>|&nbsp;
 
                       { ["admin", "super_admin"].includes(state.user.type) && (
                         <>
