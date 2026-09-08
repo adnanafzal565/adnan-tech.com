@@ -51,6 +51,14 @@ return [
     ],
 
     [
+        'title' => 'Subscribers',
+        'icon' => 'fa fa-address-book',
+        'url' => '/admin/subscribers',
+        'active' => 'admin/subscribers',
+        'permission' => 'admin.subscribers.index',
+    ],
+
+    [
         'title' => 'Posts',
         'icon' => 'fa-solid fa-blog',
         'url' => '/admin/posts',

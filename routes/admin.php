@@ -21,10 +21,14 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CacheController;
+use App\Http\Controllers\NewsletterController;
 
 Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
+
+    Route::get("/admin/subscribers", [NewsletterController::class, "index"])
+        ->name("admin.subscribers.index");
 
     Route::get("/admin/caches", [CacheController::class, "index"])
         ->name("admin.caches.index");

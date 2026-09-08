@@ -14,6 +14,18 @@ use App\Mail\NewSubscriberNotification;
 
 class NewsletterController extends Controller
 {
+    public function index()
+    {
+        set_timezone();
+        
+        $subscribers = Subscriber::orderBy("id", "desc")
+            ->paginate(config("config.PER_PAGE"));
+
+        return view("admin/subscribers/index", [
+            "subscribers" => $subscribers
+        ]);
+    }
+
     /**
      * Handle a newsletter subscription request (AJAX).
      */
