@@ -8,6 +8,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\NewsletterController;
 
 use App\Http\Middleware\UserAuth;
 
@@ -33,6 +34,9 @@ Route::middleware("web")
     // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 });*/
+
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
+    ->name('newsletter.subscribe');
 
 Route::get("/blogs", [PostController::class, "index"])
     ->name("blog.index");

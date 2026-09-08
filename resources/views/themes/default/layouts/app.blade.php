@@ -134,6 +134,8 @@
         @yield("main")
     </main>
 
+    @include ("theme::layouts/newsletter")
+
     <footer>
         <div class="footer-container">
 
