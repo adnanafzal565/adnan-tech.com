@@ -17,7 +17,7 @@
         <form id="newsletterForm" class="newsletter-form" novalidate>
           <div class="input-group input-group-lg shadow-sm">
             <span class="input-group-text bg-white border-end-0">
-              <i class="bi bi-envelope"></i>
+              <i class="fa fa-envelope"></i>
             </span>
             <input
               type="email"
