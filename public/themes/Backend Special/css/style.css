@@ -62,7 +62,7 @@ nav a {
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%;
+  width: 98%;
 }
 
 .form-group input[type="checkbox"],
