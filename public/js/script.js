@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8000";
+// const baseUrl = "http://localhost:8000";
 // const baseUrl = "https://adnan-tech.com";
 const accessTokenKey = "LaravelBoilerplateAccessToken";
 const apiKey = "xxx";

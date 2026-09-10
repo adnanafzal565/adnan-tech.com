@@ -34,24 +34,11 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('/img/favicon.ico') }}" />
 
     <link href="{{ asset('themes/' . active_theme() . '/css/style.css?v=' . time()) }}" rel="stylesheet" />
-    <script src="{{ asset('themes/' . active_theme() . '/js/app.js') }}"></script>
-
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}" />
-    <script src="{{ asset('/js/jquery.js') }}"></script>
-    <script src="{{ asset('/js/bootstrap.bundle.js') }}"></script>
-
-    <script src="{{ asset('/js/react.development.js') }}"></script>
-    <script src="{{ asset('/js/react-dom.development.js') }}"></script>
-    <script src="{{ asset('/js/babel.min.js') }}"></script>
-    <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
-    <script src="{{ asset('/js/axios.min.js') }}"></script>
-    <script src="{{ asset('/js/fontawesome.js') }}"></script>
-    
-    <script type="text/babel" src="{{ asset('/components/WebhookSecret.js?v=' . time()) }}"></script>
-    <script src="{{ asset('/js/script.js?v=' . time()) }}"></script>
 </head>
 <body>
 
+    <input type="hidden" id="base_url" value="{{ env('APP_URL') }}" />
     <input type="hidden" id="route_login" value="{{ route('login') }}" />
     <input type="hidden" id="route_register" value="{{ route('register') }}" />
     <input type="hidden" id="route_profile" value="{{ route('pages.show', ['slug' => 'profile']) }}" />
@@ -61,6 +48,7 @@
     <input type="hidden" id="api_key_header_key" value="{{ api_key_header_key() }}" />
     
     <script>
+        const baseUrl = document.getElementById('base_url').value;
         const route_login = document.getElementById('route_login').value;
         const route_register = document.getElementById('route_register').value;
         const route_profile = document.getElementById('route_profile').value;
@@ -178,6 +166,20 @@
           &copy; {{ date('Y') }} {{ site_title() }}. All rights reserved.
         </div>
     </footer>
+
+    <script src="{{ asset('/js/jquery.js') }}"></script>
+    <script src="{{ asset('/js/bootstrap.bundle.js') }}"></script>
+
+    <script src="{{ asset('/js/react.development.js') }}"></script>
+    <script src="{{ asset('/js/react-dom.development.js') }}"></script>
+    <script src="{{ asset('/js/babel.min.js') }}"></script>
+    <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
+    <script src="{{ asset('/js/axios.min.js') }}"></script>
+    <script src="{{ asset('/js/fontawesome.js') }}"></script>
+    
+    <script src="{{ asset('themes/' . active_theme() . '/js/app.js') }}"></script>
+    <script type="text/babel" src="{{ asset('/components/WebhookSecret.js?v=' . time()) }}"></script>
+    <script src="{{ asset('/js/script.js?v=' . time()) }}"></script>
 
     <script src="//code.tidio.co/kapdevnmnkvcubnn6z7zpiatypsbunjr.js" async></script>
 

@@ -9,7 +9,7 @@
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{ url('/admin') }}">Home</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -99,28 +99,31 @@
       const userLabels = JSON.parse(document.getElementById("user-labels").value || "");
       const userCounts = JSON.parse(document.getElementById("user-counts").value || "");
 
-      const ctx = document.getElementById('userChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: userLabels,
-                datasets: [{
-                    label: 'User Registrations',
-                    data: userCounts,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: { title: { display: true, text: 'Date' } },
-                    y: { title: { display: true, text: 'Users' }, beginAtZero: true }
-                }
-            }
+      window.addEventListener("load", () => {
+        const ctx = document.getElementById('userChart').getContext('2d');
+          new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: userLabels,
+                  datasets: [{
+                      label: 'User Registrations',
+                      data: userCounts,
+                      borderColor: 'rgba(75, 192, 192, 1)',
+                      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                      tension: 0.4,
+                      fill: true
+                  }]
+              },
+              options: {
+                  responsive: true,
+                  scales: {
+                      x: { title: { display: true, text: 'Date' } },
+                      y: { title: { display: true, text: 'Users' }, beginAtZero: true }
+                  }
+              }
         });
+      });
+
     </script>
 
 @endsection

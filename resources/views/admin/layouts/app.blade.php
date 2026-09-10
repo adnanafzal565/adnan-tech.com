@@ -31,55 +31,14 @@
   <link href="{{ asset('/administrator/css/style.css') }}" rel="stylesheet" />
   <link href="{{ asset('/administrator/css/custom.css?v=' . time()) }}" rel="stylesheet" />
   <link href="{{ asset('/css/fontawesome.css') }}" rel="stylesheet" />
-  <script src="{{ asset('/js/fontawesome.js') }}"></script>
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 7 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-
-  <!-- <script src="{{ asset('/administrator/js/jquery-3.6.0.min.js') }}"></script> -->
-  <script src="{{ asset('/js/jquery.js') }}"></script>
-  <script src="{{ asset('/administrator/js/bootstrap.min.js') }}"></script>
-
-  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-
-  <!-- Vendor JS Files -->
-  <script src="{{ asset('/administrator/vendor/apexcharts/apexcharts.min.js') }}"></script>
-  <script src="{{ asset('/administrator/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('/administrator/vendor/chart.js/chart.umd.js') }}"></script>
-  <script src="{{ asset('/administrator/vendor/echarts/echarts.min.js') }}"></script>
-  <script src="{{ asset('/administrator/vendor/quill/quill.min.js') }}"></script>
-  <script src="{{ asset('/administrator/vendor/simple-datatables/simple-datatables.js') }}"></script>
-  <script src="{{ asset('/administrator/vendor/tinymce/tinymce.min.js') }}"></script>
-  <script src="{{ asset('/administrator/vendor/php-email-form/validate.js') }}"></script>
-
-  <link rel="stylesheet" type="text/css" href="{{ asset('/richtext/richtext.min.css') }}" />
-  <script src="{{ asset('/richtext/jquery.richtext.min.js') }}"></script>
-  
+  <link rel="stylesheet" type="text/css" href="{{ asset('/richtext/richtext.min.css') }}" />  
   <link rel="stylesheet" type="text/css" href="{{ asset('/datetimepicker/jquery.datetimepicker.min.css') }}" />
-  <script src="{{ asset('/datetimepicker/jquery.datetimepicker.full.js') }}"></script>
-
-  <!-- Template Main JS File -->
-  <script src="{{ asset('/administrator/js/main.js') }}"></script>
-  <script src="{{ asset('/js/chart.js') }}"></script>
-
-  <script src="{{ asset('/js/react.development.js') }}"></script>
-  <script src="{{ asset('/js/react-dom.development.js') }}"></script>
-  <script src="{{ asset('/js/babel.min.js') }}"></script>
-  <script src="{{ asset('/js/axios.min.js') }}"></script>
-  <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
-  <script src="{{ asset('/js/html-react-parser.min.js') }}"></script>
-  <script src="{{ asset('/js/script.js?v=' . time()) }}"></script>
-  <script src="{{ asset('/administrator/js/script.js?v=' . time()) }}"></script>
 </head>
 
 <body>
 
+  <input type="hidden" id="base_url" value="{{ env('APP_URL') }}" />
   <input type="hidden" id="api_key_header_key" value="{{ api_key_header_key() }}" />
 
   @php
@@ -103,6 +62,7 @@
 
     let user = null;
     const api_key_header_key = document.getElementById("api_key_header_key").value;
+    const baseUrl = document.getElementById('base_url').value;
 
     if (document.getElementById("user") != null) {
       user = JSON.parse(document.getElementById("user").value);
@@ -131,8 +91,6 @@
           "timezone": timezone
         })
       });
-
-      onInit();
     }
   </script>
 
@@ -337,6 +295,53 @@
   </div>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="{{ asset('/js/fontawesome.js') }}"></script>
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Apr 7 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+  <!-- <script src="{{ asset('/administrator/js/jquery-3.6.0.min.js') }}"></script> -->
+  <script src="{{ asset('/js/jquery.js') }}"></script>
+  <script src="{{ asset('/administrator/js/bootstrap.min.js') }}"></script>
+
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+
+  <!-- Vendor JS Files -->
+  <script src="{{ asset('/administrator/vendor/apexcharts/apexcharts.min.js') }}"></script>
+  <script src="{{ asset('/administrator/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('/administrator/vendor/chart.js/chart.umd.js') }}"></script>
+  <script src="{{ asset('/administrator/vendor/echarts/echarts.min.js') }}"></script>
+  <script src="{{ asset('/administrator/vendor/quill/quill.min.js') }}"></script>
+  <script src="{{ asset('/administrator/vendor/simple-datatables/simple-datatables.js') }}"></script>
+  <script src="{{ asset('/administrator/vendor/tinymce/tinymce.min.js') }}"></script>
+  <script src="{{ asset('/administrator/vendor/php-email-form/validate.js') }}"></script>
+
+  <script src="{{ asset('/richtext/jquery.richtext.min.js') }}"></script>
+  <script src="{{ asset('/datetimepicker/jquery.datetimepicker.full.js') }}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{ asset('/administrator/js/main.js') }}"></script>
+  <script src="{{ asset('/js/chart.js') }}"></script>
+
+  <script src="{{ asset('/js/react.development.js') }}"></script>
+  <script src="{{ asset('/js/react-dom.development.js') }}"></script>
+  <script src="{{ asset('/js/babel.min.js') }}"></script>
+  <script src="{{ asset('/js/axios.min.js') }}"></script>
+  <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
+  <script src="{{ asset('/js/html-react-parser.min.js') }}"></script>
+  <script src="{{ asset('/js/script.js?v=' . time()) }}"></script>
+  <script src="{{ asset('/administrator/js/script.js?v=' . time()) }}"></script>
+
+  <script>
+    onInit();
+  </script>
 
   <style>
     .timezone {
