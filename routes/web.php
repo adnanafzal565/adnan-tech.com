@@ -9,8 +9,13 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\SubDomainController;
 
 use App\Http\Middleware\UserAuth;
+
+Route::domain("{sub_domain}.adnan-tech.com")->group(function () {
+    Route::get("/", [SubDomainController::class, "home"]);
+});
 
 Route::middleware("web")
     ->group(base_path("routes/admin.php"));
