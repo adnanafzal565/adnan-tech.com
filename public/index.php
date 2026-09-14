@@ -1,5 +1,9 @@
 <?php
 
+// search string in all files in current folder recursively
+// grep -Ril "smtp_enabled" .
+// grep -Rin "smtp_enabled" <- show line number too
+
 // split video in 1 minute each
 
 // for file in *.mp4; do

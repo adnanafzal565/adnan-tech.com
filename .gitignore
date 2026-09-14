@@ -5,6 +5,7 @@ ads.txt
 adnan-tech_com.sql
 app/Modules/EmailRenderer
 app/Modules/JobRunner
+app/Modules/EmailValidation
 *.log
 .env
 .DS_Store
