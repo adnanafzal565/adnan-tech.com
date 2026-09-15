@@ -58,7 +58,7 @@
           <tbody>
             @foreach ($api_keys as $api_key)
               <tr data-id="{{ $api_key->id }}">
-                <td>{{ $api_key->user?->name ?? "" }}</td>
+                <td>{{ $api_key->user?->email ?? "" }}</td>
                 <td>{{ $api_key->name }}</td>
                 <td>{{ $api_key->status === 1 ? "Active" : "Inactive" }}</td>
                 <td>{{ $api_key->remaining }}</td>
