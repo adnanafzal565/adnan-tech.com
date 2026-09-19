@@ -8,12 +8,16 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\ImageController;
 
 use App\Http\Middleware\UserAuth;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
+
+Route::post("/upload-image", [ImageController::class, "upload"])
+    ->name("upload.image");
 
 // Route::post('/seed_products', [ProductController::class, 'seed']);
 Route::post("/send_contact_us_message", [UserController::class, "send_contact_us_message"]);
