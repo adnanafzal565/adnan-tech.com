@@ -34,6 +34,11 @@
 
   <link rel="stylesheet" type="text/css" href="{{ asset('/richtext/richtext.min.css') }}" />  
   <link rel="stylesheet" type="text/css" href="{{ asset('/datetimepicker/jquery.datetimepicker.min.css') }}" />
+
+  <link
+    rel="stylesheet"
+    href="{{ asset('Trumbowyg/ui/trumbowyg.min.css') }}"
+  />
 </head>
 
 <body>
@@ -329,6 +334,9 @@
   <!-- Template Main JS File -->
   <script src="{{ asset('/administrator/js/main.js') }}"></script>
   <script src="{{ asset('/js/chart.js') }}"></script>
+
+  <script src="{{ asset('Trumbowyg/trumbowyg.min.js') }}"></script>
+  <script src="{{ asset('Trumbowyg/plugins/upload/trumbowyg.upload.min.js') }}"></script>
 
   <script src="{{ asset('/js/react.development.js') }}"></script>
   <script src="{{ asset('/js/react-dom.development.js') }}"></script>

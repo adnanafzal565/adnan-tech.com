@@ -24,7 +24,29 @@ const globalState = {
             this.listeners[a](this.state, newState)
         }
     }
-}
+};
+
+const trumbowyg_config = {
+    btns: [
+        ["viewHTML"],
+        ["formatting"],
+        ["strong", "em", "underline"],
+        ["link"],
+        ["upload"],
+        ["justifyLeft", "justifyCenter", "justifyRight"],
+        ["unorderedList", "orderedList"],
+        ["removeformat"],
+        ["fullscreen"]
+    ],
+
+    plugins: {
+        upload: {
+            serverPath: "/api/upload-image",
+            fileFieldName: "image",
+            urlPropertyName: "url"
+        }
+    }
+};
 
 function headline(text) {
     return text

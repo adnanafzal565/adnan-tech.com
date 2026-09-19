@@ -36,7 +36,7 @@
           <textarea name="excerpt">{{ $post->excerpt ?? "" }}</textarea>
 
           <label for="content">Content</label>
-          <textarea name="content">{{ $post->content ?? "" }}</textarea>
+          <textarea id="content">{{ $post->content ?? "" }}</textarea>
 
           <label for="image">Featured Image</label>
           <button type="button" class="btn no-hover" onclick="fileManager.openMediaModal()">📁 Select Media</button>
@@ -127,6 +127,7 @@
       try {
         const formData = new FormData(form);
         formData.append("featured_image", fileManager.selected?.id || 0);
+        formData.append("content", $("#content").trumbowyg("html"));
 
         const isActive = document.getElementById("is_active").checked;
         const isFeatured = document.getElementById("is_featured").checked;
@@ -152,7 +153,7 @@
     }
 
     window.addEventListener("load", function () {
-      $("textarea[name='content']").richText();
+      // $("textarea[name='content']").richText();
       tags.init();
       tags.selectedTags = postTags;
       tags.render();
@@ -164,6 +165,8 @@
           filePath: postFilePath
         };
       }
+
+      $("#content").trumbowyg(trumbowyg_config);
     });
   </script>
 
