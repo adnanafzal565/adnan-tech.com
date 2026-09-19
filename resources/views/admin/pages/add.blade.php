@@ -39,7 +39,7 @@
           <textarea name="excerpt"></textarea>
 
           <label for="content">Content</label>
-          <textarea name="content">{{ $page->content ?? "" }}</textarea>
+          <textarea id="content">{{ $page->content ?? "" }}</textarea>
 
             <!--
           <div id="toolbar">
@@ -90,7 +90,8 @@
         const formData = new FormData(form);
 
         const isActive = document.getElementById("is_active").checked;
-        formData.append("active", isActive ? 1 : 0)
+        formData.append("active", isActive ? 1 : 0);
+        formData.append("content", $("#content").trumbowyg("html"));
 
         const response = await axios.post(
           baseUrl + "/admin/pages/add",
@@ -111,7 +112,8 @@
     }
 
     window.addEventListener("load", function () {
-      $("textarea[name='content']").richText();
+      // $("textarea[name='content']").richText();
+      $("#content").trumbowyg(trumbowyg_config);
     });
   </script>
 
