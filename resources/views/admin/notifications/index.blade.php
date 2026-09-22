@@ -5,11 +5,17 @@
 
   @php
     $can_mark_as_unread = auth()->user()->has_route_access('admin.notifications.mark_as_unread');
+    $can_create = auth()->user()->has_route_access('admin.notifications.create');
   @endphp
 
   <div class="pagetitle">
     <div style="display: flex;">
       <h1>Notifications</h1>
+
+      @if ($can_create)
+        <a href="{{ route('admin.notifications.create') }}"
+          class="btn btn-outline-primary btn-sm ms-3">Send Notification</a>
+      @endif
     </div>
 
     <nav class="mt-3">

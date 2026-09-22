@@ -6,8 +6,41 @@ use Illuminate\Http\Request;
 
 use Validator;
 
+use App\Models\Notification;
+
 class NotificationController extends Controller
 {
+    public function create(Request $request)
+    {
+        if ($request->expectsJson()) {
+            $request->validate([
+                "user_id" => "required|exists:users,id",
+                "title" => "required|string",
+                "content" => "required|string",
+                "type" => "required|string",
+                "table_id" => "nullable",
+                "is_read" => "nullable|boolean"
+            ]);
+
+            $notification = Notification::create([
+                "user_id" => $request->user_id,
+                "title" => $request->title,
+                "content" => $request->content,
+                "type" => $request->type,
+                "table_id" => $request->table_id,
+                "is_read" => $request->is_read ?? false
+            ]);
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Notification created successfully.",
+                "notification" => $notification
+            ]);
+        }
+        
+        return view("admin/notifications/create");
+    }
+
     public function mark_as_unread(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -560,6 +560,28 @@ class UserController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $search = trim($request->search);
+
+        $users = User::where(function ($query) use ($search) {
+                $query->where("name", "LIKE", "%" . $search . "%")
+                    ->orWhere("email", "LIKE", "%" . $search . "%");
+            })
+            ->select(
+                "id",
+                "name",
+                "email"
+            )
+            ->limit(20)
+            ->get();
+
+        return response()->json([
+            "status" => "success",
+            "users" => $users
+        ]);
+    }
+
     public function index()
     {
         set_timezone();

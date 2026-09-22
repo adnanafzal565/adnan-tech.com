@@ -39,6 +39,9 @@ Route::group([
     Route::post("/admin/caches/clear", [CacheController::class, "clear"])
         ->name("admin.caches.clear");
 
+    Route::any("/admin/notifications/create", [NotificationController::class, "create"])
+        ->name("admin.notifications.create");
+
     Route::post("/admin/notifications/mark_as_unread", [NotificationController::class, "mark_as_unread"]);
 
     Route::get("/admin/notifications", [NotificationController::class, "admin_index"])
@@ -220,6 +223,9 @@ Route::group([
 
     Route::get("/admin/users/edit/{id}", [UserController::class, "edit"])
         ->name("admin.users.edit");
+
+    Route::get("/admin/users/search", [UserController::class, "search"])
+        ->name("admin.users.search");
 
     Route::get("/admin/users", [UserController::class, "index"])
         ->name("admin.users.index");
