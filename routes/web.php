@@ -18,6 +18,7 @@ Route::domain("{sub_domain}.adnan-tech.com")->group(function () {
 });
 
 Route::middleware("web")
+    ->prefix("admin")
     ->group(base_path("routes/admin.php"));
 
 // Route::get('/', function () {
