@@ -45,6 +45,10 @@ Route::get("/business-os", function () {
     return redirect("/business-management-system");
 });
 
+Route::get("/bms", function () {
+    return redirect("/business-management-system");
+});
+
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
     ->name('newsletter.subscribe');
 

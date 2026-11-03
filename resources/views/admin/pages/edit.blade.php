@@ -45,31 +45,6 @@
           <label for="content">Content</label>
           <textarea id="content" name="content">{{ $page->content ?? "" }}</textarea>
 
-            <!--
-          <div id="toolbar">
-            <button type="button" onclick="editor.format('bold')">Bold</button>
-            <button type="button" onclick="editor.format('italic')">Italic</button>
-            <button type="button" onclick="editor.format('underline')">Underline</button>
-            <button type="button" onclick="editor.format('insertUnorderedList')">Unordered List</button>
-            <button type="button" onclick="editor.format('insertOrderedList')">Ordered List</button>
-            <button type="button" onclick="editor.insertHeading(1)">H1</button>
-            <button type="button" onclick="editor.insertHeading(2)">H2</button>
-            <button type="button" onclick="editor.insertHeading(3)">H3</button>
-            <button type="button" onclick="editor.insertHeading(4)">H4</button>
-            <button type="button" onclick="editor.insertHeading(5)">H5</button>
-            <button type="button" onclick="editor.insertHeading(6)">H6</button>
-            <button type="button" onclick="editor.insertParagraph()">P</button>
-            <button type="button" onclick="editor.insertLink()">Link</button>
-            <button type="button" onclick="editor.insertImage()">Image</button>
-            <button type="button" onclick="editor.insertVideo()">Video</button>
-            <button type="button" onclick="editor.insertColumns()">Columns</button>
-            <button type="button" onclick="editor.insertSection()">Section</button>
-          </div>
-
-          <div id="editor" contenteditable="true">{!! $page->content !!}</div>
-          <input type="hidden" name="content" id="html_content" />
-          -->
-
           <div class="switch">
             <input type="checkbox" id="is_active" {{ $page->is_active == 1 ? "checked" : "" }} />
             <label for="is_active" style="margin-top: 0px;">Is Active</label>
