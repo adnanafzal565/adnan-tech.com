@@ -84,7 +84,7 @@
         color: var(--pd-ink);
         font-size: 1.125rem;
         line-height: 1.85;
-        max-width: 68ch;
+        /*max-width: 68ch;*/
     }
     .post-detail .pd-body p { margin-bottom: 1.5rem; color: var(--pd-muted); }
     .post-detail .pd-body h2,
@@ -120,7 +120,7 @@
   </style>
    
   <div class="post-detail">
-      <div class="container" style="max-width: 760px;">
+      <div class="container">
    
           <a href="{{ route('blog.index') }}" class="pd-back">&larr; All posts</a>
    
