@@ -35,6 +35,9 @@
 
     <link href="{{ asset('themes/' . active_theme() . '/css/style.css?v=' . time()) }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}" />
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4328287883552246"
+     crossorigin="anonymous"></script>
 </head>
 <body>
 
