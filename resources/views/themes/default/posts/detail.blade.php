@@ -163,24 +163,10 @@
                      (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
                 
-              {!! $post->content !!}
+                <div class="mt-3">
+                    {!! $post->content !!}
+                </div>
           </div>
-   
-          @if ($post->user)
-              <div class="pd-author-card">
-                  <img
-                      src="{{ $post->user?->profile_image_absolute ?? asset('img/user-placeholder.png') }}"
-                      alt="{{ $post->user?->name ?? '' }}"
-                      class="pd-avatar"
-                  >
-                  <div>
-                      <a href="{{ route('author', ['username' => $post->user->username ?? '']) }}" class="pd-author-link">
-                          {{ $post->user->name }}
-                      </a>
-                  </div>
-              </div>
-          @endif
-   
       </div>
   </div>
 
