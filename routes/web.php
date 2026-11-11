@@ -41,6 +41,10 @@ Route::middleware("web")
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 });*/
 
+Route::get("/embed/shutdown-the-human-patch", function () {
+    return view("embeds/shutdown-the-human-patch");
+});
+
 Route::get("/business-os", function () {
     return redirect("/business-management-system");
 });
