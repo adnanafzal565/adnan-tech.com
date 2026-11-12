@@ -45,6 +45,10 @@ Route::get("/embed/shutdown-the-human-patch", function () {
     return view("embeds/shutdown-the-human-patch");
 });
 
+Route::get("/embed/linkedout", function () {
+    return view("embeds/linkedout");
+});
+
 Route::get("/business-os", function () {
     return redirect("/business-management-system");
 });
