@@ -10,6 +10,7 @@ use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\SubDomainController;
+use App\Http\Controllers\GamesController;
 
 use App\Http\Middleware\UserAuth;
 
@@ -40,6 +41,14 @@ Route::middleware("web")
     // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 });*/
+
+Route::group([
+    "prefix" => "/games"
+], function () {
+    Route::get("/play/{slug}", [GamesController::class, "play"])->name("games.play");
+    // Route::get("/pp3d", [GamesController::class, "pp3d"]);
+    Route::get("/", [GamesController::class, "index"]);
+});
 
 Route::get("/embed/shutdown-the-human-patch", function () {
     return view("embeds/shutdown-the-human-patch");

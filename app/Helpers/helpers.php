@@ -14,6 +14,40 @@ use App\Models\Settings;
 use App\Models\ApiKey;
 use App\Models\ApiKeyRequestLog;
 
+function get_games()
+{
+    $games = [
+        (object) [
+            'id' => 1,
+            'title' => 'Precision Parking 3D',
+            'slug' => 'pp3d',
+            'thumbnail' => 'uploads/games/road-rash.jpg',
+            'description' => 'Race against opponents, fight rival bikers and dominate the highway.',
+            'rating' => 4.8,
+            'players' => 12500,
+            'category' => [
+                'name' => 'Racing'
+            ],
+            'created_at' => now()
+        ],
+        // (object) [
+        //     'id' => 2,
+        //     'title' => 'Highway Rivals',
+        //     'slug' => 'highway-rivals',
+        //     'thumbnail' => 'uploads/games/car-racing.jpg',
+        //     'description' => 'Experience high-speed street racing through a modern city.',
+        //     'rating' => 4.6,
+        //     'players' => 8500,
+        //     'category' => [
+        //         'name' => 'Racing'
+        //     ],
+        //     'created_at' => now()
+        // ]
+    ];
+    
+    return $games;
+}
+
 /**
  * Decrypt a user's stored webhook secret for attaching to an
  * outgoing request. Returns null if it can't be decrypted (e.g.
