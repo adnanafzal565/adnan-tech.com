@@ -1687,7 +1687,10 @@
     
     <style>
         /* ===== Precision Parking 3D — all selectors scoped to the game container / pp3d- prefix ===== */
-#precision-parking-game{position:relative;display:block;width:100%;max-width:1100px;margin:0 auto;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;line-height:1.25;-webkit-tap-highlight-color:transparent;outline:none}
+#precision-parking-game{
+    position:relative;display:block;width:100%;max-width:1100px;margin:0 auto;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff;line-height:1.25;-webkit-tap-highlight-color:transparent;outline:none;
+    margin-top: 20px;
+}
 #precision-parking-game [hidden]{display:none!important}
 #precision-parking-game .pp3d-frame,#precision-parking-game .pp3d-frame *{box-sizing:border-box}
 

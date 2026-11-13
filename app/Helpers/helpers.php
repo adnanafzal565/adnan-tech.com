@@ -21,12 +21,12 @@ function get_games()
             'id' => 1,
             'title' => 'Precision Parking 3D',
             'slug' => 'pp3d',
-            'thumbnail' => 'uploads/games/road-rash.jpg',
-            'description' => 'Race against opponents, fight rival bikers and dominate the highway.',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6af69cc478c59.png',
+            'description' => 'Master challenging parking levels, navigate tight spaces, and prove your driving skills.',
             'rating' => 4.8,
             'players' => 12500,
-            'category' => [
-                'name' => 'Racing'
+            'category' => (object) [
+                'name' => 'Parking'
             ],
             'created_at' => now()
         ],
@@ -38,7 +38,7 @@ function get_games()
         //     'description' => 'Experience high-speed street racing through a modern city.',
         //     'rating' => 4.6,
         //     'players' => 8500,
-        //     'category' => [
+        //     'category' => (object) [
         //         'name' => 'Racing'
         //     ],
         //     'created_at' => now()

@@ -41,7 +41,7 @@
                         <div class="game-card">
     
                             <img
-                                src="{{ asset($game->thumbnail) }}"
+                                src="{{ $game->thumbnail }}"
                                 alt="{{ $game->title }}"
                                 class="game-image"
                             >
