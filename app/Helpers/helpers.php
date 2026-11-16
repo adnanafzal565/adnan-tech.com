@@ -30,19 +30,19 @@ function get_games()
             ],
             'created_at' => now()
         ],
-        // (object) [
-        //     'id' => 2,
-        //     'title' => 'Highway Rivals',
-        //     'slug' => 'highway-rivals',
-        //     'thumbnail' => 'uploads/games/car-racing.jpg',
-        //     'description' => 'Experience high-speed street racing through a modern city.',
-        //     'rating' => 4.6,
-        //     'players' => 8500,
-        //     'category' => (object) [
-        //         'name' => 'Racing'
-        //     ],
-        //     'created_at' => now()
-        // ]
+        (object) [
+            'id' => 2,
+            'title' => 'Perfect Aim',
+            'slug' => 'perfect-aim',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6afa6c9d3b3e8.png',
+            'description' => 'Can you aim at a moving object?',
+            'rating' => 4.6,
+            'players' => 8500,
+            'category' => (object) [
+                'name' => 'Shooting'
+            ],
+            'created_at' => now()
+        ]
     ];
     
     return $games;
