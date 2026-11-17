@@ -42,6 +42,19 @@ function get_games()
                 'name' => 'Shooting'
             ],
             'created_at' => now()
+        ],
+        (object) [
+            'id' => 3,
+            'title' => 'Fill it Perfectly',
+            'slug' => 'fill-it-perfectly',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6afc6600bba64.png',
+            'description' => 'Fill the water in the glass no more no less.',
+            'rating' => 4.7,
+            'players' => 7300,
+            'category' => (object) [
+                'name' => 'Fill'
+            ],
+            'created_at' => now()
         ]
     ];
     

@@ -221,13 +221,10 @@ document.addEventListener("DOMContentLoaded", function () {
         
 .games-page {
     min-height: 100vh;
-    background: #10131c;
-    color: #fff;
 }
 
 .game-card {
-    background: #1b2030;
-    border: 1px solid #30384b;
+    border: 1px solid #d1d1d1;
     border-radius: 12px;
     overflow: hidden;
     height: 100%;
@@ -251,7 +248,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 .game-title {
     font-weight: 700;
-    color: #fff;
 }
 
 .game-description {
@@ -281,7 +277,6 @@ document.addEventListener("DOMContentLoaded", function () {
 .game-list-view .game-content {
     flex: 1;
 }
-
 @media(max-width: 576px) {
     .game-list-view .game-card {
         flex-direction: column;
