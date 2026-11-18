@@ -55,6 +55,19 @@ function get_games()
                 'name' => 'Fill'
             ],
             'created_at' => now()
+        ],
+        (object) [
+            'id' => 4,
+            'title' => 'Reflex Arena',
+            'slug' => 'reflex-arena',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6afd0371187cc.png',
+            'description' => 'Click the objects as soon as you can.',
+            'rating' => 4.3,
+            'players' => 5400,
+            'category' => (object) [
+                'name' => 'Reflexes'
+            ],
+            'created_at' => now()
         ]
     ];
     
