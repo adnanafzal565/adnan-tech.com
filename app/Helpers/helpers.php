@@ -659,35 +659,33 @@ function str_replace_all($str, $find, $replace)
     return implode($replace, explode($find, $str));
 }
 
-function menu_items($name)
-{
-    return cache()->rememberForever('menu_' . $name, function () use ($name) {
-        $menu = DB::table("menus")
-            ->where("name", "=", $name)
-            ->first();
+if (!function_exists('menu_items')) {
+    function menu_items($name)
+    {
+        return cache()->rememberForever("menu_" . $name, function () use ($name) {
+            $menu = DB::table("menus")->where("name", $name)->first();
 
-        if ($menu != null)
-        {
-            $items = DB::table('menu_items')
-                ->where('menu_id', $menu->id)
-                ->orderBy('order')
-                ->get()
-                ->groupBy('parent_id');
-
-            // Root level
-            $rootItems = $items[null] ?? [];
-
-            // Nest children manually
-            foreach ($rootItems as $key => $item)
-            {
-                $rootItems[$key]->children = $items[$item->id] ?? [];
+            if ($menu == null) {
+                return collect();
             }
 
-            return $rootItems;
-        }
+            $items = DB::table("menu_items")
+                ->where("menu_id", $menu->id)
+                ->orderBy("order")
+                ->get();
 
-        return [];
-    });
+            $byParent = $items->groupBy(fn ($i) => $i->parent_id ?? 0);
+
+            $build = function ($parentId) use (&$build, $byParent) {
+                return ($byParent[$parentId] ?? collect())->map(function ($item) use (&$build) {
+                    $item->children = $build($item->id);
+                    return $item;
+                })->values();
+            };
+
+            return $build(0);
+        });
+    }
 }
 
 function site_title()

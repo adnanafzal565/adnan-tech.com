@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign("menu_id")->references("id")->on("menus")->onUpdate("CASCADE")->onDelete("CASCADE");
             $table->string('title')->nullable();
             $table->string('url')->nullable();
-            $table->integer('parent_id')->nullable(); // for nested menus
+            $table->unsignedBigInteger('parent_id')->nullable(); // for nested menus
             $table->integer('order')->default(0);
             $table->timestamps();
         });

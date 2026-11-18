@@ -87,9 +87,30 @@
             <nav class="main-nav">
                 <ul>
                     @foreach (menu_items("Main menu") as $menu_item)
-                        <li>
-                            <a href="{{ $menu_item->url ?? '' }}">{{ $menu_item->title ?? "" }}</a>
-                        </li>
+                        @if (count($menu_item->children ?? []) > 0)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle"
+                                    href="#"
+                                    id="menuDropdown{{ $menu_item->id }}"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    {{ $menu_item->title ?? "" }}
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="menuDropdown{{ $menu_item->id }}">
+                                    @foreach ($menu_item->children as $child)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ $child->url ?? '' }}">{{ $child->title ?? "" }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ $menu_item->url ?? '' }}">{{ $menu_item->title ?? "" }}</a>
+                            </li>
+                        @endif
                     @endforeach
 
                     <li class="nav-item dropdown" id="header_user_view_app">

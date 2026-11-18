@@ -41,8 +41,24 @@ class MenuController extends Controller
             ]);
         }
 
+        // Collect this item and all of its descendants
+        // (not needed if parent_id has ON DELETE CASCADE, but harmless)
+        $ids = [(int) $id];
+        $queue = [(int) $id];
+
+        while (!empty($queue))
+        {
+            $children = DB::table("menu_items")
+                ->whereIn("parent_id", $queue)
+                ->pluck("id")
+                ->all();
+
+            $ids = array_merge($ids, $children);
+            $queue = $children;
+        }
+
         DB::table("menu_items")
-            ->where("id", "=", $id)
+            ->whereIn("id", $ids)
             ->delete();
 
         cache()->forget("menu_" . ($menu_item->menu_name ?? ""));
@@ -121,7 +137,17 @@ class MenuController extends Controller
 
         $user = auth()->user();
         $id = request()->id ?? 0;
-        $order = json_decode(request()->order ?? "[]", true);
+
+        // Tree format: [{ "id": 1, "children": [{ "id": 2, "children": [] }] }, ...]
+        $tree = json_decode(request()->order ?? "[]", true);
+
+        if (!is_array($tree))
+        {
+            return response()->json([
+                "status" => "error",
+                "message" => "Invalid order data."
+            ]);
+        }
 
         $menu = DB::table("menus")
             ->where("id", "=", $id)
@@ -135,15 +161,54 @@ class MenuController extends Controller
             ]);
         }
 
-        foreach ($order as $index => $itemId)
+        // Only items that belong to this menu may be touched
+        $validIds = DB::table("menu_items")
+            ->where("menu_id", "=", $id)
+            ->pluck("id")
+            ->map(fn ($v) => (int) $v)
+            ->all();
+
+        $updates = [];
+        $seen = [];
+
+        $walk = function ($nodes, $parentId) use (&$walk, &$updates, &$seen, $validIds)
         {
-            DB::table("menu_items")
-                ->where("id", "=", $itemId)
-                ->update([
-                    'order' => $index,
-                    "updated_at" => now()->utc()
-                ]);
-        }
+            if (!is_array($nodes))
+            {
+                return;
+            }
+
+            foreach (array_values($nodes) as $index => $node)
+            {
+                $itemId = (int) ($node["id"] ?? 0);
+
+                if (!in_array($itemId, $validIds, true) || isset($seen[$itemId]))
+                {
+                    continue;
+                }
+
+                $seen[$itemId] = true;
+                $updates[] = [$itemId, $parentId, $index];
+
+                $walk($node["children"] ?? [], $itemId);
+            }
+        };
+
+        $walk($tree, null);
+
+        DB::transaction(function () use ($updates)
+        {
+            foreach ($updates as [$itemId, $parentId, $index])
+            {
+                DB::table("menu_items")
+                    ->where("id", "=", $itemId)
+                    ->update([
+                        "parent_id" => $parentId,
+                        "order" => $index,
+                        "updated_at" => now()->utc()
+                    ]);
+            }
+        });
 
         cache()->forget("menu_" . ($menu->name ?? ""));
 
@@ -178,25 +243,28 @@ class MenuController extends Controller
             ]);
         }
 
-        $items = DB::table('menu_items')
-            ->where('menu_id', $id)
-            ->orderBy('order')
-            ->get()
-            ->groupBy('parent_id');
+        $items = DB::table("menu_items")
+            ->where("menu_id", $id)
+            ->orderBy("order")
+            ->get();
 
-        // Root level
-        $rootItems = $items[null] ?? [];
+        // Group by parent (null parent => key 0)
+        $byParent = $items->groupBy(fn ($i) => $i->parent_id ?? 0);
 
-        // Nest children manually
-        foreach ($rootItems as $key => $item)
+        // Build the tree recursively (any depth)
+        $build = function ($parentId) use (&$build, $byParent)
         {
-            $rootItems[$key]->children = $items[$item->id] ?? [];
-        }
+            return ($byParent[$parentId] ?? collect())->map(function ($item) use (&$build)
+            {
+                $item->children = $build($item->id);
+                return $item;
+            })->values();
+        };
 
         return response()->json([
             "status" => "success",
             "message" => "Menu items has been fetched.",
-            "items" => $rootItems
+            "items" => $build(0)
         ]);
     }
 
@@ -220,6 +288,7 @@ class MenuController extends Controller
         $id = request()->id ?? 0;
         $title = request()->title ?? "";
         $url = request()->url ?? "";
+        $parent_id = request()->parent_id ? (int) request()->parent_id : null;
 
         $menu = DB::table("menus")
             ->where("id", "=", $id)
@@ -233,12 +302,34 @@ class MenuController extends Controller
             ]);
         }
 
-        $next_order = DB::table('menu_items')
-            ->where('menu_id', $id)
-            ->max('order') + 1;
+        // Parent (if given) must exist and belong to the same menu
+        if ($parent_id !== null)
+        {
+            $parent_exists = DB::table("menu_items")
+                ->where("id", "=", $parent_id)
+                ->where("menu_id", "=", $id)
+                ->exists();
+
+            if (!$parent_exists)
+            {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Parent item not found."
+                ]);
+            }
+        }
+
+        // Order among siblings (a null parent_id is compiled as IS NULL by the builder)
+        $max_order = DB::table("menu_items")
+            ->where("menu_id", $id)
+            ->where("parent_id", $parent_id)
+            ->max("order");
+
+        $next_order = ($max_order === null) ? 0 : ((int) $max_order + 1);
 
         $obj = [
             "menu_id" => $id,
+            "parent_id" => $parent_id,
             "title" => $title,
             "url" => $url,
             "order" => $next_order,
@@ -248,6 +339,8 @@ class MenuController extends Controller
 
         $obj["id"] = DB::table("menu_items")
             ->insertGetId($obj);
+
+        $obj["children"] = [];
 
         cache()->forget("menu_" . ($menu->name ?? ""));
 
