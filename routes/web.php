@@ -11,6 +11,7 @@ use App\Http\Controllers\AppController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\SubDomainController;
 use App\Http\Controllers\GamesController;
+use App\Http\Controllers\ToolController;
 
 use App\Http\Middleware\UserAuth;
 
@@ -41,6 +42,9 @@ Route::middleware("web")
     // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 });*/
+
+Route::get('/tools', [ToolController::class, 'index'])->name('tools.index');
+Route::get('/tools/{slug}', [ToolController::class, 'show'])->name('tools.show');
 
 Route::group([
     "prefix" => "/games"

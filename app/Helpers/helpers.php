@@ -14,6 +14,45 @@ use App\Models\Settings;
 use App\Models\ApiKey;
 use App\Models\ApiKeyRequestLog;
 
+if (!function_exists('tools')) {
+    /**
+     * Returns the list of tools as an array of objects:
+     * id, name, slug, description.
+     *
+     * The slug must match the blade file name:
+     * resources/views/themes/default/tools/{slug}.blade.php
+     */
+    function tools()
+    {
+        $tools = [
+            [
+                "id" => 1,
+                "name" => "Project Management",
+                "slug" => "project-management",
+                "description" => "Plan projects, assign tasks and track progress in one place."
+            ],
+        ];
+
+        return array_map(fn ($tool) => (object) $tool, $tools);
+    }
+}
+
+if (!function_exists('tool_by_slug')) {
+    /**
+     * Returns a single tool object by slug, or null if not found.
+     */
+    function tool_by_slug($slug)
+    {
+        foreach (tools() as $tool) {
+            if ($tool->slug === $slug) {
+                return $tool;
+            }
+        }
+
+        return null;
+    }
+}
+
 function get_games()
 {
     $games = [
