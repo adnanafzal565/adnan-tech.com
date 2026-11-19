@@ -12,7 +12,7 @@ return [
 
     [
         'title' => 'Email Campaigns',
-        'icon' => 'fa fa-emails',
+        'icon' => 'fa-solid fa-envelope',
         'url' => '/admin/email-campaigns',
         'active' => 'admin/email-campaigns',
         'permission' => 'admin.email-campaigns.index',
