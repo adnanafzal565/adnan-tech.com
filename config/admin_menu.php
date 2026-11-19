@@ -11,6 +11,14 @@ return [
     ],
 
     [
+        'title' => 'Email Campaigns',
+        'icon' => 'fa fa-emails',
+        'url' => '/admin/email-campaigns',
+        'active' => 'admin/email-campaigns',
+        'permission' => 'admin.email-campaigns.index',
+    ],
+
+    [
         'title' => 'Apps',
         'icon' => 'fa fa-code',
         'url' => '/admin/apps',

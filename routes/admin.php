@@ -22,10 +22,25 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\CacheController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\EmailCampaignController;
 
 Route::group([
     "middleware" => [Admin::class, CheckRoutePermission::class]
 ], function () {
+
+    Route::prefix('/email-campaigns')->group(function () {
+        Route::get('/', [EmailCampaignController::class, 'index'])
+            ->name('admin.email-campaigns.index');
+        Route::post('data', [EmailCampaignController::class, 'data']);
+        Route::post('import', [EmailCampaignController::class, 'importSql']);
+        Route::post('contacts', [EmailCampaignController::class, 'storeContact']);
+        Route::post('contacts/delete', [EmailCampaignController::class, 'deleteContacts']);
+        Route::post('campaigns', [EmailCampaignController::class, 'saveCampaign']);
+        Route::post('campaigns/delete', [EmailCampaignController::class, 'deleteCampaign']);
+        Route::post('send', [EmailCampaignController::class, 'send']);
+        Route::post('send-test', [EmailCampaignController::class, 'sendTest']);
+        Route::post('campaigns/sent', [EmailCampaignController::class, 'sentContacts']);
+    });
 
     Route::get("/subscribers", [NewsletterController::class, "index"])
         ->name("admin.subscribers.index");
