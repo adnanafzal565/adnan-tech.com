@@ -48,6 +48,7 @@
     
                             <div class="game-content">
     
+                                {{--
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-primary">
                                         {{ $game->category->name ?? 'Uncategorized' }}
@@ -58,6 +59,7 @@
                                         {{ $game->rating ?? '0.0' }}
                                     </span>
                                 </div>
+                                --}}
     
                                 <h5 class="game-title">
                                     {{ $game->title }}
@@ -69,10 +71,12 @@
     
                                 <div class="d-flex justify-content-between align-items-center mt-3">
     
+                                    {{--
                                     <small class="text-secondary">
                                         <i class="bi bi-people"></i>
                                         {{ number_format($game->players ?? 0) }} Players
                                     </small>
+                                    --}}
     
                                     <a href="{{ route('games.play', ['slug' => $game->slug]) }}"
                                         class="btn btn-success btn-sm px-4">

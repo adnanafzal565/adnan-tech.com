@@ -107,6 +107,19 @@ function get_games()
                 'name' => 'Reflexes'
             ],
             'created_at' => now()
+        ],
+        (object) [
+            'id' => 5,
+            'title' => 'Crane Master',
+            'slug' => 'crane-master',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6afe5e1b0449d.png',
+            'description' => 'Can you pick objects from crane?',
+            'rating' => 4.3,
+            'players' => 5400,
+            'category' => (object) [
+                'name' => 'Reflexes'
+            ],
+            'created_at' => now()
         ]
     ];
     
