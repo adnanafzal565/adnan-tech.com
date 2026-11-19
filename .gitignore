@@ -1,3 +1,15 @@
+app/Http/Controllers/ProjectManagementController.php
+database/migrations/2026_11_18_070617_create_pm_clients_table.php
+database/migrations/2026_11_18_070629_create_pm_projects_table.php
+database/migrations/2026_11_18_070638_create_pm_tasks_table.php
+database/migrations/2026_11_18_070651_create_pm_task_comments_table.php
+resources/views/themes/default/tools/project-management.blade.php
+resources/views/themes/default/tools/pm-shared.blade.php
+resources/views/emails/pm-task-comment.blade.php
+resources/views/emails/pm-task-status.blade.php
+app/Mail/TaskCommentMail.php
+app/Mail/TaskStatusMail.php
+
 ads.txt
 *.zip
 *.tar

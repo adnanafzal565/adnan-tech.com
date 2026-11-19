@@ -12,6 +12,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\SubDomainController;
 use App\Http\Controllers\GamesController;
 use App\Http\Controllers\ToolController;
+use App\Http\Controllers\ProjectManagementController;
 
 use App\Http\Middleware\UserAuth;
 
@@ -42,6 +43,28 @@ Route::middleware("web")
     // dispatch(new \App\Jobs\SendVerifyEmailJob("Adnan", "adnanafzal565@gmail.com", 12345));
     // dispatch(new \App\Jobs\SendWelcomeEmailJob("Adnan", "adnanafzal565@gmail.com"));
 });*/
+
+Route::prefix('tools/project-management')->group(function () {
+
+    // Public, read-only client view (secret token in the URL)
+    Route::get('/shared/{token}', [ProjectManagementController::class, 'shared'])->name('pm.shared');
+    Route::get('/shared/{token}/data', [ProjectManagementController::class, 'shared_data'])->name('pm.shared.data');
+
+    // JSON API used by the React app (super admin only, checked in the controller)
+    Route::prefix('api')->group(function () {
+        Route::get('/data', [ProjectManagementController::class, 'data']);
+
+        Route::post('/tasks', [ProjectManagementController::class, 'store']);
+        Route::put('/tasks/{id}', [ProjectManagementController::class, 'update']);
+        Route::delete('/tasks/{id}', [ProjectManagementController::class, 'destroy']);
+
+        Route::get('/tasks/{id}/comments', [ProjectManagementController::class, 'comments']);
+        Route::post('/tasks/{id}/comments', [ProjectManagementController::class, 'add_comment']);
+
+        Route::post('/projects/{id}/share', [ProjectManagementController::class, 'share']);
+        Route::delete('/projects/{id}/share', [ProjectManagementController::class, 'unshare']);
+    });
+});
 
 Route::get('/tools', [ToolController::class, 'index'])->name('tools.index');
 Route::get('/tools/{slug}', [ToolController::class, 'show'])->name('tools.show');

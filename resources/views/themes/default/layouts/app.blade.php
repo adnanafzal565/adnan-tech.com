@@ -209,6 +209,7 @@
     <script src="{{ asset('/js/react.development.js') }}"></script>
     <script src="{{ asset('/js/react-dom.development.js') }}"></script>
     <script src="{{ asset('/js/babel.min.js') }}"></script>
+    <script src="{{ asset('/js/html-react-parser.min.js') }}"></script>
     <script src="{{ asset('/js/sweetalert2@11.js') }}"></script>
     <script src="{{ asset('/js/axios.min.js') }}"></script>
     <script src="{{ asset('/js/fontawesome.js') }}"></script>
