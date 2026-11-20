@@ -120,6 +120,19 @@ function get_games()
                 'name' => 'Reflexes'
             ],
             'created_at' => now()
+        ],
+        (object) [
+            'id' => 6,
+            'title' => 'Perfect Landing',
+            'slug' => 'perfect-landing',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6affd70caaa96.png',
+            'description' => 'Land the plane without crashing.',
+            'rating' => 4.3,
+            'players' => 5400,
+            'category' => (object) [
+                'name' => 'Reflexes'
+            ],
+            'created_at' => now()
         ]
     ];
     
