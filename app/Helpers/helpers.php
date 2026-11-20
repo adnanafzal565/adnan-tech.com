@@ -133,6 +133,19 @@ function get_games()
                 'name' => 'Reflexes'
             ],
             'created_at' => now()
+        ],
+        (object) [
+            'id' => 7,
+            'title' => 'Stack It Perfectly',
+            'slug' => 'stack-it-perfectly',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6b002d736791e.png',
+            'description' => 'Put blocks in order of each other.',
+            'rating' => 4.3,
+            'players' => 5400,
+            'category' => (object) [
+                'name' => 'Reflexes'
+            ],
+            'created_at' => now()
         ]
     ];
     
