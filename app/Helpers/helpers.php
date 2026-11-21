@@ -146,6 +146,19 @@ function get_games()
                 'name' => 'Reflexes'
             ],
             'created_at' => now()
+        ],
+        (object) [
+            'id' => 8,
+            'title' => 'Mini Golf Challenge',
+            'slug' => 'mini-golf-challenge',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6b0210cee3865.png',
+            'description' => 'Play golf online.',
+            'rating' => 4.3,
+            'players' => 5400,
+            'category' => (object) [
+                'name' => 'Reflexes'
+            ],
+            'created_at' => now()
         ]
     ];
     
