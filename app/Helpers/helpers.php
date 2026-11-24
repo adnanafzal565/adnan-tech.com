@@ -159,6 +159,19 @@ function get_games()
                 'name' => 'Reflexes'
             ],
             'created_at' => now()
+        ],
+        (object) [
+            'id' => 9,
+            'title' => 'Frostbound Adventures',
+            'slug' => 'frostbound-adventures',
+            'thumbnail' => 'https://adnan-tech.com/storage/files/2026/6b05014d3d495.png',
+            'description' => 'Play golf online.',
+            'rating' => 4.3,
+            'players' => 5400,
+            'category' => (object) [
+                'name' => 'Reflexes'
+            ],
+            'created_at' => now()
         ]
     ];
     
