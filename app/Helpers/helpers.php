@@ -31,6 +31,12 @@ if (!function_exists('tools')) {
                 "slug" => "project-management",
                 "description" => "Plan projects, assign tasks and track progress in one place."
             ],
+            [
+                "id" => 2,
+                "name" => "Video Grid",
+                "slug" => "video-grid",
+                "description" => "Set videos in a grid."
+            ],
         ];
 
         return array_map(fn ($tool) => (object) $tool, $tools);
