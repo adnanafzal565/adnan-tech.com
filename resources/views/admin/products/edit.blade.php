@@ -237,7 +237,7 @@
     }
 
     window.addEventListener("load", function () {
-      $("textarea[name='content']").richText();
+      // $("textarea[name='content']").richText();
 
       tags.init();
       tags.selectedTags = productTags;
