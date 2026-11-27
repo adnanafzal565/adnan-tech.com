@@ -196,10 +196,12 @@
                                 </div>
                                 --}}
 
-                                <div>
-                                    <strong>Category:</strong>
-                                    {{ implode(',', $product->categories) }}
-                                </div>
+                                @if (count($product->categories) > 0)
+                                    <div>
+                                        <strong>Category:</strong>
+                                        {{ implode(',', $product->categories) }}
+                                    </div>
+                                @endif
 
                                 <!-- <div>
                                     <strong>Availability:</strong>
